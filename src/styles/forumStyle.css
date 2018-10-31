@@ -4,6 +4,10 @@
 }
 */
 
+:root {
+    --question-main-color:  #006600; 
+}
+
 body {
     padding: 0;
     background-image: url("../images/forumWallpaper.jpg");
@@ -474,11 +478,11 @@ textarea{
 }
 
 .post a{
-    color: green !important;
+    color: var(--question-main-color) !important;
 }
 
 .stats {
-    background-color: forestgreen;
+    background-color:/*forestgreen*/var(--question-main-color) ;
     grid-area: stat;
     text-align: center;
     padding: 0 !important;
@@ -494,7 +498,7 @@ textarea{
     width: 50% !important;
     height: 100%;
     background-color: cornsilk;
-    color: green !important;
+    color: /*green*/ var(--question-main-color)  !important;
     font-size: 20px;
 }
 
@@ -519,7 +523,7 @@ textarea{
 .postTopic {
     /* background-color:orangered;*/
     grid-area: topic;
-    color: forestgreen !important;
+    color: /*forestgreen*/ var(--question-main-color)  !important;
     cursor: pointer;
     transition: .4s ease;
     font-size: 30px;

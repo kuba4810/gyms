@@ -1,0 +1,23 @@
+Dane w Aplikacji :
+
+
+User: Dane u¿ytkownika, Statystyka(Odpowiedzi, G³osy ...), Informacja czy zag³osowa³ na dane pytanie/odpowiedŸ,Powiadomienia
+
+Pytania: lista pytañ, lista odpowiedzi na dane pytanie, szczegó³owe dane pytania
+
+Wiadomoœci: lista wiadomoœci
+
+Si³ownie: lista si³owni, szczegó³y si³owni
+
+Trenerzy: lista trenerów, szczegó³y trenera
+
+
+
+Reducery:
+	U¿ytkownik: Dane logowania
+	Pytania: Lista pytañ
+
+State:
+	Pytania
+	
+	

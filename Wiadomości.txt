@@ -1,0 +1,12 @@
+MessageContainer:
+	-pobieranie wiadomoœci(Wszystkie)
+	-przekazanie do Messages
+
+Messages:
+	Wyrenderowanie listy wiadomoœci
+	Przesy³a tablicê wiadomoœci do listy przez propsy
+
+MessageList
+	Renderuje tablicê obiektów wiadomoœæ
+	Dane pojedynczej wiadomoœci przesy³a przez props
+	

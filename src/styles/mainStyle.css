@@ -98,12 +98,27 @@ body {
 
 }
 
-hr {
-    position: relative;
-    /*width: 0;*/
-    margin: 0 auto;
-    /*opacity: 0;*/
+@keyframes hrAppear{
+ from{
+     opacity:0;
+     width:0%;
+ }
+ to{
+     opacity:1;
+     width:80%;
+ }
 
+}
+
+.mainPageHeader hr {
+    position: relative;
+    margin: 0 auto;
+    width:80%;
+    border-color: white;
+   /* animation: hrAppear;
+    animation-duration:1s;*/
+    animation-delay:1s;
+    
 }
 
 /*

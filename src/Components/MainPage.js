@@ -7,7 +7,7 @@ const AppHeader = () =>{
             <div className="caption animated">
                 <i className="fas fa-dumbbell"></i> SIŁOWNIE.INFO <i className="fas fa-dumbbell"></i> <br/>
             </div>
-            <hr/>
+            <hr class="animated fadeIn"/>
             <span className="underTitle animated">ZNAJDŹ SWOJĄ SIŁOWNIE</span>
             <span className="secondUnderTitle animated">ZACZNIJ TRENING JUŻ DZIŚ</span>
         </header>

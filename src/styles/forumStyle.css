@@ -1647,7 +1647,7 @@ span.psw {
 
 
 .messageText {
-    background-color: cornsilk;
+    /*background-color: cornsilk;*/
     display: flex;
     justify-content: left;
     align-items: center;
@@ -1971,4 +1971,35 @@ span.psw {
 
 .registerButton{
     width:100%;
+}
+
+@keyframes showMessageAlert{
+    from{
+        top: -200px;
+        opacity: 0;
+    }
+    to{
+        top:0;
+        opacity:1;
+    }
+}
+
+.msgAlertActive{
+    animation-name: showMessageAlert;
+    animation-duration: 1s;
+}
+
+.messageContainerAlert{
+    position:absolute;
+    width:60%;
+    background-color:forestgreen;
+    padding:16px;
+    text-align:center;
+     top:0;
+     z-index: 10000;
+    left:50%;
+    transform: translateX(-50%);
+    top:0;
+    opacity:0;
+    
 }

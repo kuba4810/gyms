@@ -1,4 +1,5 @@
 var express = require('express')
+var messagesRoute = require('./messagesRoute');
 var app = express()
 const {Pool} = require('pg')
 
@@ -16,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(cors());
 app.options('*', cors());
+
+app.use(messagesRoute);
 /* ------------------------------ */
 
 
@@ -327,7 +330,9 @@ app.get('/getMessages/:user_id',function(req,res){
         port: 5432,
     });
 
-    var query = "SELECT login ,sender,receiver, sending_date,message_content,is_read FROM kuba.users  INNER JOIN kuba.messages ON( users.user_id = messages.sender) WHERE receiver = $1 OR sender =$1  ORDER BY sending_date ASC; "
+    var query = `SELECT message_id ,login ,sender,receiver, sending_date,message_content,is_read, receiver_deleted,sender_deleted 
+                FROM kuba.users  INNER JOIN kuba.messages ON( users.user_id = messages.sender)
+                WHERE (receiver = $1 and receiver_deleted = false) OR (sender =$1 and sender_deleted = false)  ORDER BY sending_date ASC;`
     var values = [user_id];
 
     pool.query(query,values, (err, response) => {
@@ -357,7 +362,7 @@ app.post('/newMessage',function(req,res){
         port: 5432,
     });
     
-    var query = "INSERT INTO kuba.messages VALUES($1,$2,CURRENT_TIMESTAMP,$3,false)"
+    var query = "INSERT INTO kuba.messages(sender, receiver, sending_date, message_content, is_read, receiver_deleted, sender_deleted) VALUES($1,$2,CURRENT_TIMESTAMP,$3,false,false,false)"
     var values = [data.sender,data.receiver,data.text];
 
     pool.query(query,values, (err, response) => {

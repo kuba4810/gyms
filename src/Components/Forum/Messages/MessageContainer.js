@@ -9,8 +9,70 @@ class MessageContainer extends React.Component{
         this.state = {
             messages: [],
             messageType: "received",
-            showRead: false
+            showRead: false,
+            messageContainerAlert : ""
         }
+    }
+
+    markAsRead = (message_id) =>{
+        var newMessages = this.state.messages;
+        //Find message and change is_read property to true.
+        this.state.messages.map( (message,index)  => { 
+
+            if(message.message_id == message_id) { 
+                newMessages[index].is_read = true;
+                this.setState({
+                    messages:newMessages,
+                    messageContainerAlert:"Wiadomość oznaczono jako przeczytaną !"
+                })
+
+                document.querySelector(".messageContainerAlert").classList.remove("fadeOut");
+                document.querySelector(".messageContainerAlert").classList.add("fadeIn");
+                
+                setTimeout(function(){
+                    document.querySelector(".messageContainerAlert").classList.remove("fadeIn");
+                    document.querySelector(".messageContainerAlert").classList.add("fadeOut");
+                },2500);
+                
+            } 
+
+        });
+       
+    }
+
+    deleteMessage = (message_id,userType) => {
+        var newMessages = this.state.messages;
+
+        this.state.messages.map( (message,index)  => { 
+
+            if(message.message_id == message_id) {
+                if(userType == 'sender'){
+                    newMessages[index].sender_deleted = true;
+                }
+                else{
+                    newMessages[index].receiver_deleted = true;
+                }
+
+                console.log("Nowe wiadomości: ", newMessages);
+                
+                this.setState({
+                    messages:newMessages,
+                    messageContainerAlert:"Wiadomość została usunięta !"
+                })
+
+                document.querySelector(".messageContainerAlert").classList.remove("fadeOut");
+                document.querySelector(".messageContainerAlert").classList.add("fadeIn");
+                
+                setTimeout(function(){
+                    document.querySelector(".messageContainerAlert").classList.remove("fadeIn");
+                    document.querySelector(".messageContainerAlert").classList.add("fadeOut");
+                },2500);
+                
+            } 
+
+        });
+
+        
     }
 
     filterReceiveMessages=()=>{
@@ -51,7 +113,8 @@ class MessageContainer extends React.Component{
           
         }).then(response => response.json())
             .then( (response) => {
-                this.setState({messages : response});               
+                this.setState({messages : response});
+                console.log(response);               
             }).catch(()=>{console.log("Nie udało się wczytać wiadomości !")})
 
             //document.getElementById("forumNav").classList.add("invisible");
@@ -70,21 +133,18 @@ class MessageContainer extends React.Component{
 
         if(this.state.messageType == "received"){
             if(this.state.showRead){
-                messages = this.state.messages.filter( message =>(message.receiver == userId) )
+                messages = this.state.messages.filter( message =>(message.receiver == userId && message.receiver_deleted == false) )
                 
             }
             else{
-                messages = this.state.messages.filter( message =>(message.receiver == userId && message.is_read === false) )
+                messages = this.state.messages.filter( message =>(message.receiver == userId && message.is_read === false && message.receiver_deleted == false) )
             }
             
         }
         else if(this.state.messageType == "sent"){
-           messages = this.state.messages.filter( message =>(message.sender == userId ) )
+           messages = this.state.messages.filter( message =>(message.sender == userId  && message.sender_deleted == false) )
         }
-        else if(this.state.messageType == "input"){
-            var input = this.state.searchValue.toLowerCase();
-            messages = this.state.messages.filter( message =>(message.login.indexOf(input) != -1) )
-        }
+
         else{
             messages = this.state.messages;
         }
@@ -102,7 +162,9 @@ class MessageContainer extends React.Component{
                        </div>
         
                         <div className="topicsContent" id="topicsContent"> 
+                           <div className="messageContainerAlert animated">{this.state.messageContainerAlert}</div>
                            <div className="container-fluid">
+                                
                                 <div class="row messageOptionRow">
                                     <div className="col-lg-12">
                                          <ul className="messageListOption ">
@@ -121,7 +183,7 @@ class MessageContainer extends React.Component{
                                      </div>
 
                                      <div className="col-12 messageList">
-                                         <Messages filterFunctions={filterFunctions} messages={messages} /> 
+                                         <Messages filterFunctions={filterFunctions} messageType={this.state.messageType} delete={this.deleteMessage} mark={this.markAsRead} messages={messages} /> 
                                     </div>
                            
                                 </div>

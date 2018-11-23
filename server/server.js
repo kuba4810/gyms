@@ -5,6 +5,7 @@ const {Pool} = require('pg')
 
 var EmailTemplate = require('email-templates').EmailTemplate;
 
+//app.use(express.static('public'));
 
 const cors = require('cors');
 const bodyParser = require('body-parser')
@@ -248,12 +249,12 @@ app.get('/getAllQuestions', function (req, res) {
         password: 'irondroplet',
         port: 5432,
     });
+    
+    pool.query("SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category FROM kuba.questions natural join kuba.users  ORDER BY Creating_Date DESC", (err, response) => {
 
-    pool.query('SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category	FROM kuba.questions natural join kuba.users ORDER BY Creating_Date DESC', (err, response) => {
-
-        queryResponse = response.rows;
+         queryResponse = response.rows;
         console.log(err);
-        res.json(queryResponse);
+         res.json(queryResponse);
         pool.end()
     });
 });
@@ -571,6 +572,10 @@ app.get('/getNotifications/:user_id', (req,res) => {
    });
 
 });
+
+app.get
+
+
 
 var port = 8080;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

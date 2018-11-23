@@ -29,6 +29,7 @@ class ForumNav extends React.Component{
     }
 
     handleChange = (e) =>{
+
         var newState = {
             text: e.target.value,
             category:'',
@@ -36,7 +37,18 @@ class ForumNav extends React.Component{
             type:'input'
         }
         this.props.searchQuestions(newState);
-        this.props.changeCategory('WSZYSTKIE');
+        
+        if(e.target.value.length == 0){
+            this.props.changeCategory('WSZYSTKIE');
+
+        }
+        else{           
+           
+            this.props.changeCategory('WYSZUKIWANIE');
+        }
+        
+     
+
 
     }
     render(){

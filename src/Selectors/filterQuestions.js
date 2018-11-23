@@ -6,4 +6,5 @@ export const getFilteredQuestions = (q, state) => {
         } else if (state.type = 'category') {
                 return q.filter(question => (question.category.toLowerCase() == state.category.toLowerCase()))
         }
+
 };

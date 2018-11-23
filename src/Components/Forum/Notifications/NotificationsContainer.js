@@ -10,6 +10,7 @@ class NotificationsContainer extends React.Component{
             isLoading : true
         }
     }
+    
 
         componentDidMount(){
             document.querySelector(".forumNav").classList.add("invisible");

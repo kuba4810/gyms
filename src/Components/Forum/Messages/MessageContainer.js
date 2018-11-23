@@ -1,5 +1,6 @@
 import React from 'react'
 import Messages from './Messages'
+import { timingSafeEqual } from 'crypto';
 
 class MessageContainer extends React.Component{
 
@@ -10,8 +11,19 @@ class MessageContainer extends React.Component{
             messages: [],
             messageType: "received",
             showRead: false,
-            messageContainerAlert : ""
+            messageContainerAlert : "",
+            alertTimeout : null
         }
+    }
+
+    startTimeout = () =>{
+        return(
+            setTimeout(function(){
+                var alert = document.querySelector(".messageContainerAlert");
+                alert.classList.remove("fadeIn");
+                alert.classList.add("fadeOut");
+            },2500)
+        );
     }
 
     markAsRead = (message_id) =>{
@@ -26,18 +38,24 @@ class MessageContainer extends React.Component{
                     messageContainerAlert:"Wiadomość oznaczono jako przeczytaną !"
                 })
 
-                document.querySelector(".messageContainerAlert").classList.remove("fadeOut");
-                document.querySelector(".messageContainerAlert").classList.add("fadeIn");
-                
-                setTimeout(function(){
-                    document.querySelector(".messageContainerAlert").classList.remove("fadeIn");
-                    document.querySelector(".messageContainerAlert").classList.add("fadeOut");
-                },2500);
+                var alert = document.querySelector(".messageContainerAlert");
+                alert.classList.remove("fadeOut");
+                alert.classList.add("fadeIn");
+
+                               
+                this.setState({
+                    alertTimeout: this.startTimeout()
+                })
+               
                 
             } 
 
         });
        
+    }
+
+    componentWillUnmount(){
+        clearTimeout(this.state.alertTimeout);    
     }
 
     deleteMessage = (message_id,userType) => {
@@ -63,10 +81,9 @@ class MessageContainer extends React.Component{
                 document.querySelector(".messageContainerAlert").classList.remove("fadeOut");
                 document.querySelector(".messageContainerAlert").classList.add("fadeIn");
                 
-                setTimeout(function(){
-                    document.querySelector(".messageContainerAlert").classList.remove("fadeIn");
-                    document.querySelector(".messageContainerAlert").classList.add("fadeOut");
-                },2500);
+               this.setState({
+                   alertTimeout : this.startTimeout()
+               });
                 
             } 
 

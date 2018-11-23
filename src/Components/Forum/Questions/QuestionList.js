@@ -30,13 +30,13 @@ class QuestionList extends Component{
     }
     render(){
 
-        var questions= ''
+        var questions
         var i=0;
                    
         if(this.props.questions.length > 0){
             questions = this.props.questions.map(question => <QuestionLink key={question.question_id} delay={++i} questionData={question}/>);
         }
-        else{
+        else if(this.props.questions.length > 0 && !this.props.isLoading){
             questions = 
                 <div style={{ "text-align":"center"}}>
                     
@@ -54,6 +54,11 @@ class QuestionList extends Component{
         
                 </div>
                 </div>
+        }
+        else{
+           questions= <div style={{ "text-align":"center"}}>
+                    Brak pytań z tej kategorii
+            </div>
         }
 
        
@@ -81,3 +86,5 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {questionsFetched}
 
 export const QuestionListContainer = connect(mapStateToProps,mapDispatchToProps)(QuestionList);
+
+

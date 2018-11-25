@@ -1,5 +1,6 @@
 var express = require('express')
 var messagesRoute = require('./messagesRoute');
+var gymRoute = require('./gymRoute');
 var app = express()
 const {Pool} = require('pg')
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.options('*', cors());
 
 app.use(messagesRoute);
+app.use(gymRoute);
 /* ------------------------------ */
 
 

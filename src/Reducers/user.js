@@ -1,4 +1,8 @@
 export const user = (state = {
+    isLogedIn: false,
+    loggedId: 0,
+    logedNick: '',
+    emailConfirmed: false,
     messageCount:'0',
     notificationsCount : '0'
 },action) => {

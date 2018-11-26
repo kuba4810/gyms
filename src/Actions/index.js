@@ -22,3 +22,13 @@ export const selectCurrentQuestion = (qId) => ({
   type: 'SELECT_CURRENT_QUESTION',
   qId
 });
+
+export const gymsFetched = (gymList) => ({
+  type : 'GYM_LIST_FETCHED',
+  gymList
+});
+
+export const gymSearchChanged = (input) =>({
+  type : 'GYM_SEARCH_CHANGED',
+  input
+});

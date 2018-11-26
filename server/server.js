@@ -6,7 +6,7 @@ const {Pool} = require('pg')
 
 var EmailTemplate = require('email-templates').EmailTemplate;
 
-//app.use(express.static('public'));
+app.use(express.static('public'));
 
 const cors = require('cors');
 const bodyParser = require('body-parser')

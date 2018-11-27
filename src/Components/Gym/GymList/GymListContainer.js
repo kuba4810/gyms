@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux'
 
-import List from './List'
 import GymItem from './GymItem'
 import {gymsFetched} from '../../../Actions/index'
+import {filterGym} from '../../../Selectors/filterGym'
 
 class GymListC extends React.Component{
 
@@ -42,7 +42,7 @@ class GymListC extends React.Component{
 
 const mapStateToProps = state => {
     return{
-        gym: state.gym
+        gym: filterGym(state.gym)
     };
 }
 const mapDispatchToProps = {gymsFetched}

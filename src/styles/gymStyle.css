@@ -1,3 +1,25 @@
 .gymContainer{
     color: cornsilk;
 }
+
+.color-cornsilk{
+    color:cornsilk;
+}
+
+table{
+    background-color:cornsilk;
+    color:#262626;
+}
+
+tr{
+   border-bottom: 2px solid #151515;
+}
+
+th,td{
+    width: 200px;
+    text-align: left;
+    padding: 8px 16px;
+}
+hr{
+    border-color: cornsilk;
+}

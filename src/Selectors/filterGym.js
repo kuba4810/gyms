@@ -1,5 +1,5 @@
 export const filterGym = (state) => {
-
-    return state.gymList.filter( gym => ( gym.contains(state.city)) );
+    console.log("Lista siłowni: ",state.gymList);
+    return state.gymList.filter( gym => ( gym.city.toLowerCase().includes(state.city.toLowerCase())) );
 
 };

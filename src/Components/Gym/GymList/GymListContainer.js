@@ -2,8 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux'
 
 import GymItem from './GymItem'
-import {gymsFetched} from '../../../Actions/index'
+import {gymsFetched,gymSearchChanged} from '../../../Actions/index'
 import {filterGym} from '../../../Selectors/filterGym'
+import {Link} from 'react-router-dom'
 
 class GymListC extends React.Component{
 
@@ -14,6 +15,9 @@ class GymListC extends React.Component{
         fetch('http://localhost:8080/api/gyms')
         .then( response => response.json())
             .then( response=>{
+                if(response.response === 'failed'){
+                    Promise.resolve();
+                }
                 this.props.gymsFetched(response);
             })
               .catch(error=>{
@@ -21,15 +25,28 @@ class GymListC extends React.Component{
               });
     }
 
+    handleInputChange=(e)=>{
+        this.props.gymSearchChanged(e.target.value);
+    }
+
     render(){
 
         var gyms;
-        if(this.props.gym.gymList.length > 0){
-            gyms = this.props.gym.gymList.map( (gym,index) => (<GymItem key={index} gymData = {gym}/>) );
+        if(this.props.gym.length > 0){
+            gyms = this.props.gym.map( (gym,index) => (<GymItem key={index} gymData = {gym}/>) );
         }
-
+        
+        
        return(
         <div class="gymContainer">
+           <form>
+               <div className="form-group">
+                    <label for="city">Miasto</label>
+                    <input class="form-control" name="city" type="text" onChange={this.handleInputChange}/>
+               </div>
+           </form>
+            <Link to={"/silownie/new-gym"} className="btn btn-success" >Dodaj siłownie</Link>
+
             <h3>Lista siłowni</h3>
             <ol>
             {gyms}
@@ -45,7 +62,7 @@ const mapStateToProps = state => {
         gym: filterGym(state.gym)
     };
 }
-const mapDispatchToProps = {gymsFetched}
+const mapDispatchToProps = {gymsFetched,gymSearchChanged}
 const  GymListContainer = connect(mapStateToProps,mapDispatchToProps)(GymListC);
 
 export default GymListContainer;

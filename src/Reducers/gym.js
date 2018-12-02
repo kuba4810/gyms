@@ -6,7 +6,7 @@ export const gym = (state = {
 }, action) => {
     switch(action.type){
         case 'GYM_LIST_FETCHED':
-            console.log("Odebrałem liste siłowni: ",action.gymList);
+            // console.log("Odebrałem liste siłowni: ",action.gymList);
             var newState= Object.assign({},state,
                 {
                     gymList: [...action.gymList],

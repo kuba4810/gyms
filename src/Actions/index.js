@@ -32,3 +32,8 @@ export const gymSearchChanged = (input) =>({
   type : 'GYM_SEARCH_CHANGED',
   input
 });
+
+export const gymDetailsFetched = (gymDetails) => ({
+  type: 'GYM_DETAILS_FETCHED',
+  gymDetails
+});

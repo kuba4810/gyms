@@ -1,5 +1,9 @@
 .gymContainer{
     color: cornsilk;
+   background-color:#262626;
+    min-height:100vh;
+    margin:0;
+    padding-bottom: 100px;
 }
 
 .color-cornsilk{
@@ -23,3 +27,74 @@ th,td{
 hr{
     border-color: cornsilk;
 }
+
+/* NEW GYM */
+/* ------------------------------------------------------------------------------ */
+
+    /* Form an inputs */
+    .newGymForm{
+        background-color: rgba(255,255,255,0);
+        width: 60%;
+        margin: 10px auto 0 auto;
+    }
+
+    .newGymForm label{
+        font-size: 20px;
+    }
+    .newGymForm input , .newGymForm textarea{
+        position:realative;
+        background-color: rgba(255,255,255,0.5);
+        border:none;
+        border-bottom: 2px solid cornsilk;
+        box-shadow: none;
+        border-radius: 0px;
+        font-size: 17px;
+        color: cornsilk;
+        letter-spacing:1px;
+      
+    }
+
+    .newGymForm input:focus{
+        border:none;
+        border-bottom: 2px solid #3863da;
+    }
+
+    .newGymForm input::placeholder, texteare::placeholder{
+        color:#262626;
+    
+    }
+    
+    .newGymForm textarea{
+        background-color: rgba(255,255,255,0.5) !important;
+    
+    }
+    
+    .newGymForm input:focus, .newGymForm textarea:focus{
+        outline:none;
+        box-shadow:none;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid #1873ce;
+        background-color: rgba(255,255,255,0.8) !important;
+        
+    }
+
+    .formTitle{
+        width:60%;
+        margin: 10px auto 10px auto;
+    }
+
+    .addOffer i{
+        font-size: 35px;
+        cursor:pointer;
+        transition:.2s ease;
+    }
+
+    .addOffer:hover i{
+        color: gold;
+    }
+
+    .deleteOffer{
+        float:right;
+    }

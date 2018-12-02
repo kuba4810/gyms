@@ -86,7 +86,7 @@ function AppArrow() {
     render(){
 
         return(
-            <div>
+            <div className="forumContainer">
                 <LoginForm/>
                 <RegisterForm/>
                 <UserMenu/>

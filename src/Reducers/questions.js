@@ -2,13 +2,12 @@ export const questions = (state = {
     isLoading: false,
     questionsList: [],
     category: 'WSZYSTKIE',
-    currentQuestion : {}
+    currentQuestion : {},
+    isFiltering: false
 }, action) => {
     switch (action.type) {
         case 'FETCH_QUESTIONS_SUCCESS':
-            var newState = Object.assign({}, state, {
-                questionsList: [...action.questions]
-            });
+            var newState = Object.assign({}, state, {questionsList: [...action.questions],isLoading:false});
             console.log(newState);
             return newState
         case 'CHANGE_CATEGORY':
@@ -23,6 +22,9 @@ export const questions = (state = {
 
             var newState = Object.assign({},state,{currentQuestion:state.questionsList[0]});
             return newState
+        case 'FILTERING_FINISHED':
+            var newState = Object.assign({},state,{isFiltering: !state.isFiltering});
+            return newState;
         default:
             return state
     }

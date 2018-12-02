@@ -12,7 +12,7 @@ class NotificationItem extends React.Component{
             <div>
                 <div className={`alert alert-${ntfData.ntf_type} alert-dismissible animated fadeInDown`} style={{animationDelay:`.${this.props.delay}s`}}>
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {ntfData.ntf_text} {ntfData.ntf_link !=null ? <Link to={`${ntfData.ntf_link}`} style={{color:"green !important;"}} > Link </Link> : ""}
+                    {ntfData.ntf_text} {ntfData.ntf_link !=null ? <Link to={`${ntfData.ntf_link}`} style={{color:"green !important;"}} > Przejdź </Link> : ""}
                 </div>
             </div>
         );

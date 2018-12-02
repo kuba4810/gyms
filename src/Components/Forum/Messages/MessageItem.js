@@ -75,7 +75,7 @@ class MessageItem extends React.Component{
         return(
                  <div class="message animated fadeIn">
                     <div class="messageData"><p> {message.sender==userId ? <span style={{color:"rgb(255,51,51)"}}>Ja</span> :message.login}, {message.sending_date} </p>
-                         { message.sender!=userId  && <a href={"http://localhost:3000/forum/nowa-wiadomosc/"+message.sender+"/"+message.login}>Odpisz</a>}
+                         { message.sender!=userId  &&  <a  href={"http://localhost:3000/forum/nowa-wiadomosc/"+message.sender+"/"+message.login}>Odpisz</a>  }
                          
                          {(message.receiver == userId && message.is_read == false) ? 
                           <div class="setRead" onClick={this.markAsRead}>  <span class="tooltiptext">Przeczytana</span> <i class="fas fa-angle-down"></i> </div>: ""}

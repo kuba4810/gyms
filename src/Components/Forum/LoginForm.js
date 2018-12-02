@@ -10,11 +10,8 @@ class Login extends React.Component{
         this.state = {
             loginState : ""
         }
-
         
     }
-
-
 
 
     hideLoginForm = () =>{
@@ -66,8 +63,8 @@ class Login extends React.Component{
 
                     console.log("Dane do magazynu",data);
 
-                    sessionStorage.setItem("messageCount",response.data.messageCount);
-                    sessionStorage.setItem("notificationsCount",response.data.notificationsCount);
+                    /* sessionStorage.setItem("messageCount",response.data.messageCount);
+                    sessionStorage.setItem("notificationsCount",response.data.notificationsCount); */
 
                     this.props.logedIn({
                         messageCount: "14",
@@ -106,7 +103,7 @@ class Login extends React.Component{
                                 <button type="submit" className="loginButton">Login</button>
                                 <label> <br/>
                                     <span className="loginWarning">{this.state.loginState}</span> <br/>
-                                    <input type="checkbox" checked="checked" name="remember"/> Pamiętaj mnie
+                                    
                                 </label>
 
 

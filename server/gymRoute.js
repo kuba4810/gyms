@@ -99,13 +99,12 @@ router.post('/api/gym',(request,response)=>{
     // Kwerenda do tabeli GYMS
     const createGym = `INSERT INTO kuba.gyms 
     (gym_name,city,street,post_code,phone_number,landline_phone,email,evaluation,description)
-    VALUES('${data.gym_name}','${data.city}','${data.street}','${data.post_code}','${data.phone_number}','${data.landline_number}'
+    VALUES('${data.gym_name}','${data.city}','${data.street}','${data.post_code}','${data.phone_number}','${data.landline_number}',
         '${data.email}',0,'${data.description}') returning *`
 
     // Kwerenda dla tabeli OPENING HOURS
-    const createOpeningHours = `INSERT INTO kuba.opening_hours (mon,tue,wed,thu,fri,sat,sun)
-    VALUES('${data.mon}','${data.tue}','${data.wed}','${data.thu}','${data.fri}','${data.sat}','${data.sun}')
-    WHERE gym_id = ${gym_id}`
+    const createOpeningHours = `INSERT INTO kuba.opening_hours (gym_id,mon,tue,wed,thu,fri,sat,sun)
+    VALUES(${gym_id},'${data.mon}','${data.tue}','${data.wed}','${data.thu}','${data.fri}','${data.sat}','${data.sun}')`
 
 
     // Początek łańcucha zapytań
@@ -136,21 +135,22 @@ router.post('/api/gym',(request,response)=>{
                 return client.query(createGym)
             }
         }).then((res)=>{
-            console.log("Znalazłem id siłowni !");
+            
                 gym_id = res.rows[0].gym_id;
-                
+                console.log("Znalazłem id siłowni !: ",gym_id);
                 //Utworzenie harmonogramu siłowni
-                return client.query(createOpeningHours)
+                return client.query(`INSERT INTO kuba.opening_hours (gym_id,mon,tue,wed,thu,fri,sat,sun)
+                VALUES(${res.rows[0].gym_id},'${data.mon}','${data.tue}','${data.wed}','${data.thu}','${data.fri}','${data.sat}','${data.sun}')`)
             
         }).then(()=>{
             console.log("Tworze oferty !");
-            return Promise.all( data.offers.map( offer=>( client.query(` INSERT INTO kuba.gym_offers
-            (gym_id,offer_name,description) VALUES('${gym_id},${offer.name}','${offer.description}') `) )))
+            return Promise.all( data.offers.map( offer=>( client.query(` INSERT INTO kuba.gym_offer
+            (gym_id,offer_name,description) VALUES(${gym_id},'${offer.name}','${offer.description}') `) )))
 
         }).then(()=>{
             console.log("Tworze pakiety !");
-            return Promise.all( data.packages.map( package=>( client.query(`INSERT INTO kuba.packages
-            (gym_id,package_name,description,prize) VALUES(${gym_id},'${package.name}','${package.period}','${package.price}'`) )))
+            return Promise.all( data.packages.map( package=>( client.query(`INSERT INTO kuba.gym_packages
+            (gym_id,package_name,description,prize) VALUES(${gym_id},'${package.name}','${package.period}','${package.price}')`) )))
         })
         .then(()=>{
             console.log("Udało się, siłownia dodana !");

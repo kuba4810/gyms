@@ -157,7 +157,7 @@ router.post('/api/gym',(request,response)=>{
                 response.json({
                     response :'success',
                     gym_id: gym_id,
-                    name: data.gym_name
+                    gym_name: data.gym_name
                 })
             })
         .catch(err=>{

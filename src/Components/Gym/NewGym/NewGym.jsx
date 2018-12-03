@@ -1,4 +1,5 @@
 import React from 'react'
+import history from '../../../history'
 
 class NewGym extends React.Component {
     constructor() {
@@ -8,11 +9,15 @@ class NewGym extends React.Component {
             offers: [],
             packages: [],
             photos: [],
-            currentForm: 'primaryData'
+            currentForm: 'primaryData',
+            gymIsAdding: false
         }
     }
 
     handleSubmit = () => {
+        this.setState({
+            gymIsAdding : !this.state.gymIsAdding
+        })
         var data={}
         const primaryForm = document.querySelector('.primaryData');
         const hours = document.querySelector('.openingHoursForm');
@@ -58,6 +63,7 @@ class NewGym extends React.Component {
             }).then(res =>res.json())
                 .then(res=>{
                     console.log(res);
+                    history.push(`/silownie/view/${res.gym_id}/${res.gym_name}`)
                 });
 
     }
@@ -151,6 +157,21 @@ class NewGym extends React.Component {
 
         return (
             <div>
+
+                {this.state.gymIsAdding && <div className="newGymOverlay" >
+                <div class="loaderContainer">
+                    <div class="loader">
+                    </div>
+                    <div class="loaderInner">
+        
+                    </div>
+        
+                    <div class="loaderInnerSmall">
+        
+                    </div>
+        
+                </div>
+                </div>}
                 <form className="newGymForm primaryData" onSubmit={this.handleSubmit}>
                     <legend>Dodaj nową siłownię</legend>
                     <hr/>

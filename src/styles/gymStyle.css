@@ -32,7 +32,7 @@ hr{
 /* ------------------------------------------------------------------------------ */
 
     /* Form an inputs */
-    .newGymForm{
+    .newGymForm, .newPackageForm , .photoForm{
         background-color: rgba(255,255,255,0);
         width: 60%;
         margin: 10px auto 0 auto;
@@ -85,16 +85,43 @@ hr{
         margin: 10px auto 10px auto;
     }
 
-    .addOffer i{
+    .formTitle i{
         font-size: 35px;
         cursor:pointer;
         transition:.2s ease;
+        margin-bottom: 20px;
     }
 
-    .addOffer:hover i{
-        color: gold;
+    .formTitle i:hover{
+        color: rgb(255,100,100);
     }
 
-    .deleteOffer{
+    .deleteOffer , .editOffer{
         float:right;
     }
+
+    .openingHoursForm{
+        display:flex;
+        justify-content: space-around;
+    }
+
+    .openingHoursForm .form-group{
+        width:14%;
+        text-align:center;
+    }
+
+    .openingHoursForm label{
+        font-size: 17px;
+    }
+
+    .openingHoursForm .form-group input {
+        width:100%;
+        
+    }
+
+
+    .formTitle .sendForm{
+        width:100%;
+        margin: 0 auto;
+    }
+    

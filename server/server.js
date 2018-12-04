@@ -5,6 +5,8 @@ var app = express()
 const {Pool} = require('pg')
 const pg = require('pg');
 var EmailTemplate = require('email-templates').EmailTemplate;
+var randomstring = require("randomstring");
+var nodemailer = require('nodemailer');
 
 app.use(express.static('public'));
 
@@ -28,50 +30,51 @@ app.use(gymRoute);
 var verificationCode = "478fh7fh847fedsufhw38f";
 /* EMAIL */
 /* ------------------------------ */
-/*
-var nodemailer = require('nodemailer');
 
+sendEmail =(user_id,verification_code,email) =>{
+    
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'silownie.info@gmail.com',
-    pass: 'Impala67'
-  }
-});
+    service: 'gmail',
+    auth: {
+      user: 'silownie.info@gmail.com',
+      pass: 'Impala67'
+    }
+  });
+  
+  var mailOptions = {
+    from: 'SILOWNIE-INFO',
+    to: email,
+    subject: 'Potwierdzenie rejestracji',
+    html: `<div style="background-color:darkgray; padding:32px; height:100%;">
+               <div style="background-color:cornsilk; width:90%; margin-left:auto; margin-right:auto; text-align:center;">
+                    <div style="padding:16px 8px; text-align:center; background-color:rgb(255,51,51); color:white;">
+                        <h1>Witaj kuba481</h1>
+                    </div>
+                   <div style="padding:16px 8px; background-color:white; text-align:center;">
+                         <h3> Potwierdź swój E-mail klikając na poniższy link </h3>
+                        <a href="http://localhost:3000/verify-email/${user_id}/${verification_code}" target="blank" style="text-decoration:none;"> Link aktywacyjny </a> <br>
+                           <h3>Lub skopiuj poniższy kod aktywacyjny<h3> 
+                           <h5> ${verificationCode}<h5> 
+                   
+                  
+                   <br><br>
+                   <hr>
+                   Copyright  2018 Kozioł & Koczaski
+                   </div>
+              </div> 
+           </div>
+          `
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      return 'Failed'
+    } else {
+      return 'Success'
+    }
+  });
+}
 
-var mailOptions = {
-  from: 'SILOWNIE-INFO',
-  to: 'kuba__koziol@op.pl',
-  subject: 'Potwierdzenie rejestracji',
-  html: `<div style="background-color:darkgray; padding:32px; height:100%;">
-             <div style="background-color:cornsilk; width:60%; margin-left:auto; margin-right:auto; text-align:center;">
-                  <div style="padding:16px 8px; text-align:center; background-color:rgb(255,51,51); color:white;">
-                      <h1>Witaj kuba481</h1>
-                  </div>
-                 <div style="padding:16px 8px; background-color:white; text-align:center;">
-                       <h3> Potwierdź swój E-mail klikając na poniższy link </h3>
-                      <a href="http://www.wiocha.pl" target="blank" style="text-decoration:none;"> Link aktywacyjny </a> <br>
-                         <h3>Lub skopiuj poniższy kod aktywacyjny<h3> 
-                         <h5> ${verificationCode}<h5> 
-                 
-                
-                 <br><br>
-                 <hr>
-                 Copyright  2018 Kozioł & Koczaski
-                 </div>
-            </div> 
-         </div>
-        `
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
-});
-*/
 /* ==============================END POINTS=================================*/
 /* -------------------------------------------------------------------------*/
 
@@ -86,9 +89,14 @@ app.post('/register',function(request,response){
 
     var data = req.body;
     var values = [data.login,data.email.data.password]
+    let verification_code;
 
     //INSERT INTO USERS
-    let userQuery = `INSERT INTO kuba.users ()`
+    let userQuery = `INSERT INTO kuba.users 
+    (first_name,last_name,login,passw,email,join_date,height,mass,favourite_exercise,is_blocked,is_email_confirmed)
+    VALUES('','',$1,$3,$2,CURRENT_TIMESTAMP,'','','',false,fasle)
+    returning *
+    `;
 
     // Sprawdź czy login zajęty
     client.query(`SELECT * FROM kuba.users WHERE login = $1`,values)
@@ -111,8 +119,35 @@ app.post('/register',function(request,response){
                 })
             }
             else{
-                // return client.query()
+                 //Dodaj nowego użytkownika do bazy
+                 return client.query(userQuery,values)
             }
+        }).then(res=>{
+            let user_id = res.rows[0].user_id;
+            verification_code = randomstring.generate(15);
+            // Dodaj kod weryfikacyjny
+             return client.query(`INSERT INTO kuba.email_verification_codes 
+            (user_id,verification_code)
+            VALUES(${user_id},'${verificationCode})'`)
+        
+        }).then(()=>{
+            
+            console.log('Wysyłam maila...')
+            let result = sendEmail(user_id,verification_code,data.email);
+            if(result === 'Failed'){
+                return Promise.reject(`Email sending failed !`)
+            }
+            console.log('Wysłałem maila')
+
+            response.json({
+                response: 'success',
+                message: 'Udało się zarejestrować !'
+            })
+        }).catch(err=>{
+            response.json({
+                response:'failed',
+                message: 'Wystąpił błąd, spróbuj ponownie później bądź skontaktuj się z administratorem'
+            });
         })
                         
     

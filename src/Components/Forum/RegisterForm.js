@@ -6,6 +6,16 @@ class RegisterForm extends React.Component{
         var registerForm = document.getElementById("registerForm");
         registerForm.classList.add("invisible");
 
+      
+
+    }
+
+    handleSubmit=(e)=>{
+        // e.preventDefault();
+        console.log("Działam !")
+        console.log(e.target.uname.value)
+        console.log(e.target.password.value)
+        console.log(e.target.email.value)
     }
     render(){
         return(
@@ -33,7 +43,7 @@ class RegisterForm extends React.Component{
 
 
                                         <span className="registerWarning"></span>
-                                        <button type="submit" className="registerButton">Zarejestruj</button>
+                                        <button  className="registerButton" onCLick={this.handleSubmit}>Zarejestruj</button>
                                        
                         </form>
 

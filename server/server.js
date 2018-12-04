@@ -3,7 +3,7 @@ var messagesRoute = require('./messagesRoute');
 var gymRoute = require('./gymRoute');
 var app = express()
 const {Pool} = require('pg')
-
+const pg = require('pg');
 var EmailTemplate = require('email-templates').EmailTemplate;
 
 app.use(express.static('public'));
@@ -77,33 +77,45 @@ transporter.sendMail(mailOptions, function(error, info){
 
 
 /* REGISTER */
-app.post('/register',function(req,res){
+app.post('/register',function(request,response){
+
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+     client.connect((err)=>{
+     console.log(err);
+    }); 
+
     var data = req.body;
+    var values = [data.login,data.email.data.password]
 
-    var responseData = {
-        isEmailBusy: false,
-        isLoginBusy: false,
-        response : ""
-    }
-    var pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
-    var query = 'SELECT Login,Email FROM kuba.users WHERE login = $1;';
-    var values = [data.Login];
+    //INSERT INTO USERS
+    let userQuery = `INSERT INTO kuba.users ()`
 
-    pool.query(query,values, (err, response) => {
-          console.log(err);
-            if(response.rows.length > 0){
-                responseData.isLoginBusy = true;
+    // Sprawdź czy login zajęty
+    client.query(`SELECT * FROM kuba.users WHERE login = $1`,values)
+        .then(res=>{
+            if(!res.rows){
+                response.json({
+                    response: 'failed',
+                    message : "Ten login jest już zajęty !"
+                })
             }
-            pool.end();
-            res.send(response.rows[0]);
+            else{
+                //Sprawdź czy mail jest zajęty
+                return client.query(`SELECT * FROM kuba.users WHERE email = $2`,values)
+            }
+        }).then(res=>{
+            if(!res.rows){
+                response.json({
+                    response:'failed',
+                    message : 'E-mail już w użyciu'
+                })
+            }
+            else{
+                // return client.query()
+            }
+        })
                         
-    })
+    
     
 
 
@@ -116,42 +128,8 @@ app.post('/register',function(req,res){
 /* LOG IN */
 /* ------------------------------ */
 
-app.post('/logIn',function(req,res){/*
-    var loginData = req.body;
+app.post('/logIn',function(req,res){
 
-    console.log("Dane użytkownika: ",loginData);
-
-    const pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
-
-    var query = "SELECT * FROM Kuba.Users WHERE (Login = $1 OR Email = $1) AND (Passw = $2);";
-    var values = [loginData.Login,loginData.Password];
-
-    pool.query(query,values,function(err,response){
-        if(response.rows.length > 0){
-           var data= {
-                response: "success",
-                userData:{
-                    user_id: response.rows[0].user_id,
-                    login: response.rows[0].login,
-                    isEmailConfirmed: response.rows[0].is_email_confirmed
-                }
-           }
-           
-        }
-        else{
-            data = { response:"failed"}
-        }
-
-        res.json(data);
-        pool.end();
-    });
-*/
 var data = req.body;
 
 var responseData = {

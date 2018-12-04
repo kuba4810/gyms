@@ -1,6 +1,7 @@
 import React from 'react'
 import history from '../../../history'
 
+
 class NewGym extends React.Component {
     constructor() {
         super();
@@ -13,6 +14,9 @@ class NewGym extends React.Component {
             gymIsAdding: false
         }
     }
+
+    // VALIDATORS
+    // ----------------------------------------------------------------------------
 
     handleSubmit = () => {
         this.setState({

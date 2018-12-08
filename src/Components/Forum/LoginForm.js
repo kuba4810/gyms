@@ -16,7 +16,14 @@ class Login extends React.Component{
 
     hideLoginForm = () =>{
         var loginForm = document.getElementById("loginForm");
-        loginForm.classList.add("invisible");
+        var loginContent = document.querySelector('.loginContent');
+        loginContent.classList.remove('zoomIn');
+        loginContent.classList.add('fadeOutDown');
+        
+        setTimeout(()=>{
+            loginForm.classList.add("invisible");
+        },500)
+      
     }
 
     handleLogin = (event) =>{
@@ -42,9 +49,9 @@ class Login extends React.Component{
         }).then(response => response.json())
             .then( (response) => {
                 console.log("Odpowiedź z serwera po zalogowaniu:" , response);
-                if(response.response == "failed"){
+                if(response.type === "loginFailed" || response.type === 'serverError'){
                     this.setState({
-                        loginState: "Błędny login lub hasło !"
+                        loginState: response.message
                     });
                 }
                 else{
@@ -63,8 +70,8 @@ class Login extends React.Component{
 
                     console.log("Dane do magazynu",data);
 
-                    /* sessionStorage.setItem("messageCount",response.data.messageCount);
-                    sessionStorage.setItem("notificationsCount",response.data.notificationsCount); */
+                     localStorage.setItem("messageCount",response.data.messageCount);
+                    localStorage.setItem("notificationsCount",response.data.notificationsCount); 
 
                     this.props.logedIn({
                         messageCount: "14",
@@ -84,7 +91,7 @@ class Login extends React.Component{
     render(){
         return(
             <div className="login invisible" id={"loginForm"}>
-                <div className="loginContent animate">
+                <div className="loginContent animated">
                     <div className="close transition" onClick={this.hideLoginForm}><i className="fas fa-times"></i></div>
                     <div className="imgcontainer">
                         ZALOGUJ SIĘ

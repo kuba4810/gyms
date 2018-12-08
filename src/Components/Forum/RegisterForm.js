@@ -1,34 +1,77 @@
 import React from 'react'
 
 class RegisterForm extends React.Component{
+    constructor(){
+        super();
+        this.state = {
+            message : ''
+        }
+    }
 
     hideRegisterForm(){
         var registerForm = document.getElementById("registerForm");
-        registerForm.classList.add("invisible");
+        var registerContent = document.querySelector('.registerContent');
+      
+        registerContent.classList.remove('zoomIn');
+        registerContent.classList.add('fadeOutDown')
+
+        setTimeout(()=>{
+            registerForm.classList.add("invisible");
+        },500);
 
       
 
     }
 
     handleSubmit=(e)=>{
-        // e.preventDefault();
-        console.log("Działam !")
+        e.preventDefault();
+        /* console.log("Działam !")
         console.log(e.target.uname.value)
-        console.log(e.target.password.value)
-        console.log(e.target.email.value)
+        console.log(e.target.psw.value)
+        console.log(e.target.email.value) */
+
+        var data = {
+            login : e.target.uname.value,
+            email : e.target.email.value,
+            password : e.target.psw.value
+        }
+
+        fetch("http://localhost:8080/register", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin", //
+         
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(res=>res.json())
+            .then(res=>{
+                if(res.response === 'failed'){
+                    alert(res.message);
+                    console.log(res);
+                }
+                else{
+                    this.setState({
+                        message : res.message
+                    })
+                    this.hideRegisterForm();
+                }
+            })
     }
     render(){
         return(
             <div className="register invisible" id="registerForm">
 
-                <div className="registerContent animate">
+                <div className="registerContent animated">
                     <div className="close transition" onClick={this.hideRegisterForm}><i className="fas fa-times"></i></div>
                     <div className="imgcontainer">
                         REJESTRACJA
                     </div>
 
                     <div className="container">
-                        <form action="javascript:void(0);">
+                        <form onSubmit={this.handleSubmit}>
                             <label htmlFor="uname"><b>Login*</b></label>
                             <input type="text" placeholder="Wprowadź login" name="uname" className="registerLogin"
                                    required/>
@@ -42,8 +85,8 @@ class RegisterForm extends React.Component{
                                            className="registerEmail" required/>
 
 
-                                        <span className="registerWarning"></span>
-                                        <button  className="registerButton" onCLick={this.handleSubmit}>Zarejestruj</button>
+                                        <span className="registerWarning">{this.state.message}</span>
+                                        <button type="submit"  className="registerButton">Zarejestruj</button>
                                        
                         </form>
 

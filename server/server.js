@@ -27,11 +27,11 @@ app.use(gymRoute);
 /* ------------------------------ */
 
 
-var verificationCode = "478fh7fh847fedsufhw38f";
+
 /* EMAIL */
 /* ------------------------------ */
 
-sendEmail =(user_id,verification_code,email) =>{
+sendEmail =(user_id,verification_code,email,login) =>{
     
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -48,13 +48,13 @@ var transporter = nodemailer.createTransport({
     html: `<div style="background-color:darkgray; padding:32px; height:100%;">
                <div style="background-color:cornsilk; width:90%; margin-left:auto; margin-right:auto; text-align:center;">
                     <div style="padding:16px 8px; text-align:center; background-color:rgb(255,51,51); color:white;">
-                        <h1>Witaj kuba481</h1>
+                        <h1>Witaj ${login}</h1>
                     </div>
                    <div style="padding:16px 8px; background-color:white; text-align:center;">
                          <h3> Potwierdź swój E-mail klikając na poniższy link </h3>
                         <a href="http://localhost:3000/verify-email/${user_id}/${verification_code}" target="blank" style="text-decoration:none;"> Link aktywacyjny </a> <br>
                            <h3>Lub skopiuj poniższy kod aktywacyjny<h3> 
-                           <h5> ${verificationCode}<h5> 
+                           <h5> ${verification_code}<h5> 
                    
                   
                    <br><br>
@@ -68,6 +68,7 @@ var transporter = nodemailer.createTransport({
   
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
+        console.log(error);
       return 'Failed'
     } else {
       return 'Success'
@@ -87,39 +88,41 @@ app.post('/register',function(request,response){
      console.log(err);
     }); 
 
-    var data = req.body;
-    var values = [data.login,data.email.data.password]
+    var data = request.body;
+    console.log("Dane do rejestracji : ", data)
+    var values = [data.login,data.password,data.email]
     let verification_code;
 
     //INSERT INTO USERS
     let userQuery = `INSERT INTO kuba.users 
-    (first_name,last_name,login,passw,email,join_date,height,mass,favourite_exercise,is_blocked,is_email_confirmed)
-    VALUES('','',$1,$3,$2,CURRENT_TIMESTAMP,'','','',false,fasle)
-    returning *
-    `;
+    (first_name, last_name, login, passw, email, join_date, height, mass, favourite_exercise, is_blocked, is_email_confirmed)
+    VALUES('','',$1,$2,$3,CURRENT_TIMESTAMP,0,0,'',false,false)
+    returning *`;
 
     // Sprawdź czy login zajęty
-    client.query(`SELECT * FROM kuba.users WHERE login = $1`,values)
+    client.query(`SELECT * FROM kuba.users WHERE login = $1`,[data.login])
         .then(res=>{
-            if(!res.rows){
+            if(res.rows.length > 0){
                 response.json({
                     response: 'failed',
                     message : "Ten login jest już zajęty !"
                 })
+                return Promise.reject('')
+                
+            }else{
+                // Sprawdź czy email zajęty
+                 return client.query(`SELECT * FROM kuba.users WHERE email = $1`,[data.email])
             }
-            else{
-                //Sprawdź czy mail jest zajęty
-                return client.query(`SELECT * FROM kuba.users WHERE email = $2`,values)
-            }
-        }).then(res=>{
-            if(!res.rows){
+        }).then(res=>{            
+            if(res.rows.length > 0){
                 response.json({
                     response:'failed',
                     message : 'E-mail już w użyciu'
                 })
+                return Promise.reject('')
             }
             else{
-                 //Dodaj nowego użytkownika do bazy
+                // Dodaj użytkownika do bazy
                  return client.query(userQuery,values)
             }
         }).then(res=>{
@@ -128,26 +131,29 @@ app.post('/register',function(request,response){
             // Dodaj kod weryfikacyjny
              return client.query(`INSERT INTO kuba.email_verification_codes 
             (user_id,verification_code)
-            VALUES(${user_id},'${verificationCode})'`)
+            VALUES($1,$2) returning *`,[user_id,verification_code])
         
-        }).then(()=>{
-            
-            console.log('Wysyłam maila...')
-            let result = sendEmail(user_id,verification_code,data.email);
+        }).then((res)=>{
+            let user_id = res.rows[0].user_id;
+            let result = sendEmail(user_id,verification_code,data.email,data.login);
             if(result === 'Failed'){
                 return Promise.reject(`Email sending failed !`)
             }
-            console.log('Wysłałem maila')
+            console.log('Wysłałem maila, dostałem odpowiedź: ',result);
 
             response.json({
                 response: 'success',
                 message: 'Udało się zarejestrować !'
             })
         }).catch(err=>{
+            console.log(err);
+            client.end();
+          if(err !== ''){
             response.json({
                 response:'failed',
                 message: 'Wystąpił błąd, spróbuj ponownie później bądź skontaktuj się z administratorem'
             });
+          }
         })
                         
     
@@ -163,9 +169,15 @@ app.post('/register',function(request,response){
 /* LOG IN */
 /* ------------------------------ */
 
-app.post('/logIn',function(req,res){
+app.post('/logIn',function(request,response){
 
-var data = req.body;
+var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+    client.connect((err)=>{
+    console.log(err);
+}); 
+
+let data = request.body;
+let values =[data.Login,data.Password]
 
 var responseData = {
     messageCount:0,
@@ -177,75 +189,50 @@ var responseData = {
     }
 }
 
-var pool = new Pool({
-    user: 'postgres',
-    host: '178.128.245.212',
-    database: 'postgres',
-    password: 'irondroplet',
-    port: 5432,
-});
-
-var pool2 = new Pool({
-    user: 'postgres',
-    host: '178.128.245.212',
-    database: 'postgres',
-    password: 'irondroplet',
-    port: 5432,
-});
-
-var query = "SELECT * FROM kuba.users WHERE Login = $1 AND passw = $2";
-var values = [data.Login,data.Password];
-
-pool.query(query,values,function(err,response){
-    if(response.rows.length > 0){
-        
-        var userResponseData = response.rows[0];
-        responseData.userData.user_id = userResponseData.user_id;
-        responseData.userData.login = userResponseData.login;
-        responseData.userData.isEmailConfirmed = userResponseData.is_email_confirmed;
-
-        /*---------------------------------------------------- */
-        query = 'SELECT count(*) as "msg_count" From kuba.messages WHERE receiver = $1 and is_read = false';
-        values = [responseData.userData.user_id];
-        pool2.query(query,values,function(err,response){
-            console.log("Liczba wiadomości:",response.rows[0].msg_count);
-            responseData = {...responseData,messageCount:response.rows[0].msg_count}
-            console.log("Stan obiektu:",responseData);    
-                      
-        });
-
-        /*---------------------------------------------------- */
-        pool2 = new Pool({
-            user: 'postgres',
-            host: '178.128.245.212',
-            database: 'postgres',
-            password: 'irondroplet',
-            port: 5432,
-        });
-
-        query = 'SELECT count(*) as "ntf_count" From kuba.notifications WHERE user_id = $1';
-        values = [responseData.userData.user_id];
-        pool2.query(query,values,function(err,resp){
-            console.log("Liczba powiadomień:",resp.rows[0].ntf_count);
-            responseData = {...responseData,notificationsCount:resp.rows[0].ntf_count}
-            console.log("Stan obiektu:",responseData);
-            res.json({
-                response: 'success',
-                data: responseData
+client.query(`SELECT * FROM kuba.users WHERE login = $1 and passw = $2`,values)
+    .then(res=>{
+        if(res.rows.length == 0){
+            return Promise.reject({
+                type: "loginFailed",
+                message : 'Błędny login lub hasło !'
             })
-            pool2.end();  
-        });
-        /*---------------------------------------------------- */
+        }
+        else{
+            let userData = {
+                user_id: res.rows[0].user_id,
+                login: data.Login,
+                isEmailConfirmed : res.rows[0].is_email_confirmed
+           }
+           console.log("Dane użytkownika: ",userData);
 
+            responseData = Object.assign({},responseData,{userData: userData});
+            return client.query(`SELECT count(*) as "msg_count" From kuba.messages WHERE receiver = $1 and is_read = false`,[res.rows[0].user_id])
+        }
+    }).then(res=>{
+        responseData = Object.assign({},responseData,{messageCount: res.rows[0].msg_count})
+        return client.query(`SELECT count(*) as "ntf_count" From kuba.notifications WHERE user_id = $1`,[responseData.userData.user_id])
+    }).then((res)=>{
+        responseData = Object.assign({},responseData,{notificationsCount: res.rows[0].ntf_count})
+        console.log("Dane użytkownika wraz z liczbą wiadomości i powiadomień : ",responseData);
+        response.json({
+            type : 'success',
+            data : responseData
+        })
+    }).catch(err=>{
+        console.log(err);
+        if(typeof(err.type)!=='undefined')
+        {
+            console.log('Wysyłam błąd failed')
+;            response.json(err)
+        }
+        else{
+            response.json({
+                type: 'serverError',
+                message: 'Wystąpił błąd, spróbuj ponownie później !'
+            })
+        }
+    })
 
-    }        
-    else{
-        res.json({
-            response: "failed"
-        });
-    }
-    pool.end();
- } );
 
 
 

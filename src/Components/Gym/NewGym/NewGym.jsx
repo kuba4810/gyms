@@ -67,7 +67,7 @@ class NewGym extends React.Component {
             }).then(res =>res.json())
                 .then(res=>{
                     console.log(res);
-                    history.push(`/silownie/view/${res.gym_id}/${res.gym_name}`)
+                    history.push(`/silownie/view/${res.gym_id}/${res.primaryForm.name.value}`)
                 });
 
     }

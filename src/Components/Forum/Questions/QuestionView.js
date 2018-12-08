@@ -135,7 +135,14 @@ class Question extends React.Component{
     }
 
     showLoginForm = () => {
-        document.getElementById("loginForm").classList.remove("invisible");
+        var loginForm = document.getElementById("loginForm");
+        var loginContent = document.querySelector('.loginContent');
+
+        loginForm.classList.remove("invisible");
+        
+        loginContent.classList.remove('fadeOutDown');
+        loginContent.classList.add('zoomIn');
+
     }
 
 

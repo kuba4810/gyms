@@ -13,13 +13,23 @@ class ForumHeader extends React.Component{
         
         showLoginForm = ()=>{
             var loginForm = document.getElementById("loginForm");
+            var loginContent = document.querySelector('.loginContent');
+
             loginForm.classList.remove("invisible");
+            
+            loginContent.classList.remove('fadeOutDown');
+            loginContent.classList.add('zoomIn');
 
         }
 
         showRegisterForm = () => {
             var registerForm = document.getElementById("registerForm");
-            registerForm.classList.remove("invisible");
+            var registerContent = document.querySelector('.registerContent');
+            
+            registerForm.classList.remove('invisible');
+            
+            registerContent.classList.remove("fadeOutDown");
+            registerContent.classList.add('zoomIn')
         }
         render(){
 

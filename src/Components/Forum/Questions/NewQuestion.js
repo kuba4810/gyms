@@ -48,6 +48,17 @@ class  Question extends React.Component{
         event.preventDefault();
     }
 
+    showLoginForm(){
+        var loginForm = document.getElementById("loginForm");
+        var loginContent = document.querySelector('.loginContent');
+
+        loginForm.classList.remove("invisible");
+        
+        loginContent.classList.remove('fadeOutDown');
+        loginContent.classList.add('zoomIn');
+
+    }
+
     render(){
 
         if(localStorage.getItem("logedIn") != 'false'){
@@ -94,7 +105,7 @@ class  Question extends React.Component{
             else{
               return(
                <div>
-                    <div className="topicsGroupTitle">NAJNOWSZE</div>
+                    <div className="topicsGroupTitle">NOWE PYTANIE</div>
                      <div className="topicsContent" id="topicsContent">
                         <div className="confirmationButton" > <a href="http://localhost:3000/potwierdz-email">Potwierdź E-mail by móc odpowiadać</a></div>
                     
@@ -105,9 +116,9 @@ class  Question extends React.Component{
         }else{
           return(
             <div>
-            <div className="topicsGroupTitle">NAJNOWSZE</div>
+            <div className="topicsGroupTitle">NOWE PYTANIE</div>
              <div className="topicsContent" id="topicsContent">
-             <div className="confirmationButton" onClick={()=>{document.getElementById("loginForm").classList.remove("invisible")}} >
+             <div className="confirmationButton" onClick={this.showLoginForm} >
                  Zaloguj się by móc odpowiadać
              </div>
         </div>

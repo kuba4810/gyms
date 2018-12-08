@@ -1109,6 +1109,7 @@ li:last-child {
     border-radius: 5px;
     position: relative;
     top:10%;
+    animation-duration: .5s !important;
 
 }
 
@@ -1312,7 +1313,7 @@ span.psw {
     align-items: center;
     text-align: center;
     font-size: 50px;
-    color: white;
+    color: cornsilk;
     background-color: gray;
     padding: 0;
     /*max-width: 150px;
@@ -1325,6 +1326,9 @@ span.psw {
 
 .userAvatar:hover {
     background-color: darkgray;
+}
+.userAvatar i{
+    color: cornsilk;
 }
 
 /*TREŚĆ PYTANIA*/

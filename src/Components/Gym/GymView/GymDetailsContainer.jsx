@@ -31,15 +31,27 @@ class GymDetailsCont extends React.Component{
         var primaryData=''
         var offer =''
         var packages=''
+        var openingHours =''
+        const dowPl = ['Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota','Niedziela']
+        const dowEng = ['mon','tue','wed','thu','fri','sat','sun']
+       var day = 'mon'
        
-        console.log("Magazyn: ",this.props.gymDetails);
         
         if(this.props.gymDetails.isLoading == false){
+            console.log("Magazyn: ",data);
+
             console.log("Ładuje dane: ",this.props.gymDetails.isLoading);    
              primaryData = <table>
                  <tr> <th>Nazwa</th> <th>Miejscowość</th> <th>Ulica</th> <th>Telefon</th> </tr>
                  <tr> <td>{data.gym_name}</td> <td>{data.city}</td> <td>{data.street}</td> <td>{data.landline_phone}</td> </tr>
                 </table>      
+
+                openingHours = <div>
+                    <h3>Godziny otwarcia</h3>
+                    <table>
+                        {dowEng.map((day,index)=>( <tr> <td> {dowPl[index]}: </td> <td> {data[day]} </td> </tr> ))}
+                    </table>
+                </div>
 
             offer = <table>
                 <tr>
@@ -51,13 +63,12 @@ class GymDetailsCont extends React.Component{
            
 
             packages = 
+         <div>
+                <h3> Cennik </h3>
             <table>
-            <tr>
-                <th>Pakiet</th>
-                <th>Opis</th>
-            </tr>
-             {this.props.gymDetails.gym.packages.map( p=>( <tr> <td>{p.package_name}</td> <td>{p.description}</td> </tr> ) )}
+             {this.props.gymDetails.gym.packages.map( p=>( <tr> <td>{p.package_name}</td> <td>{p.prize}zł</td> <td>{p.description}</td> </tr> ) )}
         </table>
+         </div>    
 
         }
         return(
@@ -69,13 +80,15 @@ class GymDetailsCont extends React.Component{
           
             {primaryData}
 
+              {openingHours}
+
             <h3>Oferta</h3>
            
                 {offer}
    
-
-            <h3>Pakiety</h3>
             {packages}
+
+          
                 </div>
 
         );

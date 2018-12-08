@@ -18,8 +18,8 @@ class LoginUser extends React.Component{
    render(){
        return(
            <div className="loginUser" data-toggle="collapse" data-target="#userMenu">
-                { (sessionStorage.getItem("messageCount") != "0" ||
-                    sessionStorage.getItem("notificationsCount") != "0") &&  
+                { (localStorage.getItem("messageCount") != "0" ||
+                    localStorage.getItem("notificationsCount") != "0") &&  
                     <span class="badge badge-success">!</span>}
                <div className="loginUserDiv"  onClick={this.showUserMenu}><i className="fas fa-user"></i></div>
            </div>

@@ -85,7 +85,99 @@ router.get('/api/gym/:gym_id',(request,response)=>{
 // Tworzy nową siłownię
 router.post('/api/gym',(request,response)=>{
     var data = request.body;
+    console.log("Odpalone dodawanie siłowni")
+    console.log('Dostałem takie dane: ',data)
+    var gym_id
+
+    // Kwerenda do sprawdzenia czy dana siłownia już istnieje
+    var ckeckGymQuery = `SELECT * FROM kuba.gyms
+         WHERE gym_name='${data.gym_name}' and city='${data.city}' and street='${data.street}' `
+
+    // Kwerenda do pozyskania ID nowo utworzonej siłowni
+    const getID = `SELECT gym_id FROM kuba.gyms WHERE email ='${data.email}'`  
+
+    // Kwerenda do tabeli GYMS
+    const createGym = `INSERT INTO kuba.gyms 
+    (gym_name,city,street,post_code,phone_number,landline_phone,email,evaluation,description)
+    VALUES('${data.gym_name}','${data.city}','${data.street}','${data.post_code}','${data.phone_number}','${data.landline_number}',
+        '${data.email}',0,'${data.description}') returning *`
+
+    // Kwerenda dla tabeli OPENING HOURS
+    const createOpeningHours = `INSERT INTO kuba.opening_hours (gym_id,mon,tue,wed,thu,fri,sat,sun)
+    VALUES(${gym_id},'${data.mon}','${data.tue}','${data.wed}','${data.thu}','${data.fri}','${data.sat}','${data.sun}')`
+
+
+    // Początek łańcucha zapytań
+    client.query(`SELECT email from kuba.gyms WHERE email='${data.email}'`)
+        .then(res=>{
+            console.log("Sprawdzam czy mail zajęty")
+            if(res.rows.length>0){
+                response.send({
+                    response:'failed',
+                    message: 'Podany email jest już zajęty !'
+                })
+            }
+            else{
+                // Sprawdzenie czy siłownia już istnieje
+                return client.query(ckeckGymQuery)
+            }
+        }).then(res=>{
+            console.log("Sprawdzam czy siłownia juz istnieje")
+            if(res.rows.length>0){
+                response.json({
+                    response:'failed',
+                    message: 'Siłownia o podanych danych już istnieje'
+                })
+            }
+            else{
+
+                // Utworzenie rekordu dla GYMS
+                return client.query(createGym)
+            }
+        }).then((res)=>{
+            
+                gym_id = res.rows[0].gym_id;
+                console.log("Znalazłem id siłowni !: ",gym_id);
+                //Utworzenie harmonogramu siłowni
+                return client.query(`INSERT INTO kuba.opening_hours (gym_id,mon,tue,wed,thu,fri,sat,sun)
+                VALUES(${res.rows[0].gym_id},'${data.mon}','${data.tue}','${data.wed}','${data.thu}','${data.fri}','${data.sat}','${data.sun}')`)
+            
+        }).then(()=>{
+            console.log("Tworze oferty !");
+            return Promise.all( data.offers.map( offer=>( client.query(` INSERT INTO kuba.gym_offer
+            (gym_id,offer_name,description) VALUES(${gym_id},'${offer.name}','${offer.description}') `) )))
+
+        }).then(()=>{
+            console.log("Tworze pakiety !");
+            return Promise.all( data.packages.map( package=>( client.query(`INSERT INTO kuba.gym_packages
+            (gym_id,package_name,description,prize) VALUES(${gym_id},'${package.name}','${package.period}','${package.price}')`) )))
+        })
+        .then(()=>{
+            console.log("Udało się, siłownia dodana !");
+                response.json({
+                    response :'success',
+                    gym_id: gym_id,
+                    gym_name: data.gym_name
+                })
+            })
+        .catch(err=>{
+             console.log(err);   
+             response.json({
+                 response:'failed',
+                 message: 'Wystapił błąd, spróbuj ponownie później !'
+             })
+
+        });
 });
+
+router.get('/anything',(request,response)=>{
+    client.query(`insert into kuba.messages (sender, receiver, sending_date, message_content, is_read, receiver_deleted, sender_deleted) 
+    VALUES(${1},${2},CURRENT_TIMESTAMP,'Wyślij mi id wiadomości',false,false,false) returning *`).then(res=>{
+        response.send(res);
+    });
+});
+
+
 
 module.exports=router;
 

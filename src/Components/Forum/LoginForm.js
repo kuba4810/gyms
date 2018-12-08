@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {logedIn} from '../../Actions'
+import {changeStorageState} from '../../services/localStorage'
 
 class Login extends React.Component{
 
@@ -46,41 +47,42 @@ class Login extends React.Component{
             headers: {
                 "Content-Type": "application/json"
             }
-        }).then(response => response.json())
-            .then( (response) => {
-                console.log("Odpowiedź z serwera po zalogowaniu:" , response);
-                if(response.type === "loginFailed" || response.type === 'serverError'){
-                    this.setState({
-                        loginState: response.message
-                    });
-                }
-                else{
-                    this.setState({
-                        loginState: "Logowanie przebiegło pomyślnie !"
-                    });
+        })
+        .then(response => response.json())
+        .then( (response) => {
+            console.log("Odpowiedź z serwera po zalogowaniu:" , response);
+            if(response.type === "loginFailed" || response.type === 'serverError'){
+                this.setState({
+                    loginState: response.message
+                });
+            }
+            else{
+                this.setState({
+                    loginState: "Logowanie przebiegło pomyślnie !"
+                });
 
-                    localStorage.setItem("logedIn",response.data.userData.user_id);
-                    localStorage.setItem("loggedNick",response.data.userData.login);
-                    localStorage.setItem("emailConfirmed",response.data.userData.isEmailConfirmed);
+                // Aktualizuj localStorage
+                let uData = response.data.userData;
+                console.log('Do storage wysyłam takie dane: ', uData);
+                
+                changeStorageState(true,uData.user_id,uData.login,uData.isEmailConfirmed)
 
-                    var data = {
-                        messageCount: response.data.messageCount,
-                        notificationsCount: response.data.notificationsCount
-                    }
+                // Aktualizuj magazyn
+                var data = {
+                    messageCount: response.data.messageCount,
+                    notificationsCount: response.data.notificationsCount
+                }        
+                
+                this.props.logedIn({
+                    loggedId: uData.id,
+                    logedNick: uData.login,
+                    emailConfirmed: uData.isEmailConfirmed,
+                    messageCount: response.data.messageCount,
+                    notificationsCount: response.data.notificationsCount
 
-                    console.log("Dane do magazynu",data);
+                })
+                this.hideLoginForm();
 
-                     localStorage.setItem("messageCount",response.data.messageCount);
-                    localStorage.setItem("notificationsCount",response.data.notificationsCount); 
-
-                    this.props.logedIn({
-                        messageCount: "14",
-                        notificationsCount: "5"
-                    });
-                    
-                    console.log("Dane z localStorage: " , "Id:" + localStorage.getItem("logedIn") , " Nick" + localStorage.getItem("loggedNick"));
-
-                    window.location.reload();
                 }
             })
         event.preventDefault();

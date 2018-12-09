@@ -75,7 +75,7 @@ class Question extends React.Component{
     }
 
     voteUp = () => {
-        if(localStorage.getItem("logedIn")!="false")
+        if(localStorage.getItem("loggedIn")!="false")
         {
             var data = JSON.stringify({
                 Type:1,
@@ -105,7 +105,7 @@ class Question extends React.Component{
     }
 
     voteDown = () =>{
-        if(localStorage.getItem("logedIn")!="false")
+        if(localStorage.getItem("loggedIn")!="false")
         {
             var data = JSON.stringify({
                 Type:-1,

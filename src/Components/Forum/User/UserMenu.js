@@ -2,6 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import history from '../../../history'
+import {changeStorageState} from '../../../services/localStorage'
+import {loggedOut} from '../../../Actions/index'
 
 
 class Menu extends React.Component{
@@ -15,9 +17,12 @@ class Menu extends React.Component{
        
     }
 
-
     logOut = ()=>{
-       
+        // Wyczyść localStorage i ustaw isLoggedIn na false
+            changeStorageState(false);
+        
+        // Zaktualizuj magazyn
+            this.props.loggedOut();
         history.push('/');
     }
 
@@ -64,6 +69,7 @@ const mapStateToProps = state => {
         user: state.user
     };
 }
+const mapDispatchToProps = {loggedOut};
 
 
-export const UserMenu = connect(mapStateToProps)(Menu);
+export const UserMenu = connect(mapStateToProps,mapDispatchToProps)(Menu);

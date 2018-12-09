@@ -12,7 +12,7 @@ export const changeStorageState = (isLogedIn,id='',nick='',isEmailConfirmed='') 
         localStorage.setItem('isEmailConfirmed',isEmailConfirmed);
     }
     else{
-        localStorage.setItem('isLogedIn',"false");
+        localStorage.setItem('isLoggedIn',"false");
         localStorage.removeItem('loggedId');
         localStorage.removeItem('loggedNick')
         localStorage.removeItem('isEmailConfirmed');

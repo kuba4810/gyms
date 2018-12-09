@@ -9,7 +9,8 @@ class Login extends React.Component{
         super();
 
         this.state = {
-            loginState : ""
+            loginState : "",
+            isLoading : false
         }
         
     }
@@ -28,6 +29,10 @@ class Login extends React.Component{
     }
 
     handleLogin = (event) =>{
+
+        this.setState({
+            isLoading: true
+        })
 
         var login = event.target.uname.value;
         var password = event.target.psw.value;
@@ -81,9 +86,19 @@ class Login extends React.Component{
                     notificationsCount: response.data.notificationsCount
 
                 })
-                this.hideLoginForm();
-
+                
+                setTimeout(()=>{
+                    this.hideLoginForm();
+                },500);
                 }
+            })
+            .catch(err=>{
+                alert('Wystąpił błąd, spróbuj ponownie później !')
+            })
+            .finally(()=>{
+                this.setState({
+                    isLoading: false
+                })
             })
         event.preventDefault();
 
@@ -100,7 +115,7 @@ class Login extends React.Component{
                     </div>
 
                     <div className="container">
-                        <form onSubmit={this.handleLogin}>
+                        <form className="loginForm" onSubmit={this.handleLogin}>
                             <label htmlFor="uname"><b>Login</b></label>
                             <input type="text" placeholder="Wprowadź login" name="uname" className="loginLogin"
                                    required/>
@@ -110,13 +125,15 @@ class Login extends React.Component{
                                        required/>
 
                                 <button type="submit" className="loginButton">Login</button>
-                                <label> <br/>
+                                <label class="loginMessages"> <br/>
+
+                                   {this.state.isLoading &&  <div className="littleSpinner" ></div>}
                                     <span className="loginWarning">{this.state.loginState}</span> <br/>
                                     
-                                </label>
+                                </label> <br/>
 
 
-                                <span className="psw">Nie pamiętam <a href="#">hasła</a> </span>
+                               
                         </form>
                     </div>
 

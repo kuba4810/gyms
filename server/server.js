@@ -238,6 +238,76 @@ client.query(`SELECT * FROM kuba.users WHERE login = $1 and passw = $2`,values)
 
 });
 
+// Pobiera liczbę nowych wiadomości danego użytkownika
+// ------------------------------------------------------------------------------------------------
+app.get('/api/user/:user_id/msgCount',(request,response)=>{
+    console.log('msgCount...');
+    // Połączenie z bazą
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+    client.connect((err)=>{
+        if(err){
+            console.log(err);
+           }
+    }); 
+
+    client.query(`SELECT count(*) as "msg_count" FROM kuba.messages
+                  WHERE receiver = $1 and is_read = false`,[request.params.user_id])
+    .then( res => {
+        if( res.rows.length > 0 ){
+            response.json({
+                response: 'success',
+                data: res.rows[0].msg_count
+            })
+        }
+        else{
+            return Promise.reject({
+               type: 'failed'
+            })
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+            response.json({
+                response: 'failed'
+            })
+    })
+
+});
+
+// Pobiera liczbę nowych powiadomień danego użytkownika
+// ------------------------------------------------------------------------------------------------
+app.get('/api/user/:user_id/ntfCount',(request,response)=>{
+    // Połączenie z bazą
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+    client.connect((err)=>{
+       if(err){
+        console.log(err);
+       }
+    }); 
+
+    client.query(`SELECT count(*) as "ntf_count" FROM kuba.notifications
+                  WHERE user_id = $1 and is_read = false`,[request.params.user_id])
+    .then( res => {
+        if( res.rows.length > 0 ){
+            response.json({
+                response: 'success',
+                data: res.rows[0].ntf_count
+            })
+        }
+        else{
+            return Promise.reject({
+               type: 'failed'
+            })
+        }
+    })
+    .catch(err=>{
+            response.json({
+                response: 'failed'
+            })
+    })
+
+});
+
 
 
 /* GET ALL QUESTIONS */
@@ -575,7 +645,7 @@ app.get('/getNotifications/:user_id', (req,res) => {
 
 });
 
-app.get
+
 
 
 

@@ -1,4 +1,7 @@
 import React from "react"
+import {connect} from 'react-redux'
+import {checkIfLoggedIn,getLoggedUserData} from '../../services/localStorage'
+import {logedIn} from '../../Actions'
 
 import {TopicsMenu} from "./TopicsMenu";
 import {ForumNavContainer} from "./ForumNav";
@@ -17,35 +20,7 @@ import NotificationsContainer from './Notifications/NotificationsContainer'
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-function AppHeader() {
-    return (
-        <header className="animated forumHeader">
-            <div className="logo">
-                <a href="http://localhost:3000/forum"> <i className="fas fa-dumbbell"></i> FORUM <i className="fas fa-dumbbell"></i></a>
-            </div>
 
-
-            <div className="menu">
-                <div className="menuItem animated">
-                    <a href="http://localhost:3000"><i className="fas fa-home"></i></a>
-                </div>
-                <div className="menuItem animated"><a href="http://localhost:3000/silownie">Siłownie</a></div>
-                <div className="menuItem animated"><a href="http://localhost:3000/trenerzy">Trenerzy</a></div>
-                <div className="menuItem animated" id="login">Logowanie</div>
-                <div className="menuItem animated" id="registration">Rejestracja</div>
-            </div>
-
-
-            <div className="loginUser">
-                <div className="loginUserDiv"><i className="fas fa-user"></i></div>
-            </div>
-
-
-            <div className="clear" style={{clear: "both"}}></div>
-
-        </header>
-    );
-}
 function AppArrow() {
         return (
 
@@ -56,19 +31,79 @@ function AppArrow() {
     }
 
 
-    class Forum extends React.Component{
+    class ForumContainer extends React.Component{
 
     constructor(){
         super();
 
-        this.state = {
+       /*  this.state = {
             isLogedIn: false,
             isEmailConfirmed: false
-        }
+        } */
     }
 
     componentDidMount(){
-        console.log("Stan localStorage w Forum : " , "Zalogowany: " + localStorage.getItem("logedIn") , "EmailPotwierdzony: " + localStorage.getItem("emailConfirmed"));
+        
+
+        let isLoggedIn = checkIfLoggedIn();
+       
+        console.log('W magazynie mówią że zalogowany to : ', this.props.user.isLogedIn);
+        
+
+        if(isLoggedIn !== this.props.user.isLogedIn){
+            if(isLoggedIn){
+                let userData = getLoggedUserData();
+                console.log('Dane użytkownika: ',userData);
+                
+
+                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/msgCount`)
+                              .then(res=> res.json());
+
+                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/ntfCount`)
+                              .then(res=> res.json());
+
+                Promise.all([msgCount,ntfCount])
+                .then( values =>{
+                    console.log("Pobrane dane: ",values);
+                    let data
+
+                    if( values[0].response !== 'failed' && values[1].response !== 'failed' ){
+                         data = {
+                            loggedId: userData.id,
+                            emailConfirmed: userData.isEmailConfirmed,
+                            logedNick: userData.nick,
+                            messageCount: values[0].data,
+                            notificationsCount: values[1].data
+                        }
+                    }
+                    else{
+                        data = {
+                            loggedId: userData.id,
+                            emailConfirmed: userData.isEmailConfirmed,
+                            logedNick: userData.nick,
+                            messageCount: '',
+                            notificationsCount: ''
+                        }
+                    }
+
+                    this.props.logedIn(data);
+
+                    
+                })
+                .catch(err=>{
+                    console.log("Wystąpił błąd !",err);
+                })
+            }
+           
+        } 
+        else{
+            console.log('Nikt nie jest zalogowany !')
+        }
+
+ 
+        
+       
+      /*   console.log("Stan localStorage w Forum : " , "Zalogowany: " + localStorage.getItem("logedIn") , "EmailPotwierdzony: " + localStorage.getItem("emailConfirmed"));
         if(localStorage.getItem("logedIn") != "false"){
             this.setState({
                 isLogedIn:true
@@ -79,7 +114,7 @@ function AppArrow() {
                     isEmailConfirmed: true
                 });
             }
-        }
+        } */
 
 
     }
@@ -91,7 +126,9 @@ function AppArrow() {
                 <RegisterForm/>
                 <UserMenu/>
 
-                <ForumHeader isLogedIn={this.state.isLogedIn} isEmailConfirmed={this.state.isEmailConfirmed}/>
+                <ForumHeader 
+                    isLogedIn={this.props.user.isLogedIn} 
+                    isEmailConfirmed={this.props.user.emailConfirmed}/>
 
                 <main className="animated forumMain">
                     <div className="forumContent">
@@ -121,6 +158,13 @@ function AppArrow() {
 
     }
 
+const mapDispatchToProps = { logedIn };
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    };
+}
 
+const Forum = connect(mapStateToProps,mapDispatchToProps)(ForumContainer);
 
 export default Forum;

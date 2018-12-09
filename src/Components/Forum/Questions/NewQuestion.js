@@ -13,14 +13,14 @@ class  Question extends React.Component{
         var topic = event.target.topic.value;
         var category = event.target.category.value;
         var content = event.target.content.value;
-        var userId = localStorage.getItem("logedIn");
+        var userId = localStorage.getItem("loggedId");
 
         var topicWithDashes = topic.toLowerCase().split(" ").join("-");
 
        //console.log("Zawartość formularza (NewQuestion): Temat: " + topic + " Kategoria: " + category + " Treść: " + content,"UserID: " +userId);
 
         var data = {
-            UserID: localStorage.getItem("logedIn"),
+            UserID: localStorage.getItem("loggedId"),
             Topic: topic,
             Text: content,
             Category: category
@@ -61,8 +61,8 @@ class  Question extends React.Component{
 
     render(){
 
-        if(localStorage.getItem("logedIn") != 'false'){
-            if(localStorage.getItem("emailConfirmed") == "true"){
+        if(localStorage.getItem("isLoggedIn") != 'false'){
+            if(localStorage.getItem("isEmailConfirmed") == "true"){
                 return(
 
                     <div>

@@ -265,6 +265,36 @@ footer {
     font-size: 20px;
 }
 
+/* ADDITIONAL ITEMS */
+
+@keyframes rotateSpinner {
+    from {
+        transform: rotate(0deg)
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loginForm label.loginMessages{
+    display:flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.littleSpinner{
+  
+    width:25px;
+    height:25px;
+    border: 4px solid #262626;
+    border-top: 4px solid rgb(255,51,51);
+    border-bottom: 4px solid rgb(255,51,51);
+    border-radius: 50%;
+
+    animation: rotateSpinner .5s linear infinite;
+
+}
+
+/* ---------------------------------------------------------------------------- */
 
 /* width */
 ::-webkit-scrollbar {

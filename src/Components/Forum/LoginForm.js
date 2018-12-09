@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {logedIn} from '../../Actions'
+import {changeStorageState} from '../../services/localStorage'
 
 class Login extends React.Component{
 
@@ -8,7 +9,8 @@ class Login extends React.Component{
         super();
 
         this.state = {
-            loginState : ""
+            loginState : "",
+            isLoading : false
         }
         
     }
@@ -28,6 +30,10 @@ class Login extends React.Component{
 
     handleLogin = (event) =>{
 
+        this.setState({
+            isLoading: true
+        })
+
         var login = event.target.uname.value;
         var password = event.target.psw.value;
 
@@ -46,42 +52,53 @@ class Login extends React.Component{
             headers: {
                 "Content-Type": "application/json"
             }
-        }).then(response => response.json())
-            .then( (response) => {
-                console.log("Odpowiedź z serwera po zalogowaniu:" , response);
-                if(response.type === "loginFailed" || response.type === 'serverError'){
-                    this.setState({
-                        loginState: response.message
-                    });
+        })
+        .then(response => response.json())
+        .then( (response) => {
+            console.log("Odpowiedź z serwera po zalogowaniu:" , response);
+            if(response.type === "loginFailed" || response.type === 'serverError'){
+                this.setState({
+                    loginState: response.message
+                });
+            }
+            else{
+                this.setState({
+                    loginState: "Logowanie przebiegło pomyślnie !"
+                });
+
+                // Aktualizuj localStorage
+                let uData = response.data.userData;
+                console.log('Do storage wysyłam takie dane: ', uData);
+                
+                changeStorageState(true,uData.user_id,uData.login,uData.isEmailConfirmed)
+
+                // Aktualizuj magazyn
+                var data = {
+                    messageCount: response.data.messageCount,
+                    notificationsCount: response.data.notificationsCount
+                }        
+                
+                this.props.logedIn({
+                    loggedId: uData.id,
+                    logedNick: uData.login,
+                    emailConfirmed: uData.isEmailConfirmed,
+                    messageCount: response.data.messageCount,
+                    notificationsCount: response.data.notificationsCount
+
+                })
+                
+                setTimeout(()=>{
+                    this.hideLoginForm();
+                },500);
                 }
-                else{
-                    this.setState({
-                        loginState: "Logowanie przebiegło pomyślnie !"
-                    });
-
-                    localStorage.setItem("logedIn",response.data.userData.user_id);
-                    localStorage.setItem("loggedNick",response.data.userData.login);
-                    localStorage.setItem("emailConfirmed",response.data.userData.isEmailConfirmed);
-
-                    var data = {
-                        messageCount: response.data.messageCount,
-                        notificationsCount: response.data.notificationsCount
-                    }
-
-                    console.log("Dane do magazynu",data);
-
-                     localStorage.setItem("messageCount",response.data.messageCount);
-                    localStorage.setItem("notificationsCount",response.data.notificationsCount); 
-
-                    this.props.logedIn({
-                        messageCount: "14",
-                        notificationsCount: "5"
-                    });
-                    
-                    console.log("Dane z localStorage: " , "Id:" + localStorage.getItem("logedIn") , " Nick" + localStorage.getItem("loggedNick"));
-
-                    window.location.reload();
-                }
+            })
+            .catch(err=>{
+                alert('Wystąpił błąd, spróbuj ponownie później !')
+            })
+            .finally(()=>{
+                this.setState({
+                    isLoading: false
+                })
             })
         event.preventDefault();
 
@@ -98,7 +115,7 @@ class Login extends React.Component{
                     </div>
 
                     <div className="container">
-                        <form onSubmit={this.handleLogin}>
+                        <form className="loginForm" onSubmit={this.handleLogin}>
                             <label htmlFor="uname"><b>Login</b></label>
                             <input type="text" placeholder="Wprowadź login" name="uname" className="loginLogin"
                                    required/>
@@ -108,13 +125,15 @@ class Login extends React.Component{
                                        required/>
 
                                 <button type="submit" className="loginButton">Login</button>
-                                <label> <br/>
+                                <label class="loginMessages"> <br/>
+
+                                   {this.state.isLoading &&  <div className="littleSpinner" ></div>}
                                     <span className="loginWarning">{this.state.loginState}</span> <br/>
                                     
-                                </label>
+                                </label> <br/>
 
 
-                                <span className="psw">Nie pamiętam <a href="#">hasła</a> </span>
+                               
                         </form>
                     </div>
 

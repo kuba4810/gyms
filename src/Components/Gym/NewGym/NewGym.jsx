@@ -191,6 +191,8 @@ class NewGym extends React.Component {
     }
 
     handleSubmit = () => {
+      // Pobierz state   
+      let s = this.state;
 
       if(this.validate()){
             // Utworzenie obiektu data z wszystkimi danymi siłowni
@@ -198,25 +200,23 @@ class NewGym extends React.Component {
             gymIsAdding: !this.state.gymIsAdding
         })
         var data = {}
-        const primaryForm = document.querySelector('.primaryData');
-        const hours = document.querySelector('.openingHoursForm');
 
         var primaryData = {
-            gym_name: primaryForm.name.value,
-            city: primaryForm.city.value,
-            street: primaryForm.street.value,
-            post_code: primaryForm.post_code.value,
-            phone_number: primaryForm.phone_number.value,
-            landline_number: primaryForm.landline_number.value,
-            email: primaryForm.mail.value,
-            description: primaryForm.description.value,
-            mon: `${hours.monO.value}-${hours.monC.value}`,
-            tue: `${hours.tueO.value}-${hours.tueC.value}`,
-            wed: `${hours.wedO.value}-${hours.wedC.value}`,
-            thu: `${hours.thuO.value}-${hours.thuC.value}`,
-            fri: `${hours.friO.value}-${hours.friC.value}`,
-            sat: `${hours.satO.value}-${hours.satC.value}`,
-            sun: `${hours.sunO.value}-${hours.sunC.value}`
+            gym_name: s.name,
+            city: s.city,
+            street: s.street,
+            post_code: s.post_code,
+            phone_number: s.phone_number,
+            landline_number: s.landline_number,
+            email: s.mail,
+            description: s.description,
+            mon: `${s.monO}-${s.monC}`,
+            tue: `${s.tueO}-${s.tueC}`,
+            wed: `${s.wedO}-${s.wedC}`,
+            thu: `${s.thuO}-${s.thuC}`,
+            fri: `${s.friO}-${s.friC}`,
+            sat: `${s.satO}-${s.satC}`,
+            sun: `${s.sunO}-${s.sunC}`
         }
 
         var offers = this.state.offers;
@@ -240,7 +240,8 @@ class NewGym extends React.Component {
         }).then(res => res.json())
             .then(res => {
                 console.log(res);
-                history.push(`/silownie/view/${res.gym_id}/${primaryData.gym_name.value}`)
+                let formatedName = s.name.split(' ').join('-');
+                history.push(`/silownie/view/${res.gym_id}/${formatedName}`)
             });
 
       }

@@ -170,10 +170,6 @@ img {
 }
 
 
-.item:hover img {
-    /*    filter: grayscale(0%); 
-*/
-}
 
 .itemCaption {
     position: absolute;
@@ -294,6 +290,10 @@ footer {
 
 }
 
+.inputError{
+    font-size: 16px;
+    color:red;
+}
 /* ---------------------------------------------------------------------------- */
 
 /* width */

@@ -31,6 +31,9 @@ hr{
 /* NEW GYM */
 /* ------------------------------------------------------------------------------ */
 
+    .newGymContainer{
+
+    }
     /* Form an inputs */
     .newGymForm, .newPackageForm , .photoForm{
         background-color: rgba(255,255,255,0);

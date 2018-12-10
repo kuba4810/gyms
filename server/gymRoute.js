@@ -3,12 +3,10 @@ var router = express.Router();
 const {Pool} = require('pg');
 const pg = require('pg');
 
-var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
-client.connect((err)=>{
-    console.log(err);
-}); 
+
 // Pobiera listę wszystkich siłowni
 router.get('/api/gyms',(request,response)=>{
+    
 
     var pool = new Pool({
         user: 'postgres',
@@ -38,7 +36,10 @@ router.get('/api/gyms',(request,response)=>{
 // Pobiera szczegółowe dane jednej siłowni
 // ----------------------------------------------------------------------------------------
 router.get('/api/gym/:gym_id',(request,response)=>{
-
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+       client.connect((err)=>{
+       console.log(err);
+    });
     // Pusty obiekt przygotowany pod odbiór danych
     var responseData={
         gymData:{},
@@ -84,6 +85,11 @@ router.get('/api/gym/:gym_id',(request,response)=>{
 // -----------------------------------------------------------------------------------------
 // Tworzy nową siłownię
 router.post('/api/gym',(request,response)=>{
+
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+       client.connect((err)=>{
+       console.log(err);
+    }); 
     var data = request.body;
     console.log("Odpalone dodawanie siłowni")
     console.log('Dostałem takie dane: ',data)

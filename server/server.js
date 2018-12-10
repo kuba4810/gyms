@@ -1,4 +1,4 @@
-var express = require('express')
+﻿var express = require('express')
 var messagesRoute = require('./messagesRoute');
 var gymRoute = require('./gymRoute');
 var app = express()
@@ -7,11 +7,18 @@ const pg = require('pg');
 var EmailTemplate = require('email-templates').EmailTemplate;
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
-
+var opn = require('opn');
 app.use(express.static('public'));
 
 const cors = require('cors');
 const bodyParser = require('body-parser')
+
+
+
+// opens the url in the default browser 
+// opn('http://localhost:8080/');
+
+//opn('http://localhost:8080/', {app: 'firefox'});
 
 
 /* SETTINGS */

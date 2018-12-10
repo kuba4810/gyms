@@ -1,5 +1,8 @@
 import React from 'react'
 import history from '../../../history'
+import OfferItem from './OfferItem'
+import PackageItem from './PackageItem'
+import Spinner from '../../LoadingSpinner'
 
 
 class NewGym extends React.Component {
@@ -7,6 +10,39 @@ class NewGym extends React.Component {
         super();
 
         this.state = {
+            errors :{
+                name: '',
+                city: '',
+                street: '',
+                phone_number: '',
+                landline_number:'',
+                post_code : '',
+                mail: '',
+                description: ''
+            },
+            formValid: false,
+            name: '',
+            city: '',
+            street: '',
+            post_code: '',
+            phone_number: '',
+            landline_number: '',
+            mail: '',
+            description: '',
+            monO: '',
+            tueO: '',
+            wedO: '',
+            thuO: '',
+            friO: '',
+            satO: '',
+            sunO: '',
+            monC: '',
+            tueC: '',
+            wedC: '',
+            thuC: '',
+            friC: '',
+            satC: '',
+            sunC: '',
             offers: [],
             packages: [],
             photos: [],
@@ -15,26 +51,163 @@ class NewGym extends React.Component {
         }
     }
 
-    // VALIDATORS
-    // ----------------------------------------------------------------------------
+    checkTextLength = (value,isRequired) =>{
+        if( value.length === 0 && isRequired){
+            return({
+                valid : false,
+                error: 'To pole jest wymagane !'
+            }) 
+        }
+        else if(value.length > 0 && value.length < 3){
+            return({
+                valid : false,
+                error: 'Minimum 3 znaki !'
+            })
+        }
+        else if(value.length > 50){
+            return({
+                valid : false,
+                error: 'Maksimum 50 znaków !'
+            })
+        } else{
+            return({
+                valid : true,
+                error: ''
+            })
+        }
+    }
+
+    validate = () =>{
+        let errors = this.state.errors;
+        let formValid = true;
+        let checkTextResponse;
+        let pattern;
+
+            // name
+            checkTextResponse = this.checkTextLength(this.state.name,true);
+            if(!checkTextResponse.valid) {
+                formValid = false;
+                errors = Object.assign({},errors,{name: checkTextResponse.error});
+            }
+            else{
+                errors = Object.assign({},errors,{name: checkTextResponse.error});
+            }
+
+            // city
+            checkTextResponse =  this.checkTextLength(this.state.city,true);
+            if(!checkTextResponse.valid) {
+                formValid = false;
+                errors = Object.assign({},errors,{city: checkTextResponse.error});
+            } else{
+                errors = Object.assign({},errors,{city: checkTextResponse.error});
+            }
+
+            // street
+            checkTextResponse = this.checkTextLength(this.state.street,true);
+            if(!checkTextResponse.valid) {
+                formValid = false;
+                errors = Object.assign({},errors,{street: checkTextResponse.error});
+            } else{
+                errors = Object.assign({},errors,{street: checkTextResponse.error});
+            }
+
+            // post_code
+            pattern = /^[0-9]{2}-?[0-9]{3}$/;
+
+            if(this.state.post_code.length !== 0 && !pattern.test(this.state.post_code)){
+                formValid = false;
+                errors = Object.assign({},errors,{post_code : 'Kod pocztowy jest nieprawidłowy !'})
+            } else {
+                checkTextResponse = this.checkTextLength(this.state.post_code,false);
+                if(!checkTextResponse.valid) {
+                    formValid = false;
+                    errors = Object.assign({},errors,{post_code: checkTextResponse.error});
+                }else{
+                    errors = Object.assign({},errors,{post_code: checkTextResponse.error});
+                }
+            } 
+
+            // phone_number
+            pattern = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
+
+            if(this.state.phone_number.length !== 0 && !pattern.test(this.state.phone_number)){
+                formValid = false;
+                errors = Object.assign({},errors,{phone_number : 'Podany numer jest nieprawidłowy !'})
+            } else {
+                checkTextResponse = this.checkTextLength(this.state.phone_number,false);
+                if(!checkTextResponse.valid) {
+                    formValid = false;
+                    errors = Object.assign({},errors,{phone_number: checkTextResponse.error});
+                }else{
+                    errors = Object.assign({},errors,{phone_number: checkTextResponse.error});
+                }
+            } 
+
+
+            // landline_number
+
+            if(this.state.landline_number.length !== 0 && !pattern.test(this.state.landline_number)){
+                formValid = false;
+                errors = Object.assign({},errors,{landline_number : 'Podany numer jest nieprawidłowy !'})
+            } else {
+                checkTextResponse = this.checkTextLength(this.state.landline_number,false);
+                if(!checkTextResponse.valid) {
+                    formValid = false;
+                    errors = Object.assign({},errors,{landline_number: checkTextResponse.error});
+                }else{
+                    errors = Object.assign({},errors,{landline_number: checkTextResponse.error});
+                }
+            }
+
+            // mail
+            pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+            checkTextResponse = this.checkTextLength(this.state.mail,true);
+            if(!checkTextResponse.valid) {
+                formValid = false;
+                errors = Object.assign({},errors,{mail: checkTextResponse.error});
+            }
+            else if(!pattern.test(this.state.mail)){
+                formValid = false;
+                errors = Object.assign({},errors,{mail : 'Podany mail jest nieprawidłowy !'})
+            } else{
+                errors = Object.assign({},errors,{mail: checkTextResponse.error});
+            }
+
+            // description
+            checkTextResponse = this.checkTextLength(this.state.description,true);
+            if(!checkTextResponse.valid) {
+                formValid = false;
+                errors = Object.assign({},errors,{description: checkTextResponse.error});
+            } else{
+                errors = Object.assign({},errors,{description: checkTextResponse.error});
+            }
+
+            this.setState({
+                errors
+            })
+
+            return formValid;
+    }
 
     handleSubmit = () => {
+
+      if(this.validate()){
+            // Utworzenie obiektu data z wszystkimi danymi siłowni
         this.setState({
-            gymIsAdding : !this.state.gymIsAdding
+            gymIsAdding: !this.state.gymIsAdding
         })
-        var data={}
+        var data = {}
         const primaryForm = document.querySelector('.primaryData');
         const hours = document.querySelector('.openingHoursForm');
 
-        
-
-        var primaryData ={
+        var primaryData = {
             gym_name: primaryForm.name.value,
             city: primaryForm.city.value,
-            street : primaryForm.street.value,
+            street: primaryForm.street.value,
             post_code: primaryForm.post_code.value,
             phone_number: primaryForm.phone_number.value,
-            landline_number : primaryForm.landline_number.value,
+            landline_number: primaryForm.landline_number.value,
             email: primaryForm.mail.value,
             description: primaryForm.description.value,
             mon: `${hours.monO.value}-${hours.monC.value}`,
@@ -44,34 +217,37 @@ class NewGym extends React.Component {
             fri: `${hours.friO.value}-${hours.friC.value}`,
             sat: `${hours.satO.value}-${hours.satC.value}`,
             sun: `${hours.sunO.value}-${hours.sunC.value}`
-            
         }
 
         var offers = this.state.offers;
         var packages = this.state.packages;
 
-        data = Object.assign({},data,primaryData,{offers:[...offers]},{packages:[...packages]});
+        data = Object.assign({}, data, primaryData, { offers: [...offers] }, { packages: [...packages] });
 
         console.log(data);
 
+        // Wysłanie żądania do serwera
         fetch('http://localhost:8080/api/gym', {
             method: "POST",
             mode: "cors",
             cache: "no-cache",
-            credentials: "same-origin", //
-         
-            body: JSON.stringify(data), // body data type must match "Content-Type" header
+            credentials: "same-origin",
+
+            body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
             }
-            }).then(res =>res.json())
-                .then(res=>{
-                    console.log(res);
-                    history.push(`/silownie/view/${res.gym_id}/${res.primaryForm.name.value}`)
-                });
+        }).then(res => res.json())
+            .then(res => {
+                console.log(res);
+                history.push(`/silownie/view/${res.gym_id}/${primaryData.gym_name.value}`)
+            });
 
+      }
     }
 
+
+    // Utworzenie pojedynczej oferty
     handleOfferSubmit = (e) => {
         e.preventDefault();
         var offers = this.state.offers;
@@ -92,17 +268,15 @@ class NewGym extends React.Component {
 
     showOfferForm = (e) => {
         var form = document.querySelector(".offerForm");
-        //   form.classList.remove("show");
         e.target.classList.add('invisible');
-
     }
-    showPackageForm=(e)=>{
+
+    showPackageForm = (e) => {
         e.target.classList.add('invisible');
     }
 
     deleteOffer = (i) => {
         var offers = this.state.offers;
-
         offers = offers.filter((o, index) => (i != index));
         this.setState({
             offers
@@ -118,6 +292,7 @@ class NewGym extends React.Component {
             price: e.target.packagePrice.value,
             period: e.target.packagePeriod.value
         });
+
         this.setState({
             packages
         })
@@ -131,193 +306,246 @@ class NewGym extends React.Component {
 
     }
 
-    deletePackage=(i) => {
+    deletePackage = (i) => {
         var packages = this.state.packages;
-
         packages = packages.filter((p, index) => (i != index));
         this.setState({
             packages
         });
     }
-    render() {
 
+    handleChange = (e) => {
+        let target = e.target;
+        let value = e.target.value;
+
+        let data = {
+            target: value
+        }
+        this.setState({
+            [e.target.name]: value
+        },()=>{
+          console.log(this.state.monO)
+        })
+
+
+    }
+    /* ------------------------------------------------------------------------------------------------ */
+    /*                                          RENDER                                                  */
+    /* ------------------------------------------------------------------------------------------------ */
+    render() {
         var currentOffers = ''
         var currentPackages = ''
 
         // Utworzenie listy dodanych ofert
         currentOffers = this.state.offers.map((o, index) =>
-            (<li key={index} className="animated fadeInDown" >
-                {o.name},{o.description}
-                <div className="btn btn-danger deleteOffer" onClick={this.deleteOffer.bind(null, index)}>Usuń</div>
-                <div className="btn btn-warning editOffer">Edytuj</div>
-            </li>));
+            (<OfferItem offerData={o} key={index} deleteOffer={this.deleteOffer.bind(this, index)} />));
 
+        // Utworzenie listy pakietów
         currentPackages = this.state.packages.map((p, index) =>
-            (<li key={index} className="animated fadeInDown" >
-                {p.name}, {p.price}zł , {p.period}
-                <div className="btn btn-danger deleteOffer" onClick={this.deletePackage.bind(null, index)}>Usuń</div>
-                <div className="btn btn-warning editOffer">Edytuj</div>
-            </li>));
+            (<PackageItem packageData={p} key={index} deletePackage={this.deletePackage.bind(this, index)} />));
 
         return (
             <div>
+                {/* Spinner */}
+                {this.state.gymIsAdding && <Spinner />}
 
-                {this.state.gymIsAdding && <div className="newGymOverlay" >
-                <div class="loaderContainer">
-                    <div class="loader">
-                    </div>
-                    <div class="loaderInner">
-        
-                    </div>
-        
-                    <div class="loaderInnerSmall">
-        
-                    </div>
-        
-                </div>
-                </div>}
-                <form className="newGymForm primaryData" onSubmit={this.handleSubmit}>
+                {/* Podstawowe dane */}
+                {/* ------------------------------------------------------------------------------- */}
+                <form className="newGymForm primaryData animated" onSubmit={this.handleSubmit}>
                     <legend>Dodaj nową siłownię</legend>
-                    <hr/>
+                    <hr />
 
                     <div className="form-group">
-                        <label htmlFor="name">Nazwa</label>
-                        <input type="text" name="name" className="form-control" autoComplete="off"/>
+                        {/* name */}
+                        <label htmlFor="name">
+                        *Nazwa <span className="inputError"> {this.state.errors.name} </span>
+                        </label>
+                        <input type="text" name="name" className="form-control"
+                            value={this.state.name} onChange={this.handleChange}
+                            autoComplete="off" />
 
-                        <label htmlFor="city">Miasto</label>
-                        <input type="text" name="city" className="form-control"/>
+                        {/* city */}
+                        <label htmlFor="city">
+                        *Miasto <span className="inputError"> {this.state.errors.city} </span>
+                        </label>
+                        <input type="text" name="city" className="form-control"
+                            value={this.state.city} onChange={this.handleChange} />
 
-                        <label htmlFor="street">Ulica</label>
-                        <input type="text" name="street" className="form-control"/>
+                        {/* street */}
+                        <label htmlFor="street">
+                        *Ulica <span className="inputError"> {this.state.errors.street} </span>
+                        </label>
+                        <input type="text" name="street" className="form-control"
+                            value={this.state.street} onChange={this.handleChange} />
 
-                        <label htmlFor="post_code">Kod pocztowy</label>
-                        <input type="text" name="post_code" className="form-control"/>
+                        {/* post_code */}
+                        <label htmlFor="post_code">
+                        Kod pocztowy  <span className="inputError"> {this.state.errors.post_code} </span>
+                        </label>
+                        <input type="text" name="post_code" className="form-control"
+                            value={this.state.post_code} onChange={this.handleChange} />
 
-                        <label htmlFor="phone_number">Telefon komórkowy</label>
-                        <input type="text" name="phone_number" className="form-control"/>
+                        {/* phone_number */}
+                        <label htmlFor="phone_number">
+                        Telefon komórkowy <span className="inputError"> {this.state.errors.phone_number} </span>
+                        </label>
+                        <input type="text" name="phone_number" className="form-control"
+                            value={this.state.phone_number} onChange={this.handleChange} />
 
-                        <label htmlFor="landline_phone">Telefon stacjonarny</label>
-                        <input type="text" name="landline_number" className="form-control"/>
- 
-                        <label htmlFor="mail">E-mail</label>
-                        <input type="text" name="mail" className="form-control"/>
+                        {/* landline_number */}
+                        <label htmlFor="landline_phone">
+                        Telefon stacjonarny <span className="inputError"> {this.state.errors.landline_number}</span>
+                        </label>
+                        <input type="text" name="landline_number" className="form-control"
+                            value={this.state.landline_phone} onChange={this.handleChange} />
 
-                        <label htmlFor="description">Opis</label>
-                        <textarea className="form-control" name="description" id="" cols="30" rows="10"></textarea>
+                        {/* mail */}
+                        <label htmlFor="mail">
+                        *E-mail <span className="inputError"> {this.state.errors.mail} </span>
+                        </label>
+                        <input type="text" name="mail" className="form-control"
+                            value={this.state.mail} onChange={this.handleChange} />
 
-                
+                        {/* description */}
+                        <label htmlFor="description">
+                        *Opis <span className="inputError"> {this.state.errors.description} </span>
+                        </label>
+                        <textarea className="form-control" name="description" id="" cols="30" rows="10"
+                            value={this.state.description} onChange={this.handleChange}>
+                        </textarea>
                     </div>
-              </form>
-                 <div className="formTitle">
-                     <h3>Harmonogram</h3>
-                     Dodaj godziny otwarcia Twojej siłowni
-                     <hr />
-                 </div>
+                </form>
 
-                 <form className="openingHoursForm newGymForm">
+                {/* Godziny otwarcia */}
+                {/* ------------------------------------------------------------------------------- */}
+                <div className="formTitle">
+                    <h3>Harmonogram</h3>
+                    Dodaj godziny otwarcia Twojej siłowni
+                    <hr />
+                </div>
 
-                        <div className="form-group">
-                            <label>Pon</label>
-                            <input type="time" name="monO" className="form-control"/>
-                            <input type="time" name="monC" className="form-control"/>
-                        </div>
+                <form className="openingHoursForm newGymForm">
 
-                        <div className="form-group">
-                             <label>Wt</label>
-                            <input type="time" name="tueO" className="form-control"/>
-                            <input type="time" name="tueC" className="form-control"/>
-                        </div>
 
-                        <div className="form-group">
-                             <label htmlFor="">Śr</label>
-                            <input type="time" name="wedO" className="form-control"/>
-                            <input type="time" name="wedC" className="form-control"/>
-                        </div>
+                    <div className="form-group">
+                        <label>Pon</label>
+                        <input type="time" name="monO" className="form-control"
+                            value={this.state.monO} onChange={this.handleChange} />
 
-                        <div className="form-group">
-                            <label htmlFor="">Czw</label>
-                           <input type="time" name="thuO" className="form-control"/>
-                           <input type="time" name="thuC" className="form-control"/>
-                        </div>
+                        <input type="time" name="monC" className="form-control" 
+                        value={this.state.monC} onChange={this.handleChange}/>
+                    </div>
 
-                        <div className="form-group">
-                            <label htmlFor="">Pt</label>
-                           <input type="time" name="friO" className="form-control"/>
-                           <input type="time" name="friC" className="form-control"/>
-                        </div>
+                    <div className="form-group">
+                        <label>Wt</label>
+                        <input type="time" name="tueO" className="form-control"
+                        value={this.state.tueO} onChange={this.handleChange} />
 
-                        <div className="form-group">
+                        <input type="time" name="tueC" className="form-control" 
+                        value={this.state.tueC} onChange={this.handleChange}/>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Śr</label>
+                        <input type="time" name="wedO" className="form-control"
+                         value={this.state.wedO} onChange={this.handleChange}/>
+
+                        <input type="time" name="wedC" className="form-control" 
+                        value={this.state.wedC} onChange={this.handleChange}/>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Czw</label>
+                        <input type="time" name="thuO" className="form-control" 
+                        value={this.state.thuO} onChange={this.handleChange}/>
+
+                        <input type="time" name="thuC" className="form-control" 
+                        value={this.state.thuC} onChange={this.handleChange}/>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Pt</label>
+                        <input type="time" name="friO" className="form-control" 
+                        value={this.state.friO} onChange={this.handleChange}/>
+
+                        <input type="time" name="friC" className="form-control"
+                        value={this.state.friC} onChange={this.handleChange} />
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="">Sob</label>
-                           <input type="time" name="satO" className="form-control"/>
-                           <input type="time" name="satC" className="form-control"/>
-                         </div>
+                        <input type="time" name="satO" className="form-control"
+                        value={this.state.satO} onChange={this.handleChange} />
 
-                        <div className="form-group">
-                           <label htmlFor="">Nd</label>
-                           <input type="time" name="sunO" className="form-control"/>
-                           <input type="time" name="sunC"className="form-control"/>
-                        </div>
+                        <input type="time" name="satC" className="form-control" 
+                        value={this.state.satC} onChange={this.handleChange}/>
+                    </div>
 
-                           
-                        
-                 </form>
+                    <div className="form-group">
+                        <label htmlFor="">Nd</label>
+                        <input type="time" name="sunO" className="form-control" 
+                        value={this.state.sunO} onChange={this.handleChange}/>
 
-                 <div className="formTitle">
-                     <h3>Oferta</h3>
-                     Dodaj oferty jakie są dostępne w Twojej siłowni (Siłownia,Basen,Sauna...)
-                     <hr />
-                 </div>
+                        <input type="time" name="sunC" className="form-control" 
+                        value={this.state.sunC} onChange={this.handleChange}/>
+                    </div>
+                </form>
+
+                {/* Oferty */}
+                {/* ------------------------------------------------------------------------------- */}
+                <div className="formTitle">
+                    <h3>Oferta</h3>
+                    Dodaj oferty jakie są dostępne w Twojej siłowni (Siłownia,Basen,Sauna...)
+                   <hr />
+                </div>
 
                 <div className="formTitle">
-                    {/* <h4>Dodane oferty:</h4> */}
                     <ul className="list-group">
                         {currentOffers}
                     </ul>
                 </div>
+
                 <div className="formTitle addOffer">
-                    <i className="fas fa-plus-circle showOfferForm" onClick={this.showOfferForm} data-toggle="collapse" data-target="#offerForm"></i>
+                    <i className="fas fa-plus-circle showOfferForm"
+                        onClick={this.showOfferForm} data-toggle="collapse" data-target="#offerForm">
+                    </i>
                 </div>
 
                 <form id="offerForm" className="newGymForm offerForm collapse" onSubmit={this.handleOfferSubmit}>
-
-
                     <label htmlFor="offerName">Nazwa oferty</label>
                     <input name="offerName" type="text" className="form-control" />
 
                     <label htmlFor="offerDescription">Opis oferty</label>
                     <textarea name="offerDescription" id="" cols="30" rows="5" className="form-control"></textarea>
-                    <br />
 
+                    <br />
                     <button className="btn btn-primary" >Dodaj oferte</button>
                     <br /> <br />
-
                 </form>
 
-                <div className="formTitle">
+                {/* Pakiety */}
+                {/* ------------------------------------------------------------------------------- */}
 
+                <div className="formTitle">
                     <h3>Cennik</h3>
                     Dodaj pakiety jakie Twoja siłownia oferuje. <br />
                     Przykład: 1 wejście, 6zł , 1raz
-                     <hr />
+                   <hr />
                 </div>
 
-                {/* ----------------------------------------------------------------------------------------- */}
-                {/* -----------------------------------------PAKIETY----------------------------------------- */}
-                {/* ----------------------------------------------------------------------------------------- */}
-
                 <div className="formTitle">
-                    {/* <h4>Dodane pakiety:</h4> */}
                     <ul className="list-group">
                         {currentPackages}
                     </ul>
                 </div>
 
                 <div className="formTitle addPackages">
-                    <i className="fas fa-plus-circle showPackageForm" onClick={this.showOfferForm} data-toggle="collapse" data-target="#packageForm"></i>
+                    <i className="fas fa-plus-circle showPackageForm"
+                        onClick={this.showOfferForm} data-toggle="collapse" data-target="#packageForm">
+                    </i>
                 </div>
 
                 <form id="packageForm" className=" newGymForm packageForm collapse" onSubmit={this.handlePackageSubmit}>
-
 
                     <label htmlFor="packageName">Nazwa pakietu</label>
                     <input name="packageName" type="text" className="form-control" />
@@ -331,22 +559,17 @@ class NewGym extends React.Component {
                     <br />
                     <button className="btn btn-primary" >Dodaj oferte</button>
                     <br /> <br />
-
                 </form>
 
-                {/* Pobieranie zdjęć */}
-                {/* ----------------------------------------------------------------------------------------- */}
-                {/* <form className="newGymForm photoForm">
-                    <label htmlFor="photo">Dodaj zdjęcie</label>
-                    <input type="file" name="photo"  accept="image/png, image/jpeg" multiple="true" className="form-control"/>
-                </form> */}
-
-
-
-                <div className="formTitle">
-                   <div className="btn btn-success sendForm" onClick={this.handleSubmit}>Wyślij formularz</div>
+                <div className="newGymButtons">
+                    <div className="formTitle">
+                        <div className="btn btn-success sendForm" onClick={this.handleSubmit}>
+                            Wyślij formularz
+                      </div>
+                    </div>
                 </div>
-            </div >
+
+            </div>
         );
     }
 }

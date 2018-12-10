@@ -190,11 +190,50 @@ class NewGym extends React.Component {
             return formValid;
     }
 
+    checkOpeningHours = () => {
+        let s = this.state;
+        
+        let ifEmpty = (s.monO.length === 0) && (s.monC.length === 0) &&
+                      (s.tueO.length === 0) && (s.tueC.length === 0) &&
+                      (s.wedO.length === 0) && (s.wedC.length === 0) &&
+                      (s.thuO.length === 0) && (s.thuC.length === 0) &&
+                      (s.friO.length === 0) && (s.friC.length === 0) &&
+                      (s.satO.length === 0) && (s.satC.length === 0) &&
+                      (s.sunO.length === 0) && (s.sunC.length === 0) 
+        
+                      return ifEmpty;
+
+    }
+
     handleSubmit = () => {
       // Pobierz state   
       let s = this.state;
+      let confirmResponse;
+      let ifContinue = true;
 
       if(this.validate()){
+
+        if(this.checkOpeningHours()){
+            confirmResponse = window.confirm('Harmonogram jest pusty, czy kontynuować ? ');  
+            if(!confirmResponse){
+               return null;
+            }      
+        }
+
+        if(s.offers.length === 0){
+            confirmResponse = window.confirm('Oferty są puste, czy kontynuować ? ');  
+            if(!confirmResponse){
+               return null;
+            }      
+        }
+
+        if(s.packages.length === 0){
+            confirmResponse = window.confirm('Cennik jest pusty, czy kontynuować ?');
+            if(!confirmResponse){
+                return null;
+             }  
+        }          
+
             // Utworzenie obiektu data z wszystkimi danymi siłowni
         this.setState({
             gymIsAdding: !this.state.gymIsAdding

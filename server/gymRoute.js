@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {Pool} = require('pg');
 const pg = require('pg');
-
+var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
 
 // Pobiera listę wszystkich siłowni
 // ------------------------------------------------------------------------------------------------
@@ -38,9 +38,9 @@ router.get('/api/gyms',(request,response)=>{
 // ------------------------------------------------------------------------------------------------
 router.get('/api/gym/:gym_id',(request,response)=>{
     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
-       client.connect((err)=>{
-       console.log(err);
-    });
+    client.connect((err)=>{
+        console.log(err);
+     });
     // Pusty obiekt przygotowany pod odbiór danych
     var responseData={
         gymData:{},

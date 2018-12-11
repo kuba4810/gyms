@@ -3,6 +3,7 @@ import history from '../../../history'
 import OfferItem from './OfferItem'
 import PackageItem from './PackageItem'
 import Spinner from '../../LoadingSpinner'
+import ImageUploader from 'react-images-upload';
 
 
 class NewGym extends React.Component {
@@ -45,12 +46,21 @@ class NewGym extends React.Component {
             sunC: '',
             offers: [],
             packages: [],
-            photos: [],
+            pictures: [],
             equipment : [],
             currentForm: 'primaryData',
             gymIsAdding: false
         }
     }
+    onDrop = (picture) => {
+        this.setState({
+            pictures: picture,
+        },()=>{
+            console.log('Zdjęcia: ',this.state.pictures)
+        }); 
+    }
+
+
 
     checkTextLength = (value,isRequired) =>{
         if( value.length === 0 && isRequired){
@@ -416,10 +426,13 @@ class NewGym extends React.Component {
 
                 {/* Podstawowe dane */}
                 {/* ------------------------------------------------------------------------------- */}
-                <form className="newGymForm primaryData animated" onSubmit={this.handleSubmit}>
-                    <legend>Dodaj nową siłownię</legend>
-                    <hr />
 
+                <div className="formTitle">
+                    <h3>Podstawowe dane</h3>
+                    <hr />
+                </div>
+
+                <form className="newGymForm primaryData animated" onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         {/* name */}
                         <label htmlFor="name">
@@ -731,6 +744,24 @@ class NewGym extends React.Component {
                         </div>
                    </div>
                 </form>
+
+                {/* Zdjęcie */}
+                {/* ------------------------------------------------------------------------------- */}
+                <div className="formTitle">
+                    <h3>Zdjęcia</h3>
+                    Dodaj zdjęcia do swojej siłowni
+                   <hr />
+                </div>
+
+               <div className="gymImagesUpload">
+                    <ImageUploader
+                            withIcon={true}
+                            buttonText='Choose images'
+                            onChange={this.onDrop}
+                            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                            maxFileSize={5242880}
+                        />
+               </div>
 
                 {/* Przycisk do wysyłania */}
                 {/* ------------------------------------------------------------------------------- */}

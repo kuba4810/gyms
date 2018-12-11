@@ -1,5 +1,5 @@
 export const questions = (state = {
-    isLoading: false,
+    isLoading: true,
     questionsList: [],
     category: 'WSZYSTKIE',
     currentQuestion : {},

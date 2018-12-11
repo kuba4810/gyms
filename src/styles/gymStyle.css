@@ -155,3 +155,8 @@ hr{
     .equipment input{
         cursor:pointer;
     }
+
+    .gymImagesUpload{
+        width:60%;
+        margin: 0 auto;
+    }

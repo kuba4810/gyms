@@ -5,6 +5,7 @@ const pg = require('pg');
 
 
 // Pobiera listę wszystkich siłowni
+// ------------------------------------------------------------------------------------------------
 router.get('/api/gyms',(request,response)=>{
     
 
@@ -31,10 +32,10 @@ router.get('/api/gyms',(request,response)=>{
   
 
 });
-// ----------------------------------------------------------------------------------------
+
 
 // Pobiera szczegółowe dane jednej siłowni
-// ----------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 router.get('/api/gym/:gym_id',(request,response)=>{
     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
        client.connect((err)=>{
@@ -82,8 +83,10 @@ router.get('/api/gym/:gym_id',(request,response)=>{
     });
        
   
-// -----------------------------------------------------------------------------------------
+
+
 // Tworzy nową siłownię
+// ------------------------------------------------------------------------------------------------
 router.post('/api/gym',(request,response)=>{
 
     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
@@ -174,13 +177,6 @@ router.post('/api/gym',(request,response)=>{
              })
 
         });
-});
-
-router.get('/anything',(request,response)=>{
-    client.query(`insert into kuba.messages (sender, receiver, sending_date, message_content, is_read, receiver_deleted, sender_deleted) 
-    VALUES(${1},${2},CURRENT_TIMESTAMP,'Wyślij mi id wiadomości',false,false,false) returning *`).then(res=>{
-        response.send(res);
-    });
 });
 
 

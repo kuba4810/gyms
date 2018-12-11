@@ -46,6 +46,7 @@ class NewGym extends React.Component {
             offers: [],
             packages: [],
             photos: [],
+            equipment : [],
             currentForm: 'primaryData',
             gymIsAdding: false
         }
@@ -260,8 +261,13 @@ class NewGym extends React.Component {
 
         var offers = this.state.offers;
         var packages = this.state.packages;
+        var equipment = this.state.equipment.join(',');
 
-        data = Object.assign({}, data, primaryData, { offers: [...offers] }, { packages: [...packages] });
+        data = Object.assign({}, data, primaryData, 
+                               { offers: [...offers] }, 
+                               { packages: [...packages]},
+                               {equipment: equipment }
+                            );
 
         console.log(data);
 
@@ -366,9 +372,28 @@ class NewGym extends React.Component {
         },()=>{
           console.log(this.state.monO)
         })
-
-
     }
+
+    // Dodawanie bądź usuwanie wyposażenia
+    // --------------------------------------------------------------------------------------------
+    handleCheck = (e) =>{
+        let equipment = this.state.equipment;
+        if(e.target.checked){
+            equipment.push(e.target.value);
+        } else{
+           equipment = equipment.filter(eq => ( eq !== e.target.value ));
+        }
+
+        this.setState({
+            equipment : [...equipment]
+        },()=>{
+            console.log("Wyposażenie: ", this.state.equipment);
+            
+        })
+    } 
+
+
+
     /* ------------------------------------------------------------------------------------------------ */
     /*                                          RENDER                                                  */
     /* ------------------------------------------------------------------------------------------------ */
@@ -601,6 +626,114 @@ class NewGym extends React.Component {
                     <br /> <br />
                 </form>
 
+                {/* Wyposażenie */}
+                {/* ------------------------------------------------------------------------------- */}
+                <div className="formTitle">
+                    <h3>Wyposażenie</h3>
+                    Zaznacz dostępne w Twojej siłowni wyposażenie.
+                   <hr />
+                </div>
+
+                <form className="equipment">
+                   <div className="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value='Atlas' onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Atlas</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input"value='Bieżnie' onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Bieżnie</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value='Bramy' onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Bramy</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value='Drążki do podciągania' onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Drążki do podciągania</label>
+                        </div>
+                   </div>
+
+                   <div className="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value='Hantle' onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Hantle</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value='Ławki skośne' onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Ławki skośne</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value='Ławki treningowe' onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Ławki treningowe</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Orbiterek" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Orbiterek </label>
+                        </div>
+                   </div>
+
+                   <div className="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Piłki treningowe" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Piłki treningowe</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Rowery treningowe" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Rowery treningowe</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Stepper" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Stepper</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Stepy do aerobiku" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Stepy do aerobiku</label>
+                        </div>
+                   </div>
+
+
+                   <div className="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Suwnice do wypychania" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Suwnice do wypychania</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Sztangi" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Sztangi</label>
+                        </div>
+                        <div class="form-check"> 
+                            <input type="checkbox" class="form-check-input" value="Wiosła" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Wiosła</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Maszyny eliptyczne"onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Maszyny eliptyczne</label>
+                        </div>
+                   </div>
+
+                   <div className="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Piłki fitness" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Piłki fitness</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Kettle" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Kettle</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Pasy obciążeniowe" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Pasy obciążeniowe</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" value="Maszyny hammer" onChange={this.handleCheck}/>
+                            <label class="form-check-label" for="exampleCheck1">Maszyny hammer</label>
+                        </div>
+                   </div>
+                </form>
+
+                {/* Przycisk do wysyłania */}
+                {/* ------------------------------------------------------------------------------- */}
                 <div className="newGymButtons">
                     <div className="formTitle">
                         <div className="btn btn-success sendForm" onClick={this.handleSubmit}>

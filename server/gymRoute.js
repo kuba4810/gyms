@@ -106,10 +106,11 @@ router.post('/api/gym',(request,response)=>{
     const getID = `SELECT gym_id FROM kuba.gyms WHERE email ='${data.email}'`  
 
     // Kwerenda do tabeli GYMS
+    let values =[data.gym_name,data.city,data.street,data.post_code,data.phone_number,data.landline_number,
+                 data.email,data.description,data.equipment]
     const createGym = `INSERT INTO kuba.gyms 
-    (gym_name,city,street,post_code,phone_number,landline_phone,email,evaluation,description)
-    VALUES('${data.gym_name}','${data.city}','${data.street}','${data.post_code}','${data.phone_number}','${data.landline_number}',
-        '${data.email}',0,'${data.description}') returning *`
+    (gym_name,city,street,post_code,phone_number,landline_phone,email,evaluation,description,equipment)
+    VALUES($1,$2,$3,$4,$5,$6,$7,0,$8,$9) returning *`
 
     // Kwerenda dla tabeli OPENING HOURS
     const createOpeningHours = `INSERT INTO kuba.opening_hours (gym_id,mon,tue,wed,thu,fri,sat,sun)
@@ -141,7 +142,7 @@ router.post('/api/gym',(request,response)=>{
             else{
 
                 // Utworzenie rekordu dla GYMS
-                return client.query(createGym)
+                return client.query(createGym,values)
             }
         }).then((res)=>{
             

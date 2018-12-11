@@ -1,8 +1,9 @@
 {
-  "main.css": "static/css/main.fdadd9ca.css",
-  "main.css.map": "static/css/main.fdadd9ca.css.map",
-  "main.js": "static/js/main.aa813bcb.js",
-  "main.js.map": "static/js/main.aa813bcb.js.map",
+  "main.css": "static/css/main.e7efc656.css",
+  "main.css.map": "static/css/main.e7efc656.css.map",
+  "main.js": "static/js/main.ab1ea8a0.js",
+  "main.js.map": "static/js/main.ab1ea8a0.js.map",
+  "static\\media\\UploadIcon.svg": "static/media/UploadIcon.1cedb6e9.svg",
   "static\\media\\body-bg.jpg": "static/media/body-bg.e9644cec.jpg",
   "static\\media\\findYourGym.jpg": "static/media/findYourGym.e8b07b13.jpg",
   "static\\media\\fontello.eot?42277545": "static/media/fontello.89d04078.eot",
@@ -10,7 +11,7 @@
   "static\\media\\fontello.ttf?42277545": "static/media/fontello.92d85a2c.ttf",
   "static\\media\\fontello.woff2?42277545": "static/media/fontello.c6dad888.woff2",
   "static\\media\\fontello.woff?42277545": "static/media/fontello.f971adaa.woff",
-  "static\\media\\forumWallpaper.jpg": "static/media/forumWallpaper.c5b89f56.jpg",
+  "static\\media\\forumWallpaper.jpg": "static/media/forumWallpaper.03ae5629.jpg",
   "static\\media\\gymForum.jpg": "static/media/gymForum.7d7b965a.jpg",
   "static\\media\\personalTrainer.jpg": "static/media/personalTrainer.ff1ae2ee.jpg"
 }

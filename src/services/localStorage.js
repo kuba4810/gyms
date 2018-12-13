@@ -26,7 +26,7 @@ export const checkIfLoggedIn = () =>{
     let isLogedIn;
     let storageItem = localStorage.getItem('isLoggedIn');
 
-    console.log('Typ flagi zalogowania : ',typeof(storageItem));
+    // console.log('Typ flagi zalogowania : ',typeof(storageItem));
 
     if (storageItem === null ){
         localStorage.setItem('isLoggedIn','false');

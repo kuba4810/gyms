@@ -3,33 +3,28 @@ var router = express.Router();
 const {Pool} = require('pg');
 const pg = require('pg');
 var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+const fileUpload = require('express-fileupload');
+const makeDir = require('make-dir');
 
 // Pobiera listę wszystkich siłowni
 // ------------------------------------------------------------------------------------------------
 router.get('/api/gyms',(request,response)=>{
     
-
-    var pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
+     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+    client.connect((err)=>{
+        console.log(err);
+     });
 
     let query = 'SELECT * FROM kuba.gyms';
-
-    try{
-        pool.query(query,(err,res)=>{
-            response.json(res.rows);
-        });
-    }
-    catch(err){
-        response.json({
-            response: 'failed'
-        })
-    }
-  
+     client.query(query).then(res=> res.rows)
+     .then(res=>{
+        response.json(res)
+     })
+     .catch(err=>{
+         response.json({
+             response: 'failed'
+         })
+     })  
 
 });
 
@@ -68,12 +63,19 @@ router.get('/api/gym/:gym_id',(request,response)=>{
     }).then((res)=>{
         console.log("Trzeci select: ", res.rows);
         responseData = Object.assign({},responseData,{packages:[...res.rows]});
-        // Po wykonaniu ostatniego zapytania dane są zwracane do klienta
+
+        return client.query(`SELECT * FROM kuba.gym_photos WHERE gym_id = $1`,[request.params.gym_id])
+    }) 
+    .then(res => {
+        responseData = Object.assign({},responseData,{photos:[...res.rows]});
+
+       // Po wykonaniu ostatniego zapytania dane są zwracane do klienta
        response.json({
-           response: 'success',
-           data: responseData
-       });
-    }) .catch(err=>{
+       response: 'success',
+       data: responseData
+    });
+    })
+    .catch(err=>{
         console.log("Wystąpił błąd: ",err);
         response.json({
             response: 'failed'
@@ -163,6 +165,17 @@ router.post('/api/gym',(request,response)=>{
             (gym_id,package_name,description,prize) VALUES(${gym_id},'${package.name}','${package.period}','${package.price}')`) )))
         })
         .then(()=>{
+            console.log('Dodaje zdjęcia na serwer...');
+            let query = 'INSERT INTO kuba.gym_photos (gym_id,url) VALUES ($1,$2)'
+
+            return Promise.all( 
+                data.pictures.map( 
+                    pic=> ( 
+                        client.query(query,[gym_id,pic])
+                  
+                        )))
+        })
+        .then(()=>{
             console.log("Udało się, siłownia dodana !");
                 response.json({
                     response :'success',
@@ -180,6 +193,42 @@ router.post('/api/gym',(request,response)=>{
         });
 });
 
+
+router.post('/upload/:gym_name', (req, res) => {
+    let gym_name = req.params.gym_name;
+
+    console.log("Tworzę zdjęcia w folderach...");
+    
+    console.log("Dostałem takie pliki: ", req.files);
+    // res.send("Odpowiedź")
+    if (Object.keys(req.files).length == 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+  
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let files = req.files.image;
+    // console.log("Pojedynczy plik: ", files[0]);
+    // Use the mv() method to place the file somewhere on your server
+    console.log(`public/images/${gym_name}/${files[0].name}.jpg`)
+
+    makeDir(`public/images/${gym_name}`)
+    .then(path=>{
+        for(var i = 0; i< files.length; i++){
+            files[i].mv(`public/images/${gym_name}/${files[i].name}`, function(err) {
+                if (err)
+                 { 
+                    console.log("Wystąpił błąd: ",err);            
+                   
+                }
+           
+                  
+              });
+        }
+        res.send('File uploaded!'); 
+    })
+   
+   
+  });
 
 
 module.exports=router;

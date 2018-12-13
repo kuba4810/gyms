@@ -4,6 +4,7 @@ import OfferItem from './OfferItem'
 import PackageItem from './PackageItem'
 import Spinner from '../../LoadingSpinner'
 import ImageUploader from 'react-images-upload';
+import axios from 'axios'
 
 
 class NewGym extends React.Component {
@@ -49,15 +50,47 @@ class NewGym extends React.Component {
             pictures: [],
             equipment : [],
             currentForm: 'primaryData',
-            gymIsAdding: false
+            gymIsAdding: false,
+            selectedFile : null
         }
     }
+
     onDrop = (picture) => {
+        let pictures = picture.map( pic => URL.createObjectURL(pic) );
+        console.log(pictures);
+        
         this.setState({
-            pictures: picture,
+            pictures: pictures,
         },()=>{
             console.log('Zdjęcia: ',this.state.pictures)
         }); 
+
+
+      }
+
+
+    /* fileSelectedHandler = event=>{
+       this.setState({
+           selectedFile : event.target.files[0]
+       })
+        
+    } */
+
+    fileUploadHandler =()=>{
+        console.log("Wysyłam zdjęcie ...");
+        
+        let fd = new FormData()
+
+        for(var img of this.state.pictures){
+            fd.append('image',img,img.name);
+        }
+
+       
+        axios.post('http://localhost:8080/upload/silkaMiszczuf',fd)
+        .then(res=>{
+            console.log(res);
+            
+        })
     }
 
 
@@ -242,6 +275,7 @@ class NewGym extends React.Component {
             confirmResponse = window.confirm('Cennik jest pusty, czy kontynuować ?');
             if(!confirmResponse){
                 return null;
+                
              }  
         }          
 
@@ -272,15 +306,17 @@ class NewGym extends React.Component {
         var offers = this.state.offers;
         var packages = this.state.packages;
         var equipment = this.state.equipment.join(',');
+        var pictures = this.state.pictures.map( pic => `images/${s.name}/${pic.name}` );
 
         data = Object.assign({}, data, primaryData, 
                                { offers: [...offers] }, 
                                { packages: [...packages]},
-                               {equipment: equipment }
+                               {equipment: equipment },
+                               { pictures : [...pictures]}
                             );
 
         console.log(data);
-
+        let gym_id;
         // Wysłanie żądania do serwera
         fetch('http://localhost:8080/api/gym', {
             method: "POST",
@@ -294,10 +330,31 @@ class NewGym extends React.Component {
             }
         }).then(res => res.json())
             .then(res => {
-                console.log(res);
+                if(res.response !== 'success'){
+                    alert('Wystąpił błąd !')
+                }
+                else{
+                    gym_id = res.gym_id;
+                }
+            })
+           /*  .then(()=>{
+                let fd = new FormData()
+
+                for(var img of this.state.pictures){
+                    fd.append('image',img,img.name);
+                }
+        
+                console.log('Wysyłam żądanie w celu utworzenia zdjęć ...');
+                
+                axios.post(`http://localhost:8080/upload/${s.name}`,fd)
+                .then(res=>{
+                    console.log(res);                    
+                })
+            }) */
+            .then(()=>{
                 let formatedName = s.name.split(' ').join('-');
-                history.push(`/silownie/view/${res.gym_id}/${formatedName}`)
-            });
+                history.push(`/silownie/view/${gym_id}/${formatedName}`)
+            })
 
       }
     }
@@ -371,7 +428,7 @@ class NewGym extends React.Component {
     }
 
     handleChange = (e) => {
-        let target = e.target;
+        // let target = e.target;
         let value = e.target.value;
 
         let data = {
@@ -382,6 +439,7 @@ class NewGym extends React.Component {
         },()=>{
           console.log(this.state.monO)
         })
+    
     }
 
     // Dodawanie bądź usuwanie wyposażenia
@@ -410,6 +468,7 @@ class NewGym extends React.Component {
     render() {
         var currentOffers = ''
         var currentPackages = ''
+        var pictures =''
 
         // Utworzenie listy dodanych ofert
         currentOffers = this.state.offers.map((o, index) =>
@@ -418,6 +477,8 @@ class NewGym extends React.Component {
         // Utworzenie listy pakietów
         currentPackages = this.state.packages.map((p, index) =>
             (<PackageItem packageData={p} key={index} deletePackage={this.deletePackage.bind(this, index)} />));
+        pictures = this.state.pictures.map( pic => ( <img src={pic} alt=""/> ) )
+        
 
         return (
             <div>
@@ -761,7 +822,14 @@ class NewGym extends React.Component {
                             imgExtension={['.jpg', '.gif', '.png', '.gif']}
                             maxFileSize={5242880}
                         />
+                    
+                        {/* <input type="file" onChange={this.fileSelectedHandler}/>
+                        <button onClick={this.fileUploadHandler} >Wyślij</button> */}
                </div>
+               
+               <div className="formTitle gymImagesUploadList">
+                   {pictures}
+                </div>
 
                 {/* Przycisk do wysyłania */}
                 {/* ------------------------------------------------------------------------------- */}

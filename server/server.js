@@ -10,6 +10,11 @@ var nodemailer = require('nodemailer');
 var opn = require('opn');
 app.use(express.static('public'));
 
+const fileUpload = require('express-fileupload');
+
+// default options
+app.use(fileUpload());
+
 const cors = require('cors');
 const bodyParser = require('body-parser')
 

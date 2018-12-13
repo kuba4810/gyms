@@ -34,6 +34,7 @@ class GymDetailsCont extends React.Component {
         var packages = ''
         var openingHours = ''
         var equipment = ''
+        var photos =''
         const dowPl = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela']
         const dowEng = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
         var day = 'mon'
@@ -74,6 +75,10 @@ class GymDetailsCont extends React.Component {
                 </div>
             equipment = data.equipment.split(',').map( eq => ( <div><i class="fas fa-check"></i> {eq}  </div> ) )
 
+            // photos = this.props.gymDetails.gym.photos.map( 
+            //     (photo,index) => ( 
+            //         ))
+
         }
         return (
             <div class="color-cornsilk">
@@ -97,6 +102,9 @@ class GymDetailsCont extends React.Component {
                 <h5>
                     {equipment}
                 </h5>
+
+                <h3>Zdjęcia</h3>
+                {/* <img src={require("./images/pakernia/obraz7.jpg")}/> */}
             </div>
 
         );

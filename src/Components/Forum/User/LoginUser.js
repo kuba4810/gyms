@@ -20,7 +20,7 @@ class User extends React.Component{
        let msg = this.props.user.messageCount;
        let ntf = this.props.user.notificationsCount;
        console.log('Liczba wiadomości: ',msg,' Liczba powiadomień: ',ntf);
-       let condition = (msg !== 0 && msg !== '') && (ntf !== 0 && ntf !== '')
+       let condition = (msg !== 0 && msg !== '') || (ntf !== 0 && ntf !== '')
        console.log('Powinno pokazać badge: ',condition)
 
        return(

@@ -160,3 +160,15 @@ hr{
         width:60%;
         margin: 0 auto;
     }
+
+    .gymImagesUploadList  {
+        display:flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .gymImagesUploadList img{
+        width:30%;
+        height: 15vh;
+        border: 2px solid black;
+        margin-top: 5px;
+    }

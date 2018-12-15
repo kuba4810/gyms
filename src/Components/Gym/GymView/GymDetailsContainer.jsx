@@ -23,8 +23,77 @@ class GymDetailsCont extends React.Component {
                 }
 
             });
+    }
 
+    // Wystawianie oceny
+    // --------------------------------------------------------------------------------------------
+    vote = (star) => {
+        let data = {
+            gym_id: this.props.match.params.gym_id,
+            star: star
+        }
+        console.log('Dane do oceny: ', data)
 
+        fetch('http://localhost:8080/api/gym/vote', {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.response === 'success') {
+                    alert('Oddano głos !')
+                } else {
+                    alert('Wystąpił błąd, spróbuj ponownie później !')
+                }
+                console.log(res.response)
+            })
+            .catch(err => {
+                alert('Wystąpił błąd, spróbuj ponownie później !')
+            })
+    }
+
+    sendComment = (e) =>{
+        e.preventDefault();
+        console.log(e.target.text.value);
+
+        let data = {
+            user_id : localStorage.getItem("loggedId"),
+            gym_id: this.props.match.params.gym_id,
+            text: e.target.text.value
+        }
+
+        console.log('Dane komentarza: ', data)
+        
+        fetch('http://localhost:8080/api/gym/comment', {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.response === 'success') {
+                    alert('Wysłano komentarz !')
+                } else {
+                    alert('Wystąpił błąd, spróbuj ponownie później !')
+                }
+                console.log(res.response)
+            })
+            .catch(err => {
+                alert('Wystąpił błąd, spróbuj ponownie później !')
+            })
     }
     render() {
         const data = this.props.gymDetails.gym.gymData;
@@ -34,10 +103,11 @@ class GymDetailsCont extends React.Component {
         var packages = ''
         var openingHours = ''
         var equipment = ''
-        var photos =''
+        var photos = ''
         const dowPl = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela']
         const dowEng = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
         var day = 'mon'
+        let evaluation = ''
 
 
         if (this.props.gymDetails.isLoading == false) {
@@ -73,7 +143,9 @@ class GymDetailsCont extends React.Component {
                         {this.props.gymDetails.gym.packages.map(p => (<tr> <td>{p.package_name}</td> <td>{p.prize}zł</td> <td>{p.description}</td> </tr>))}
                     </table>
                 </div>
-            equipment = data.equipment.split(',').map( eq => ( <div><i class="fas fa-check"></i> {eq}  </div> ) )
+            equipment = data.equipment.split(',').map(eq => (<div><i class="fas fa-check"></i> {eq}  </div>))
+
+            evaluation
 
             // photos = this.props.gymDetails.gym.photos.map( 
             //     (photo,index) => ( 
@@ -85,9 +157,26 @@ class GymDetailsCont extends React.Component {
                 <h2> Witam, jestem widokiem siłowni <em>{this.props.match.params.gym_name}</em> :D </h2>
                 <br />
                 <hr />
+
+                <h3>Ocena: {!this.props.gymDetails.isLoading ? data.evaluation : ''}</h3>
+                <div class="starDiv">
+                    <span class="starDivTitle">
+                        Oceń:
+                   </span>
+                    <div class="stars">
+                        <i class="fas fa-star rateStar" id="rateStar5" onClick={this.vote.bind(null, 5)}></i>
+                        <i class="fas fa-star rateStar" id="rateStar4" onClick={this.vote.bind(null, 4)} ></i>
+                        <i class="fas fa-star rateStar" id="rateStar3" onClick={this.vote.bind(null, 3)}></i>
+                        <i class="fas fa-star rateStar" id="rateStar2" onClick={this.vote.bind(null, 2)}></i>
+                        <i class="fas fa-star rateStar" id="rateStar1" onClick={this.vote.bind(null, 1)}></i>
+                    </div>
+                </div>
+
                 <h3>Podstawowe dane</h3>
 
                 {primaryData}
+
+
 
                 {openingHours}
 
@@ -103,8 +192,19 @@ class GymDetailsCont extends React.Component {
                     {equipment}
                 </h5>
 
-                <h3>Zdjęcia</h3>
+                {/* <h3>Zdjęcia</h3> */}
                 {/* <img src={require("./images/pakernia/obraz7.jpg")}/> */}
+
+
+                {(localStorage.getItem('isLoggedIn') === 'true') &&
+                    <form onSubmit={this.sendComment} className='gymCommentForm' >
+                        <legend><h3>Wystaw opinie</h3></legend>
+                        <div className="form-group">
+                        <textarea className="form-control" name="text" id="" cols="30" rows="10"></textarea>
+                        </div>
+                        <button type="submit" className="btn-success">Wyślij</button>
+                    </form>
+                }
             </div>
 
         );

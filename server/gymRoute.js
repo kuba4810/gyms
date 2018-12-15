@@ -193,7 +193,8 @@ router.post('/api/gym',(request,response)=>{
         });
 });
 
-
+// Odbiera zdjęcia przesłane od klienta
+// ------------------------------------------------------------------------------------------------
 router.post('/upload/:gym_name', (req, res) => {
     let gym_name = req.params.gym_name;
 
@@ -230,6 +231,97 @@ router.post('/upload/:gym_name', (req, res) => {
    
   });
 
+// Wystawianie ocen
+// -----------------------------------------------------------------------------------------------
+router.post('/api/gym/vote',(request,response)=>{
+    let data = request.body;
+    let star_column_name;
+
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+       client.connect((err)=>{
+       console.log(err);
+    }); 
+    console.log("Typ star to : ",typeof(data.star))
+
+    // Ustal którą liczbę gwiazdek zaktualizować
+    switch(data.star){
+        case 1:
+         star_column_name = 'one_star_count'
+         break;
+
+        case 2:
+         star_column_name = 'two_star_count'
+         break;
+
+        case 3:
+         star_column_name = 'three_star_count'
+         break;
+
+        case 4:
+         star_column_name = 'four_star_count'
+         break;
+
+        case 5: 
+         star_column_name = 'five_star_count'
+         break;
+    }
+    console.log('Zamierzam zmienić kolumnę : ',star_column_name)
+    // Utwórz zapytanie z parametrami
+    let query = `UPDATE kuba.gym_stats SET ${star_column_name} = $1 WHERE gym_id = $2`;
+    let values = [data.star,data.gym_id]
+
+    // Wynonanie kwerendy
+    client.query(query,values)
+       .then(res=>res.rows)
+       .then(res=>{
+            response.json({
+                response:'success'
+            })
+       })
+       .catch(err=>{
+           response.json({
+               response:'failed'
+           })
+           console.log(err);
+           
+       })
+       .finally(()=>{
+           client.end()
+       })
+});
+
+// Wystawianie komentarza do siłowni
+// ------------------------------------------------------------------------------------------------
+router.post('/api/gym/comment',(request,response)=>{
+    let data = request.body;
+
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+       client.connect((err)=>{
+       console.log(err);
+    }); 
+
+    let query =`INSERT INTO kuba.gym_comments(
+         user_id, gym_id, creation_date, pluses, minuses, content)
+        VALUES ($1,$2,CURRENT_TIMESTAMP,0,0,$3);`
+    let values = [data.user_id,data.gym_id,data.text]
+
+    client.query(query,values)
+       .then(res=>res.rows)
+       .then(res=>{
+           response.json({
+               response:'success'
+           })
+       })
+       .catch(err=>{
+           console.log(err);
+           response.json({
+               response:'failed'
+           })
+       })
+       .finally(()=>{
+           client.end()
+       })
+})
+
 
 module.exports=router;
-

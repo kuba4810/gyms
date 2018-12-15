@@ -172,3 +172,59 @@ hr{
         border: 2px solid black;
         margin-top: 5px;
     }
+
+/* Gwiazdki do oceniania */    
+/* ------------------------------------------ */
+.starDiv {
+    display: flex;
+    align-items: center;
+}
+
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.starDiv i {
+    font-size: 20px;
+    padding: 5px;
+    cursor: pointer;
+
+}
+
+.starDiv i:hover,
+.starDiv i:hover~i {
+    color: gold;
+}
+
+.starDiv .starDivTitle {
+    font-size: 30px;
+    /*background-color:black;*/
+    display: inline-block;
+    padding-right: 10px;
+
+}
+
+
+/* Komentarze siłowni */
+/* ---------------------------------------------- */
+.gymCommentForm{
+    width: 40%;
+    margin-top:30px;
+}
+.gymCommentForm textarea{
+    background-color: rgba(255,255,255,0.5) !important;
+    color: #262626;
+    border-radius: 0;
+    transition: .4s ease;
+   
+}
+
+.gymCommentForm textarea:focus{
+    box-shadow: none;
+    background-color: rgba(255,255,255,1) !important;
+}
+.gymCommentForm button{
+    width:100%;
+    border-radius: 0;
+}

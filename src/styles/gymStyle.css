@@ -1,231 +1,587 @@
-.gymContainer{
-    color: cornsilk;
-   background-color:#262626;
-    min-height:100vh;
-    margin:0;
-    padding-bottom: 100px;
+
+
+
+/* Gym MAx */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: bisque;
 }
 
-.color-cornsilk{
-    color:cornsilk;
+body * {
+    box-sizing: border-box;
 }
 
-table{
-    background-color:cornsilk;
-    color:#262626;
+/* HEADER */
+/* ---------------------------------------------- */
+header {
+    /* display: flex;
+    justify-content: space-around;
+    align-items: center; */
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: space-evenly;
+    grid-column-gap: 100px; 
+    background-color: #343a40;
+    font-size: 18px;
+    text-align: center;
+
 }
 
-tr{
-   border-bottom: 2px solid #151515;
+/* NAV IN HEADER */
+/* ---------------------------------------------------- */
+
+li {
+    /*kloci obok siebie w poziomie*/
+    list-style-type: none;
 }
 
-th,td{
-    width: 200px;
-    text-align: left;
-    padding: 8px 16px;
-}
-hr{
-    border-color: cornsilk;
+li a {
+    text-decoration: none;
+    color: darkgray;
+    margin: 5px 10px;
+    cursor: pointer;
 }
 
-/* NEW GYM */
-/* ------------------------------------------------------------------------------ */
+li a:hover {
+    color: rgb(221, 219, 219);
+}
 
-    .newGymContainer{
+li a.active {
+    color: rgb(221, 219, 219)
+}
 
-    }
-    /* Form an inputs */
-    .newGymForm, .newPackageForm , .photoForm{
-        background-color: rgba(255,255,255,0);
-        width: 60%;
-        margin: 10px auto 0 auto;
-    }
-
-    .newGymForm label{
-        font-size: 20px;
-    }
-    .newGymForm input , .newGymForm textarea{
-        position:realative;
-        background-color: rgba(255,255,255,0.5);
-        border:none;
-        border-bottom: 2px solid cornsilk;
-        box-shadow: none;
-        border-radius: 0px;
-        font-size: 17px;
-        color: cornsilk;
-        letter-spacing:1px;
-      
-    }
-
-    .newGymForm input:focus{
-        border:none;
-        border-bottom: 2px solid #3863da;
-    }
-
-    .newGymForm input::placeholder, texteare::placeholder{
-        color:#262626;
-    
-    }
-    
-    .newGymForm textarea{
-        background-color: rgba(255,255,255,0.5) !important;
-    
-    }
-    
-    .newGymForm input:focus, .newGymForm textarea:focus{
-        outline:none;
-        box-shadow:none;
-        border-top:none;
-        border-left: none;
-        border-right: none;
-        border-bottom: 2px solid #1873ce;
-        background-color: rgba(255,255,255,0.8) !important;
-        
-    }
-
-    .formTitle{
-        width:60%;
-        margin: 10px auto 10px auto;
-    }
-
-    .formTitle i{
-        font-size: 35px;
-        cursor:pointer;
-        transition:.2s ease;
-        margin-bottom: 20px;
-    }
-
-    .formTitle i:hover{
-        color: rgb(255,100,100);
-    }
-
-    .deleteOffer , .editOffer{
-        float:right;
-    }
-
-    .openingHoursForm{
-        display:flex;
-        justify-content: space-around;
-    }
-
-    .openingHoursForm .form-group{
-        width:14%;
-        text-align:center;
-    }
-
-    .openingHoursForm label{
-        font-size: 17px;
-    }
-
-    .openingHoursForm .form-group input {
-        width:100%;
-        
-    }
-
-
-    .formTitle .sendForm{
-        width:100%;
-        margin: 0 auto;
-    }
-    
-
-    .newGymOverlay{
-        position:fixed;
-        top:0;
-        z-index: 1000000;
-        background-color: rgba(255,255,255,0.5);
-        width:100%;
-        height:100vh;
-    }
-
-    .newGymOverlay .loaderContainer{
-        position: relative;
-        top: 35%;
-    }
-
-
-    .equipment{
-        width:60%;
-        margin: 0 auto;
-        display:flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-    }
-
-    .equipment input{
-        cursor:pointer;
-    }
-
-    .gymImagesUpload{
-        width:60%;
-        margin: 0 auto;
-    }
-
-    .gymImagesUploadList  {
-        display:flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-    .gymImagesUploadList img{
-        width:30%;
-        height: 15vh;
-        border: 2px solid black;
-        margin-top: 5px;
-    }
-
-/* Gwiazdki do oceniania */    
-/* ------------------------------------------ */
-.starDiv {
+ul {
+    /*display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-column-gap: 10px;*/
     display: flex;
+    justify-content: space-around;
     align-items: center;
 }
 
-.stars {
-    display: flex;
-    flex-direction: row-reverse;
+
+
+
+/* SECTION IN MAIN */
+/* ---------------------------------------------------- */
+section h1
+{
+    /* display: flex;
+    justify-content: center; */
+    /* height: 5vh; */
+    text-align: center;
+    letter-spacing: 1.5;
+    font-size: 28px;
+}
+section p{
+    text-align: center;
+    letter-spacing: 1.5;
+    font-size: 18px;
 }
 
-.starDiv i {
-    font-size: 20px;
-    padding: 5px;
+.search-box {
+    margin: auto;
+    background-color: #2f3640;
+    height: 4.5%;
+    width: 15%;
+    border-radius: 40px;
+    padding: 10px;
+}
+
+.search-txt {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+    color: white;
+    font-size: 16px;
+    width: 100%;
+}
+
+/* BUTTON ADD GYM*/
+/* ---------------------------------------------------- */
+.btn{
+    margin-left: 60%;
+    width: 170px;
+}
+#add-gym {
+    
+    background-color: rgb(207, 105, 46);
+    /* Green */
+    color: white;
+    padding: 15px 32px;
+    text-decoration: none;
+    border: none;
+    border-radius: 50px;
     cursor: pointer;
-
+    width: 160px; 
+    margin-right: -10px;
 }
 
-.starDiv i:hover,
-.starDiv i:hover~i {
-    color: gold;
+section a {
+    text-decoration: none;
+    cursor: pointer;
+    color:white;
 }
 
-.starDiv .starDivTitle {
-    font-size: 30px;
-    /*background-color:black;*/
-    display: inline-block;
-    padding-right: 10px;
-
-}
-
-
-/* Komentarze siłowni */
+/* ARTICLE IN MAIN */
 /* ---------------------------------------------- */
-.gymCommentForm{
-    width: 40%;
-    margin-top:30px;
-    margin-bottom:30px;
-}
-.gymCommentForm textarea{
-    background-color: rgba(255,255,255,0.5) !important;
-    color: #262626;
-    border-radius: 0;
-    transition: .4s ease;
-   
+
+article {
+    background-color: burlywood;
+    padding-bottom: 10px;
 }
 
-.gymCommentForm textarea:focus{
-    box-shadow: none;
-    background-color: rgba(255,255,255,1) !important;
+article h1 {
+    text-align: center;
+    padding-top: 3%;
 }
-.gymCommentForm button{
-    width:100%;
-    border-radius: 0;
+
+.gym-list-container {
+    /* display: flex;
+    justify-content: space-around;
+    margin: 3%; */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    grid-gap: 10px;
+    width: 90%;
+    margin: 50px auto 0 auto;
+
+}
+
+.gym-list-box {
+    height: auto;
+    /* width: 30%; */
+    background-color: #343a40;
+    color: rgb(190, 190, 190);
+
+}
+
+.gym-list-header {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2%;
+    /* margin-left: -5%; */
+    width: 100%;
+}
+
+.img-holder {
+    width: 32%;
+    max-width: 90px;
+    min-width: 40px;
+    height: 90px;
+}
+
+.gym-list-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg");
+    background-repeat: no-repeat;
+    /* background-position: left 15% top 5%; */
+    /* background-size: cover; */
+    background-size: 100% 100%;
+
+}
+
+.gym-list-name {
+    margin-top: 3%;
+    width: 32%;
+    line-height: 10px;
+
+
+}
+
+.gym-list-stars {
+    margin-top: 3%;
+    color: yellow;
+    font-size: 26px;
+}
+
+.gym-list-body {
+    height: auto;
+}
+
+
+.gym-list-description {
+    margin-left: 12%;
+    width: 75%;
+}
+
+.gym-list-footer {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* .gym-list-offer {} */
+
+/* .gym-list-hours {} */
+
+/* FOOTER */
+/* --------------------------------- */
+footer {
+    bottom: 0;
+    padding: 10px;
+    width: 100%;
+    background-color: black;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+}
+
+
+
+/* RESPONSIVE */
+/* -------------------------------------------------- */
+
+@media only screen and (min-width:992px) and (max-width: 1200px) {
+    .img-holder {
+        max-width: 80px;
+        min-width: 40px;
+        height: 80px;
+    }
+}
+
+@media only screen and (min-width:768px) and (max-width: 991px) {
+    header {
+        /* display: flex;
+        justify-content: space-around;
+        align-items: center; */
+        display: grid;
+        grid-template-columns: auto;
+        /* grid-column-gap: 10px;  */
+        background-color: #343a40;
+        font-size: 18px;
+
+    }
+
+    .gym-list-container {
+        grid-template-columns: auto auto;
+    }
+
+    .img-holder {
+        max-width: 60px;
+        min-width: 30px;
+        height: 60px;
+    }
+}
+
+
+@media only screen and (max-width: 767px) {
+    
+    header {
+        /* display: flex;
+        justify-content: space-around;
+        align-items: center; */
+        display: grid;
+        grid-template-columns: auto;
+        /* grid-column-gap: 10px;  */
+        background-color: #343a40;
+        font-size: 18px;
+
+    }
+    .gym-list-container {
+        grid-template-columns: auto;
+    }
+
+    .img-holder {
+        max-width: 60px;
+        min-width: 30px;
+        height: 60px;
+    }
+}
+
+
+
+/* GYM LIST */
+/* Base Styles */
+
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+	line-height: 1.4em;
+	color: #222;
+	background: #973737;
+	font-family: 'Lato', sans-serif;
+}
+
+/* img{
+	max-width: 100%;
+	height: auto;
+	border-radius: 3px;
+} */
+
+/* a{
+	text-decoration: none;
+	color: inherit;
+} */
+li {
+    /*kloci obok siebie w poziomie*/
+    list-style-type: none;
+}
+
+li a {
+    text-decoration: none;
+    color: darkgray;
+    margin: 5px 10px;
+    cursor: pointer;
+}
+
+li a:hover {
+    color: rgb(221, 219, 219);
+}
+
+li a.active {
+    color: rgb(221, 219, 219)
+}
+
+/* Grid */
+
+.section {
+	clear: both;
+	padding: 0;
+	margin: 0;
+}
+
+.col {
+	display: block;
+	float: left;
+	margin: 1% 0 1% 1.6%;
+}
+
+.col:first-child {
+	margin-left: 0;
+}
+
+.span_3_of_3 {
+	width: 100%;
+}
+
+.span_2_of_3 {
+	width: 66.1%;
+}
+
+.span_1_of_3 {
+	width: 32.2%;
+}
+
+/* Header & Navigation */
+
+header {
+	max-width: 100%;
+
+
+	display: grid;
+	grid-template-columns: auto auto auto;
+	justify-content: space-evenly;
+	grid-column-gap: 100px;
+	background-color: #343a40;
+	font-size: 18px;
+	text-align: center;
+}
+
+
+ul {
+    /*display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-column-gap: 10px;*/
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+/* HAMBURGER ICON */
+/* .menu-bar {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	background: #2d2d2d;
+	text-align: left;
+	padding: 15px 20px;
+	color: #fff;
+	font-size: 1.4em;
+	cursor: pointer;
+	display: none;
+}
+
+.hamburger-icon {
+	float: right;
+	clear: both;
+	margin-top: -5px;
+	font-size: 1.4em;
+} */
+
+/* Blog Posts */
+
+.container {
+	max-width: 1420px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.blog-post {
+	background: #fff;
+	margin: 0 auto 2em auto;
+	padding: 35px 30px;
+	box-shadow: 5px 5px 15px -1px rgba(0, 0, 0, 0.3);
+}
+
+.side-post {
+	background: #fff;
+	margin: 0 auto 1.5em auto;
+	width: 15em;
+	padding: 20px;
+}
+
+.blog-content {
+	font-size: 1em;
+	border-left: 5px solid #8EE5EE;
+	padding-left: 15px;
+}
+
+.side-content {
+	font-size: .9em;
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+
+.blog-title {
+	font-size: 2.5em;
+	margin-top: 5px;
+}
+
+.date {
+	font-size: 1em;
+	font-weight: 400;
+	color: #9C9C9C;
+	margin-top: -10px;
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+}
+
+
+
+/* Button */
+
+/* .button {
+	display: block;
+	padding: 15px 20px;
+	margin-top: .8em;
+	background: #009ACD;
+	text-align: center;
+	color: #fff;
+	font-size: 1.4em;
+	border-radius: 3px;
+	transition: all .4s ease-in;
+}
+
+.button:hover {
+	background: #005c7b;
+} */
+
+
+/* FOOTER */
+/* --------------------------------- */
+footer {
+	position: relative;
+	clear: both;
+    padding: 10px;
+    background-color: black;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+}
+
+/*Media Queries*/
+
+/* @900px*/
+@media only screen and (max-width: 62.25em) {
+	header {
+        /* display: flex;
+        justify-content: space-around;
+        align-items: center; */
+        display: grid;
+        grid-template-columns: auto;
+        /* grid-column-gap: 10px;  */
+        background-color: #343a40;
+        font-size: 18px;
+
+    }
+	
+	.col {
+		margin: 1% 0 1% 0%;
+	}
+
+	.span_3_of_3,
+	.span_2_of_3,
+	.span_1_of_3 {
+		width: 100%;
+	}
+
+	.side-post {
+		width: 42%;
+		float: left;
+		margin: -2% 0 1% 1.6%;
+	}
+}
+
+/* @685px*/
+@media only screen and (max-width: 42.813em) {
+	header {
+        /* display: flex;
+        justify-content: space-around;
+        align-items: center; */
+        display: grid;
+        grid-template-columns: auto;
+        /* grid-column-gap: 10px;  */
+        background-color: #343a40;
+        font-size: 18px;
+
+    }
+	
+	.side-post {
+		width: auto;
+		padding: 15px;
+		margin: -2% auto 8% auto;
+	}
+
+	.blog-title {
+		font-size: 1.95em;
+	}
+
+	.date {
+		font-size: .9em;
+	}
+
+	
+}
+
+/* @480px */
+@media only screen and (max-width: 30em) {
+	nav ul .nav-item {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+		width: 100%;
+		padding: 15px;
+	}
+}
+
+/* @380px*/
+@media only screen and (max-width: 23.75em) {
+
+	.blog-content,
+	.post-link {
+		font-size: .9em;
+	}
+
+	.side-content {
+		font-size: .8em;
+	}
 }

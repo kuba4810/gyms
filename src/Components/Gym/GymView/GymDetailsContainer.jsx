@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { getGymDetails } from '../../../services/gymService'
-import { gymDetailsFetched } from '../../../Actions/index'
+import { gymDetailsFetched,newCommentSent ,evaluation_update} from '../../../Actions/index'
 
 
 class GymDetailsCont extends React.Component {
@@ -48,13 +48,14 @@ class GymDetailsCont extends React.Component {
             .then(res => res.json())
             .then(res => {
                 if (res.response === 'success') {
-                    alert('Oddano głos !')
+                    this.props.evaluation_update(star)
                 } else {
                     alert('Wystąpił błąd, spróbuj ponownie później !')
                 }
                 console.log(res.response)
             })
             .catch(err => {
+                console.log(err);
                 alert('Wystąpił błąd, spróbuj ponownie później !')
             })
     }
@@ -84,14 +85,17 @@ class GymDetailsCont extends React.Component {
         })
             .then(res => res.json())
             .then(res => {
+                console.log('Odpowiedź z serwera: ',res)
                 if (res.response === 'success') {
-                    alert('Wysłano komentarz !')
+
+                    this.props.newCommentSent(res.comment);
                 } else {
                     alert('Wystąpił błąd, spróbuj ponownie później !')
                 }
-                console.log(res.response)
+              
             })
             .catch(err => {
+                console.log(err)
                 alert('Wystąpił błąd, spróbuj ponownie później !')
             })
     }
@@ -108,6 +112,7 @@ class GymDetailsCont extends React.Component {
         const dowEng = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
         var day = 'mon'
         let evaluation = ''
+        let comments =''
 
 
         if (this.props.gymDetails.isLoading == false) {
@@ -145,12 +150,17 @@ class GymDetailsCont extends React.Component {
                 </div>
             equipment = data.equipment.split(',').map(eq => (<div><i class="fas fa-check"></i> {eq}  </div>))
 
-            evaluation
-
-            // photos = this.props.gymDetails.gym.photos.map( 
-            //     (photo,index) => ( 
-            //         ))
-
+            // Opinie
+            comments =  
+                <table>
+                    <tr>
+                       <th>Użytkownik</th>
+                       <th>Data</th>
+                       <th>Treść</th>
+                    </tr>
+                    {this.props.gymDetails.gym.comments.map(com => 
+                        (<tr> <td> {com.login} </td> <td>{com.creation_date}</td> <td> {com.content} </td>  </tr>))}
+                 </table>  
         }
         return (
             <div class="color-cornsilk">
@@ -205,6 +215,8 @@ class GymDetailsCont extends React.Component {
                         <button type="submit" className="btn-success">Wyślij</button>
                     </form>
                 }
+
+                {comments}
             </div>
 
         );
@@ -216,7 +228,7 @@ const mapStateToProps = state => {
         gymDetails: state.gymDetails
     };
 }
-const mapDispatchToProps = { gymDetailsFetched }
+const mapDispatchToProps = { gymDetailsFetched ,newCommentSent,evaluation_update}
 const GymDetailsContainer = connect(mapStateToProps, mapDispatchToProps)(GymDetailsCont);
 
 export default GymDetailsContainer;

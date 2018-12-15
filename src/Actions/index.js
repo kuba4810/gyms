@@ -41,6 +41,15 @@ export const gymDetailsFetched = (gymDetails) => ({
   gymDetails
 });
 
+export const newCommentSent =(data) => ({
+  type: 'NEW_COMMENT',
+  data
+});
+
+export const evaluation_update = (data) => ({
+  type : 'EVALUATION_UPDATE',
+  data
+});
 // Użytkownik się zalogował 
 // Akcja wykorzystywana również przy aktualizacji stanu po ponownym otwarciu przeglądarki
 export const logedIn = (data) => ({
@@ -53,3 +62,4 @@ export const logedIn = (data) => ({
 export const loggedOut = () =>({
   type: 'LOGGED_OUT'
 });
+

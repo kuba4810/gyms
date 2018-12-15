@@ -41,7 +41,8 @@ router.get('/api/gym/:gym_id',(request,response)=>{
         gymData:{},
         offers:[],
         packages:[],
-        photos : []
+        photos : [],
+        comments: [],
     }
 
 
@@ -68,12 +69,20 @@ router.get('/api/gym/:gym_id',(request,response)=>{
     }) 
     .then(res => {
         responseData = Object.assign({},responseData,{photos:[...res.rows]});
-
-       // Po wykonaniu ostatniego zapytania dane są zwracane do klienta
-       response.json({
-       response: 'success',
-       data: responseData
-    });
+        
+        return client.query(`SELECT comment_id, login, user_id, creation_date, pluses,minuses,content
+                            FROM kuba.users NATURAL JOIN kuba.gym_comments
+                            WHERE gym_id = $1`,[request.params.gym_id])
+    })
+    .then(res=>{
+        responseData = Object.assign({},responseData,{comments:[...res.rows]});     
+    })
+    .then(()=>{
+         // Po wykonaniu ostatniego zapytania dane są zwracane do klienta   
+        response.json({
+            response: 'success',
+            data: responseData
+         });
     })
     .catch(err=>{
         console.log("Wystąpił błąd: ",err);
@@ -302,15 +311,25 @@ router.post('/api/gym/comment',(request,response)=>{
 
     let query =`INSERT INTO kuba.gym_comments(
          user_id, gym_id, creation_date, pluses, minuses, content)
-        VALUES ($1,$2,CURRENT_TIMESTAMP,0,0,$3);`
+        VALUES ($1,$2,CURRENT_TIMESTAMP,0,0,$3) returning *`
     let values = [data.user_id,data.gym_id,data.text]
 
     client.query(query,values)
        .then(res=>res.rows)
        .then(res=>{
-           response.json({
-               response:'success'
-           })
+        
+           return res[0].comment_id
+       })
+       .then(res=>{
+           return client.query(`SELECT comment_id, login, user_id, creation_date, pluses,minuses,content
+           FROM kuba.users NATURAL JOIN kuba.gym_comments
+           WHERE comment_id = $1`,[res])
+       })
+       .then(res=>{
+        response.json({
+            response:'success',
+            comment: res.rows[0]
+        })
        })
        .catch(err=>{
            console.log(err);
@@ -322,6 +341,8 @@ router.post('/api/gym/comment',(request,response)=>{
            client.end()
        })
 })
+
+
 
 
 module.exports=router;

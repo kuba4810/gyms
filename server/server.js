@@ -1,17 +1,30 @@
-var express = require('express')
+﻿var express = require('express')
 var messagesRoute = require('./messagesRoute');
 var gymRoute = require('./gymRoute');
+const notificationEndpoint = require('./Routes/notification.endpoints');
 var app = express()
 const {Pool} = require('pg')
 const pg = require('pg');
 var EmailTemplate = require('email-templates').EmailTemplate;
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
-
+var opn = require('opn');
 app.use(express.static('public'));
+
+const fileUpload = require('express-fileupload');
+
+// default options
+app.use(fileUpload());
 
 const cors = require('cors');
 const bodyParser = require('body-parser')
+
+
+
+// opens the url in the default browser 
+// opn('http://localhost:8080/');
+
+//opn('http://localhost:8080/', {app: 'firefox'});
 
 
 /* SETTINGS */
@@ -24,6 +37,7 @@ app.options('*', cors());
 
 app.use(messagesRoute);
 app.use(gymRoute);
+app.use(notificationEndpoint);
 /* ------------------------------ */
 
 
@@ -390,36 +404,7 @@ app.get('/getAnswers/:question_id',function(req,res){
 
 });
 
-/* MESSAGES */
-/* ------------------------------ */
-app.get('/getMessages/:user_id',function(req,res){
-    var user_id = req.params.user_id;
 
-    const pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
-
-    var query = `SELECT message_id ,login ,sender,receiver, sending_date,message_content,is_read, receiver_deleted,sender_deleted 
-                FROM kuba.users  INNER JOIN kuba.messages ON( users.user_id = messages.sender)
-                WHERE (receiver = $1 and receiver_deleted = false) OR (sender =$1 and sender_deleted = false)  ORDER BY sending_date ASC;`
-    var values = [user_id];
-
-    pool.query(query,values, (err, response) => {
-
-        queryResponse = response.rows;
-        //console.log(queryResponse)
-
-        res.json(queryResponse);
-        pool.end()
-
-
-    });
-
-});
 
 /* NEW MESSAGE */
 /* ------------------------------ */
@@ -614,36 +599,7 @@ app.get('/updateMsgNot/:user_id',(req,res)=>{
 });
 
 
-app.get('/getNotifications/:user_id', (req,res) => {
-    var user_id = req.params.user_id;
 
-    var pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
-
-   var query = "SELECT * FROM kuba.notifications WHERE user_id = $1";
-   var values = [user_id];
-
-   pool.query(query,values,(err,response) => {
-        if( response.rows.length == 0 ){
-            res.json({
-                notificationsCount: 0
-            });
-        }
-        else{
-           res.json({
-            notificationsCount : response.rows.length,
-            notifications : response.rows
-           });
-        }
-        pool.end();
-   });
-
-});
 
 
 

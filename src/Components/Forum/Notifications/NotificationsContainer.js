@@ -18,7 +18,7 @@ class NotificationsContainer extends React.Component{
             document.querySelector(".forumContent").style.width="100%";
 
             /* Get notifications from database */
-            fetch(`http://localhost:8080/getNotifications/${localStorage.getItem("logedIn")}`)
+            fetch(`http://localhost:8080/notifications/${localStorage.getItem("logedIn")}`)
                 .then( response => response.json() )
                     .then( response => {
                         console.log("Powiadomienia: ",response);

@@ -2,49 +2,47 @@ var express = require('express');
 var router = express.Router();
 const {Pool} = require('pg');
 const pg = require('pg');
-
 var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
-client.connect((err)=>{
-    console.log(err);
-}); 
-// Pobiera listę wszystkich siłowni
-router.get('/api/gyms',(request,response)=>{
+const fileUpload = require('express-fileupload');
+const makeDir = require('make-dir');
 
-    var pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
+// Pobiera listę wszystkich siłowni
+// ------------------------------------------------------------------------------------------------
+router.get('/api/gyms',(request,response)=>{
+    
+     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+    client.connect((err)=>{
+        console.log(err);
+     });
 
     let query = 'SELECT * FROM kuba.gyms';
-
-    try{
-        pool.query(query,(err,res)=>{
-            response.json(res.rows);
-        });
-    }
-    catch(err){
-        response.json({
-            response: 'failed'
-        })
-    }
-  
+     client.query(query).then(res=> res.rows)
+     .then(res=>{
+        response.json(res)
+     })
+     .catch(err=>{
+         response.json({
+             response: 'failed'
+         })
+     })  
 
 });
-// ----------------------------------------------------------------------------------------
+
 
 // Pobiera szczegółowe dane jednej siłowni
-// ----------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 router.get('/api/gym/:gym_id',(request,response)=>{
-
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+    client.connect((err)=>{
+        console.log(err);
+     });
     // Pusty obiekt przygotowany pod odbiór danych
     var responseData={
         gymData:{},
         offers:[],
         packages:[],
-        photos : []
+        photos : [],
+        comments: [],
     }
 
 
@@ -66,12 +64,27 @@ router.get('/api/gym/:gym_id',(request,response)=>{
     }).then((res)=>{
         console.log("Trzeci select: ", res.rows);
         responseData = Object.assign({},responseData,{packages:[...res.rows]});
-        // Po wykonaniu ostatniego zapytania dane są zwracane do klienta
-       response.json({
-           response: 'success',
-           data: responseData
-       });
-    }) .catch(err=>{
+
+        return client.query(`SELECT * FROM kuba.gym_photos WHERE gym_id = $1`,[request.params.gym_id])
+    }) 
+    .then(res => {
+        responseData = Object.assign({},responseData,{photos:[...res.rows]});
+        
+        return client.query(`SELECT comment_id, login, user_id, creation_date, pluses,minuses,content
+                            FROM kuba.users NATURAL JOIN kuba.gym_comments
+                            WHERE gym_id = $1`,[request.params.gym_id])
+    })
+    .then(res=>{
+        responseData = Object.assign({},responseData,{comments:[...res.rows]});     
+    })
+    .then(()=>{
+         // Po wykonaniu ostatniego zapytania dane są zwracane do klienta   
+        response.json({
+            response: 'success',
+            data: responseData
+         });
+    })
+    .catch(err=>{
         console.log("Wystąpił błąd: ",err);
         response.json({
             response: 'failed'
@@ -81,9 +94,16 @@ router.get('/api/gym/:gym_id',(request,response)=>{
     });
        
   
-// -----------------------------------------------------------------------------------------
+
+
 // Tworzy nową siłownię
+// ------------------------------------------------------------------------------------------------
 router.post('/api/gym',(request,response)=>{
+
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+       client.connect((err)=>{
+       console.log(err);
+    }); 
     var data = request.body;
     console.log("Odpalone dodawanie siłowni")
     console.log('Dostałem takie dane: ',data)
@@ -97,10 +117,11 @@ router.post('/api/gym',(request,response)=>{
     const getID = `SELECT gym_id FROM kuba.gyms WHERE email ='${data.email}'`  
 
     // Kwerenda do tabeli GYMS
+    let values =[data.gym_name,data.city,data.street,data.post_code,data.phone_number,data.landline_number,
+                 data.email,data.description,data.equipment]
     const createGym = `INSERT INTO kuba.gyms 
-    (gym_name,city,street,post_code,phone_number,landline_phone,email,evaluation,description)
-    VALUES('${data.gym_name}','${data.city}','${data.street}','${data.post_code}','${data.phone_number}','${data.landline_number}',
-        '${data.email}',0,'${data.description}') returning *`
+    (gym_name,city,street,post_code,phone_number,landline_phone,email,evaluation,description,equipment)
+    VALUES($1,$2,$3,$4,$5,$6,$7,0,$8,$9) returning *`
 
     // Kwerenda dla tabeli OPENING HOURS
     const createOpeningHours = `INSERT INTO kuba.opening_hours (gym_id,mon,tue,wed,thu,fri,sat,sun)
@@ -132,7 +153,7 @@ router.post('/api/gym',(request,response)=>{
             else{
 
                 // Utworzenie rekordu dla GYMS
-                return client.query(createGym)
+                return client.query(createGym,values)
             }
         }).then((res)=>{
             
@@ -153,6 +174,17 @@ router.post('/api/gym',(request,response)=>{
             (gym_id,package_name,description,prize) VALUES(${gym_id},'${package.name}','${package.period}','${package.price}')`) )))
         })
         .then(()=>{
+            console.log('Dodaje zdjęcia na serwer...');
+            let query = 'INSERT INTO kuba.gym_photos (gym_id,url) VALUES ($1,$2)'
+
+            return Promise.all( 
+                data.pictures.map( 
+                    pic=> ( 
+                        client.query(query,[gym_id,pic])
+                  
+                        )))
+        })
+        .then(()=>{
             console.log("Udało się, siłownia dodana !");
                 response.json({
                     response :'success',
@@ -170,14 +202,147 @@ router.post('/api/gym',(request,response)=>{
         });
 });
 
-router.get('/anything',(request,response)=>{
-    client.query(`insert into kuba.messages (sender, receiver, sending_date, message_content, is_read, receiver_deleted, sender_deleted) 
-    VALUES(${1},${2},CURRENT_TIMESTAMP,'Wyślij mi id wiadomości',false,false,false) returning *`).then(res=>{
-        response.send(res);
-    });
+// Odbiera zdjęcia przesłane od klienta
+// ------------------------------------------------------------------------------------------------
+router.post('/upload/:gym_name', (req, res) => {
+    let gym_name = req.params.gym_name;
+
+    console.log("Tworzę zdjęcia w folderach...");
+    
+    console.log("Dostałem takie pliki: ", req.files);
+    // res.send("Odpowiedź")
+    if (Object.keys(req.files).length == 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+  
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let files = req.files.image;
+    // console.log("Pojedynczy plik: ", files[0]);
+    // Use the mv() method to place the file somewhere on your server
+    console.log(`public/images/${gym_name}/${files[0].name}.jpg`)
+
+    makeDir(`public/images/${gym_name}`)
+    .then(path=>{
+        for(var i = 0; i< files.length; i++){
+            files[i].mv(`public/images/${gym_name}/${files[i].name}`, function(err) {
+                if (err)
+                 { 
+                    console.log("Wystąpił błąd: ",err);            
+                   
+                }
+           
+                  
+              });
+        }
+        res.send('File uploaded!'); 
+    })
+   
+   
+  });
+
+// Wystawianie ocen
+// -----------------------------------------------------------------------------------------------
+router.post('/api/gym/vote',(request,response)=>{
+    let data = request.body;
+    let star_column_name;
+
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+       client.connect((err)=>{
+       console.log(err);
+    }); 
+    console.log("Typ star to : ",typeof(data.star))
+
+    // Ustal którą liczbę gwiazdek zaktualizować
+    switch(data.star){
+        case 1:
+         star_column_name = 'one_star_count'
+         break;
+
+        case 2:
+         star_column_name = 'two_star_count'
+         break;
+
+        case 3:
+         star_column_name = 'three_star_count'
+         break;
+
+        case 4:
+         star_column_name = 'four_star_count'
+         break;
+
+        case 5: 
+         star_column_name = 'five_star_count'
+         break;
+    }
+    console.log('Zamierzam zmienić kolumnę : ',star_column_name)
+    // Utwórz zapytanie z parametrami
+    let query = `UPDATE kuba.gym_stats SET ${star_column_name} = $1 WHERE gym_id = $2`;
+    let values = [data.star,data.gym_id]
+
+    // Wynonanie kwerendy
+    client.query(query,values)
+       .then(res=>res.rows)
+       .then(res=>{
+            response.json({
+                response:'success'
+            })
+       })
+       .catch(err=>{
+           response.json({
+               response:'failed'
+           })
+           console.log(err);
+           
+       })
+       .finally(()=>{
+           client.end()
+       })
 });
+
+// Wystawianie komentarza do siłowni
+// ------------------------------------------------------------------------------------------------
+router.post('/api/gym/comment',(request,response)=>{
+    let data = request.body;
+
+    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
+       client.connect((err)=>{
+       console.log(err);
+    }); 
+
+    let query =`INSERT INTO kuba.gym_comments(
+         user_id, gym_id, creation_date, pluses, minuses, content)
+        VALUES ($1,$2,CURRENT_TIMESTAMP,0,0,$3) returning *`
+    let values = [data.user_id,data.gym_id,data.text]
+
+    client.query(query,values)
+       .then(res=>res.rows)
+       .then(res=>{
+        
+           return res[0].comment_id
+       })
+       .then(res=>{
+           return client.query(`SELECT comment_id, login, user_id, creation_date, pluses,minuses,content
+           FROM kuba.users NATURAL JOIN kuba.gym_comments
+           WHERE comment_id = $1`,[res])
+       })
+       .then(res=>{
+        response.json({
+            response:'success',
+            comment: res.rows[0]
+        })
+       })
+       .catch(err=>{
+           console.log(err);
+           response.json({
+               response:'failed'
+           })
+       })
+       .finally(()=>{
+           client.end()
+       })
+})
+
 
 
 
 module.exports=router;
-

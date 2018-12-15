@@ -19,9 +19,7 @@ class User extends React.Component{
    render(){
        let msg = this.props.user.messageCount;
        let ntf = this.props.user.notificationsCount;
-       console.log('Liczba wiadomości: ',msg,' Liczba powiadomień: ',ntf);
-       let condition = (msg !== 0 && msg !== '') && (ntf !== 0 && ntf !== '')
-       console.log('Powinno pokazać badge: ',condition)
+       let condition = (msg !== '0' && msg !== '') || (ntf !== '0' && ntf !== '');
 
        return(
            <div className="loginUser" data-toggle="collapse" data-target="#userMenu">

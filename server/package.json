@@ -8,5 +8,9 @@
     "start": "nodemon server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express-fileupload": "^1.0.0",
+    "opn": "^5.4.0"
+  }
 }

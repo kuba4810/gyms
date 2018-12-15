@@ -54,6 +54,12 @@ class Menu extends React.Component{
                            </Link>
                         </li>
 
+                        <li className="har">
+                           <Link to="/forum/powiadomienia">
+                               Moje treningi
+                           </Link>
+                        </li>
+
                         <li className="logOut" onClick={this.logOut}>Wyloguj</li>
                     </ul>
 

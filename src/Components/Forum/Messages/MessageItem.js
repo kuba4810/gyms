@@ -61,7 +61,7 @@ class MessageItem extends React.Component{
    
 
     render(){
-        var user_id = localStorage.getItem("logedIn");
+        var user_id = localStorage.getItem("loggedId");
         var message = this.props.message;
         var bgColor;
         if( message.is_read == true && message.receiver == parseInt(user_id)){

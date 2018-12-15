@@ -119,7 +119,8 @@ class MessageContainer extends React.Component{
 
     componentDidMount(){
 
-        var userId = localStorage.getItem("logedIn");
+        var userId = localStorage.getItem("loggedId");
+        console.log('Id użytkownika: ',userId);
 
         fetch("http://localhost:8080/getMessages/"+ userId,{
             method: "GET",
@@ -145,7 +146,7 @@ class MessageContainer extends React.Component{
 
     render(){
 
-        var userId = localStorage.getItem("logedIn");
+        var userId = localStorage.getItem("loggedId");
         var messages=[];
 
         if(this.state.messageType == "received"){

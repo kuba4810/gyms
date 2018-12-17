@@ -1,0 +1,131 @@
+body{
+    background-color: #0088cc;
+
+}
+
+.sheduleContainer{
+    display:grid;
+    grid-template-areas: 'list  list list container container container container container container container container container';
+    width:90%;
+    margin: 50px auto 0 auto;
+    column-gap: 10px;
+    
+}
+
+.listContainer{
+    grid-column: list;
+    background-color: #262626;
+    /* box-shadow: 0px 0px 10px 2px #262626; */
+}
+
+.listHeader{
+    background-color: #151515;
+    color: cornsilk;
+    padding: 10px 0 10px 0;
+    text-align: center;
+    font-size: 20px;
+}
+
+.calendarContainer{
+    grid-column: container;  
+    /* box-shadow: 0px 0px 10px 2px #262626;  */
+}
+
+.calendarContainerHeader{
+    background-color: #0044cc;
+    display:flex;
+    padding: 5px 0 5px 0;
+    font-size: 25px;
+    color: cornsilk;
+    align-items: center;
+}
+
+.previousMonth, .nextMonth{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:30px;
+    height:30px;
+    background-color: cornsilk;
+    border-radius: 50%;
+    color: #262626;
+    font-size: 15px;
+    cursor:pointer;
+    transition: .4s ease;
+}
+.previousMonth{
+    margin-left: 10px; 
+}
+
+.previousMonth:hover , .nextMonth:hover{
+    background-color: #00ccff;
+   
+}
+
+
+
+.currentMonth{
+    width:100px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.calendarContainerHeader div{
+    margin-right: 10px;
+}
+
+
+.changeMonth{
+    display:flex;
+    padding: 5px 0 5px 0;
+    color: cornsilk;
+    font-size: 25px;
+}
+
+.calendarHeader{
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap:5px;
+    /* margin-bottom: 10px; */
+    background-color: #151515;
+    color: cornsilk;
+    font-size:20px;
+    padding: 8px;
+ 
+}
+
+.dayTitle{
+    text-align:center;
+}
+
+.calendarBody{
+    display:grid;
+    grid-template-columns: repeat(7, auto);
+    grid-row-gap:40px;
+    justify-items: center;
+    background-color: #262626;
+    padding: 10px;
+   
+}
+
+.dayItem{
+    border-radius: 50%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height:70px;
+    background-color: #262626;
+    color:cornsilk;
+    transition: .4s ease;
+    cursor:pointer;
+    font-size:20px;
+    background-color: #001133;
+    border: 2px solid #001133;
+}
+
+.dayItem:hover{
+   
+    background-color: #003399;
+    
+}

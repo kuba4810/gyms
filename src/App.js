@@ -4,7 +4,7 @@ import { Router , Route } from 'react-router-dom';
 import history from './history'
 import MainPage from './Components/MainPage'
 import Gym from './Components/Gym/Gym'
-import Trainers from './Components/PersonalTrainers/trainersSearching'
+import Trainers from './Components/PersonalTrainers/PersonalTrainer'
 import Forum from './Components/Forum/Forum'
 
 

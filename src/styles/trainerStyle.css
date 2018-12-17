@@ -5,10 +5,11 @@ body{
 
 .sheduleContainer{
     display:grid;
-    grid-template-areas: 'list  list list container container container container container container container container container';
+    grid-template-areas: 'list list list container container container container container container container container container';
     width:90%;
     margin: 50px auto 0 auto;
     column-gap: 10px;
+    position: relative;
     
 }
 
@@ -24,6 +25,29 @@ body{
     padding: 10px 0 10px 0;
     text-align: center;
     font-size: 20px;
+}
+
+.sheduleList{
+    color:cornsilk;
+    display:flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+.sheduleListItem{
+    width:90%;
+    margin: 10px auto 10px auto;
+    padding: 16px 8px;
+    background-color: #001133;
+    color: cornsilk;
+    text-align:center;
+    border-radius: 5px;
+    cursor:pointer;
+    transition: .4s ease;
+}
+
+.sheduleListItem:hover{
+    background-color: #0044cc;
 }
 
 .calendarContainer{
@@ -65,7 +89,7 @@ body{
 
 
 .currentMonth{
-    width:100px;
+    width:150px;
     text-align:center;
     font-weight:bold;
 }
@@ -124,8 +148,51 @@ body{
     border: 2px solid #001133;
 }
 
+.dayItemIsEvent{
+    background-color: green;
+}
+.dayItemNone{
+    background-color: gray;
+}
 .dayItem:hover{
    
     background-color: #003399;
     
 }
+
+
+.trainingDetails{
+    position:absolute;
+    width:100%;
+    height:100vh;
+    background-color: rgba(63,63,63,0.9);
+    animation-duration: .4s;
+
+}
+
+.hideTrainingDetails{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:50px;
+    height:50px;
+    background-color: cornsilk;
+    cursor: pointer;
+    transition:.3s ease;
+    position:relative;
+    left:96.5%;
+
+}
+
+.hideTrainingDetails:hover{
+    background-color: red;
+}
+/* .trainingContent{
+    position:fixed;
+    top:15%;
+    width:70%;
+    left:50%;
+    transform: translateX(-50%);
+    height: 70vh;
+    background-color: #fff;
+} */

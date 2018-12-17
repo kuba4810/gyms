@@ -72,7 +72,7 @@ router.get('/api/gym/:gym_id',(request,response)=>{
         
         return client.query(`SELECT comment_id, login, user_id, creation_date, pluses,minuses,content
                             FROM kuba.users NATURAL JOIN kuba.gym_comments
-                            WHERE gym_id = $1`,[request.params.gym_id])
+                            WHERE gym_id = $1 ORDER BY creation_date DESC`,[request.params.gym_id])
     })
     .then(res=>{
         responseData = Object.assign({},responseData,{comments:[...res.rows]});     

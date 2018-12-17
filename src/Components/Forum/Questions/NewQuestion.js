@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import history from '../../../history'
 
 class  Question extends React.Component{
     componentDidMount(){
@@ -42,7 +43,8 @@ class  Question extends React.Component{
         }).then(response => response.json())
             .then( (response) => { 
                 console.log("Odpowiedź z serwera: ",response);
-                window.location = "http://localhost:3000/forum/pytanie/" + response.question_id + "/" + topicWithDashes;
+                history.push(`/forum/pytanie/${response.question_id}/${topicWithDashes}`);
+                // window.location = "http://localhost:3000/forum/pytanie/" + response.question_id + "/" + topicWithDashes;
             }).catch();
             
         event.preventDefault();

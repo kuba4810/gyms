@@ -1,3 +1,7 @@
+
+// FORUM
+// ------------------------------------------------------------------------------------------------
+
 // Pytania zostały pobrane
 export const questionsFetched = (questions) => ({
   type: 'FETCH_QUESTIONS_SUCCESS',
@@ -22,6 +26,21 @@ export const selectCurrentQuestion = (qId) => ({
   type: 'SELECT_CURRENT_QUESTION',
   qId
 });
+
+// Wczytano listę odpowiedzi danego pytania
+export const answersFetched = (answers) => ({
+  type : 'ANSWERS_FETCHED',
+  answers
+})
+
+// Dodano odpowiedź
+export const answerAdded = (answer) => ({
+  type : 'ANSWER_ADDED',
+  answer
+})
+
+// SIŁOWNIE
+// ------------------------------------------------------------------------------------------------
 
 // Lista siłowni została pobrana
 export const gymsFetched = (gymList) => ({

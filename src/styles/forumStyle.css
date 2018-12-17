@@ -3,7 +3,9 @@
     outline:solid 1px red !important;
 }
 */
-
+hr{
+    border-color: cornsilk;
+}
 :root {
     --question-main-color:  #006600; 
 }
@@ -1333,7 +1335,7 @@ span.psw {
     /*grid-area: cont;*/
     padding: 5px 50px;
     text-align: justify;
-    font-size: 25px;
+    font-size: 20px;
     border-left: 1px solid black;
     border-right: 1px solid black;
     white-space: pre-wrap;

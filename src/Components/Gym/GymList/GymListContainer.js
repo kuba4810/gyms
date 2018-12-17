@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom'
 import GymHeader from './GymHeader'
 import GymSection from './GymSection'
 
+
 class GymListC extends React.Component{
 
     constructor(){

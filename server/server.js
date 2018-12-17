@@ -521,7 +521,7 @@ app.post('/insertAnswer',function(req,res){
         port: 5432,
     });
 
-    var query = "INSERT INTO kuba.answers(user_id, question_id, creating_date,  content_, pluses, minuses)	VALUES ($1,$2,Current_timestamp,$3,0,0);"
+    var query = "INSERT INTO kuba.answers(user_id, question_id, creating_date,  content_, pluses, minuses)	VALUES ($1,$2,Current_timestamp,$3,0,0) returning *;"
     var values = [data.userID,data.questionId,data.content];
 
     pool.query(query,values,function(err,response){
@@ -529,6 +529,7 @@ app.post('/insertAnswer',function(req,res){
         if(typeof(err)!==undefined){
             res.json({
                 result:"success",
+                newAnswer : response.rows[0]
             });
         }
         else{

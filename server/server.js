@@ -1,6 +1,4 @@
 ﻿var express = require('express')
-var messagesRoute = require('./messagesRoute');
-var gymRoute = require('./gymRoute');
 const notificationEndpoint = require('./Routes/notification.endpoints');
 var app = express()
 const {Pool} = require('pg')
@@ -12,6 +10,11 @@ var opn = require('opn');
 app.use(express.static('public'));
 
 const fileUpload = require('express-fileupload');
+
+// Routers
+var messagesRoute = require('./messagesRoute');
+var gymRoute = require('./gymRoute');
+var trainerRoute = require('./trainerRoute');
 
 // default options
 app.use(fileUpload());
@@ -38,6 +41,7 @@ app.options('*', cors());
 app.use(messagesRoute);
 app.use(gymRoute);
 app.use(notificationEndpoint);
+app.use(trainerRoute);
 /* ------------------------------ */
 
 

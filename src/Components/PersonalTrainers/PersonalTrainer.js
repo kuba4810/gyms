@@ -90,8 +90,9 @@ class Trainer extends Component {
                     isEmailConfirmed={this.props.user.emailConfirmed}
                     page={'TRENERZY'}/>
 
-                <SheduleContainer />
+                
                 <Route exact path={this.props.match.path} component={TrainersListContainer} />
+                <Route exact path={`${this.props.match.path}/harmonogram/:training_id?`} component={SheduleContainer} />
               
             </div>
          );

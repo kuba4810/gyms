@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import DayItem from './DayItem'  
 import SheduleTrainingsList from './SheduleTrainingsList'
 import TrainingDetails from './TrainingDetails'
+import { rejects } from 'assert';
+import history from '../../../history'
 
 class SheduleContainer extends Component {
     constructor(){
         super();
-        console.log('Pracuje konstruktor ...');
+        // console.log('Pracuje konstruktor ...');
         
         let currentDate = new Date();
         let currentYear = currentDate.getFullYear();
@@ -18,6 +20,7 @@ class SheduleContainer extends Component {
 
         
         this.state = {
+            isLoading : true,
             year : currentYear,
             month : currentMonth,
             day : currentDay,            
@@ -35,7 +38,8 @@ class SheduleContainer extends Component {
                 {id:3, price:100, date:'2018-11-29,18:00', duration:'45min', name:'Trening personalny',note:'Pierwszy trening, ma być lekko'},
                 {id:4, price:150, date:'2019-00-13,15:00', duration:'60min', name:'Trening personalny',note:' Nastawienie na redukcje '},
                 {id:5, price:160, date:'2019-01-04,19:00', duration:'70min', name:'Trening personalny',note:' Koleś chce zwiększyć masę mięśniową '},
-                {id:6, price:160, date:'2019-01-27,19:00', duration:'70min', name:'Trening personalny',note:' Koleś chce zwiększyć masę mięśniową '}
+                {id:6, price:160, date:'2019-01-27,19:00', duration:'70min', name:'Trening personalny',note:' Koleś chce zwiększyć masę mięśniową '},
+                {id:7, price:160, date:'2018-11-20,18:00', duration:'70min', name:'Trening personalny',note:' Koleś chce zwiększyć masę mięśniową '}
             ],
             currentTrainingList : [
                
@@ -43,26 +47,52 @@ class SheduleContainer extends Component {
             sheduleListDate :{
                 day:'',
                 month: ''
-            }
+            },
+            currentTraining: 0
         }
     }
 
     componentDidMount(){
-        this.renderCalendar();
-        console.log('State: ',this.state);
-        
-        console.log('Dzień tygodnia: ',(new Date()).getDay())
 
-        // let month = parseInt(this.state.trainingsList[3].date.split(',')[0].split('-')[1]);
-        // console.log('Miesiąc jako liczba: ',month)
+
+       
+
+        fetch(`http://localhost:8080/api/trainer/shedule/1`)
+        .then(res=>res.json())
+        .then((res)=>{
+            // Failed
+            if(res.response === 'failed'){
+                 console.log(res);
+                 
+                 return  Promise.reject(res.message);                 
+            }
+            // Success
+            else{
+                // console.log('Odebrane z serwera treningi: ',res);
+                this.setState({
+                    trainingsList : res.trainings
+                })
+            }
+        })
+        .then(()=>{
+            this.renderCalendar();
+        })
+        .catch(err=>{
+            alert('Wystąpił błąd ! Spróbuj ponownie później');
+            console.log(err);
+            
+        })
+       
+      
+
     }
 
-    showTrainingList = (trainings) =>{
-        console.log('Dostałem takie treningi: ',trainings);
+    showTrainingList = (trainings,dayItem) =>{
+        // console.log('Dostałem takie treningi: ',trainings);
         
         let array = this.state.trainingsList.filter( tr => {
             for(var i=0; i<trainings.length ; i++){
-                if( tr.id === trainings[i] )
+                if( tr.training_id === trainings[i] )
                 {
                     return tr;
                 }
@@ -71,8 +101,8 @@ class SheduleContainer extends Component {
 
         
         let sheduleListDate = {
-            day : array[0].date.split(',')[0].split('-')[2],
-            month: this.state.monthNames[ parseInt(array[0].date.split(',')[0].split('-')[1]) ]
+            day : dayItem,
+            month: this.state.monthNames[this.state.month]
         }
 
         this.setState({
@@ -80,11 +110,11 @@ class SheduleContainer extends Component {
             sheduleListDate : sheduleListDate
 
         })
-        console.log('Znalazłem takie treningi: ',array)
+        // console.log('Znalazłem takie treningi: ',array)
     }
     renderCalendar = () => {
 
-        console.log('Renderuje kalendarz :D');
+        // console.log('Renderuje kalendarz :D');
         
         var items = [];
         let days = document.querySelectorAll('.dayItem');
@@ -101,7 +131,7 @@ class SheduleContainer extends Component {
         let dow;
 
        if(this.state.firstAppear){
-           console.log('Szukam dnia');
+        //    console.log('Szukam dnia');
            this.setState({
                firstAppear:false
            })
@@ -120,7 +150,7 @@ class SheduleContainer extends Component {
                 
             }
 
-           console.log('Pierwszy dzień miesiąca to : ',dow);
+        //    console.log('Pierwszy dzień miesiąca to : ',dow);
 
             this.setState({
                 dow: dow
@@ -138,16 +168,16 @@ class SheduleContainer extends Component {
         } */
 
         items = []
-        let dates = this.state.trainingsList.map( t => ( {id: t.id, date : t.date.split(',')[0]} ) );
+        let dates = this.state.trainingsList.map( t => ( {id: t.training_id, date : t.date.split(',')[0]} ) );
         for(var index=0; index < 42 ; index++ ){           
             
             if(index < dow || index >= this.state.monthDaysCount[this.state.month]+dow ){
                 items.push( <DayItem dayNumber={'-'} />)
             }else{
-                let itemDate = `${this.state.year}-${this.state.month<10 ? `0${this.state.month}` : this.state.month}-${i<10? `0${i}` : i }`
+                let itemDate = `${this.state.year}-${this.state.month+1<10 ? `0${this.state.month+1}` : this.state.month+1}-${i<10? `0${i}` : i }`
                 let propsTrainings = dates.filter( tr=> ( tr.date === itemDate ) )      
-                 console.log('Pasujące daty: ',propsTrainings) 
-                 console.log('ItemDate: ',itemDate);
+                //  console.log('Pasujące daty: ',propsTrainings) 
+                //  console.log('ItemDate: ',itemDate);
                  
                 items.push( 
                    <DayItem 
@@ -168,10 +198,10 @@ class SheduleContainer extends Component {
     }
 
     nextMonth = () => {
-        console.log('Zmieniam miesiąc...');
+        // console.log('Zmieniam miesiąc...');
         
             if(this.state.month === 11){
-                console.log('Zmieniam też rok...');
+                // console.log('Zmieniam też rok...');
                 
                 let year = this.state.year+1;
                 let month = 0;
@@ -182,7 +212,7 @@ class SheduleContainer extends Component {
                     month : month,
                     dow: dow
                 },()=>{
-                    console.log(this.state);                    
+                    // console.log(this.state);                    
                     this.renderCalendar();
                 })
 
@@ -208,17 +238,17 @@ class SheduleContainer extends Component {
                     month : month,
                     dow: dow
                 },()=>{
-                    console.log(dow,month);
+                    // console.log(dow,month);
                     this.renderCalendar()
                 })
             }
     }
 
     previousMonth = () => {
-        console.log('Zmieniam miesiąc...');
+        // console.log('Zmieniam miesiąc...');
         
             if(this.state.month === 0){
-                console.log('Zmieniam też rok...');
+                // console.log('Zmieniam też rok...');
                 
                 let year = this.state.year-1;
                 let month = 11;
@@ -229,7 +259,7 @@ class SheduleContainer extends Component {
                     month : month,
                     dow: dow
                 },()=>{
-                    console.log(this.state);                    
+                    // console.log(this.state);                    
                     this.renderCalendar();
                 })
 
@@ -255,31 +285,54 @@ class SheduleContainer extends Component {
                     month : month,
                     dow: dow
                 },()=>{
-                    console.log(dow,month);
+                    // console.log(dow,month);
                     this.renderCalendar()
                 })
             }
     }
-    showDetails = ()=>{
+ 
+    showDetails = (training_id)=>{
         document.querySelector('.trainingDetails').classList.remove('zoomOut');
         document.querySelector('.trainingDetails').classList.remove('invisible');
         document.querySelector('.trainingDetails').classList.add('zoomIn');
+
+        let id = training_id;
+        // console.log('Dostaje takie id: ',id);
+        
+        this.setState({
+            currentTraining : id
+        },()=>{
+            // console.log('Nowy state',this.state);
+            
+        })
     }
     render() { 
         
-        let list = <SheduleTrainingsList showDetails={this.showDetails.bind(this)} trainingsList={this.state.currentTrainingList} />
+        console.log('Renderuje shedule container...');
+        
+        let list = <SheduleTrainingsList 
+           showDetails={this.showDetails.bind(this)}           
+           trainingsList={this.state.currentTrainingList}
+            />
+        let details = <TrainingDetails
+                       training_id = {this.state.currentTraining}
+                      />
         return ( 
             <div className="sheduleContainer">
-              <TrainingDetails />
+             
               <div className="listContainer">
                  <div className="listHeader">
                     <b>{this.state.sheduleListDate.day}</b> : {this.state.sheduleListDate.month}
+                 </div>
+                 <div className="listTitle">
+                    Zaplanowane treningi
                  </div>
 
                     {list}
               </div>
 
               <div className="calendarContainer">
+              
               <div className="calendarContainerHeader">
                   
                      <div className="previousMonth" onClick={this.previousMonth}><i class="fas fa-angle-left"></i></div> 
@@ -291,6 +344,7 @@ class SheduleContainer extends Component {
                  </div>
 
                 <div className="calendar">
+                    {details}
                     <div className="calendarHeader">
                         <div className="dayTitle">Nd</div>
                         <div className="dayTitle">Pon</div>
@@ -301,7 +355,7 @@ class SheduleContainer extends Component {
                         <div className="dayTitle">Sob</div>
                     </div>
                     <div className="calendarBody">
-
+                      
                         {this.state.dayItems}
                     </div>
                 </div>

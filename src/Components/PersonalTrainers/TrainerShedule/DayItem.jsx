@@ -4,9 +4,9 @@ class DayItem extends Component {
     state = {  }
 
     showTrainings = ()=>{
-        if(this.props.trainings && this.props.trainings.length > 0){
+        if(this.props.trainings ){
             let table = this.props.trainings.map( training=> (training.id) );
-            this.props.showTrainings(table)
+            this.props.showTrainings(table,this.props.dayNumber)
         }
     }
 

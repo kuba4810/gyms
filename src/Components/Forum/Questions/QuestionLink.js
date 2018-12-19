@@ -20,7 +20,7 @@ class QuestionLink extends React.Component{
                     <Link  to={"/forum/pytanie/" + data.question_id + "/" + data.topic.toLowerCase().split(" ").join("-")}>{data.topic}</Link>
                 </div>
                 <div className="postData">
-                    Dodany przez: <Link to={"/forum/uzytkownik/" + data.login} className="userLink">{data.login}</Link> <span className="creationDate">{data.creating_date.slice(0,10)}, {data.creating_date.slice(11,19)} Kategoria: {data.category}</span>
+                    Dodany przez: <Link to={"/uzytkownik/profil" + data.login} className="userLink">{data.login}</Link> <span className="creationDate">{data.creating_date.slice(0,10)}, {data.creating_date.slice(11,19)} Kategoria: {data.category}</span>
                 </div>
             </div>
 

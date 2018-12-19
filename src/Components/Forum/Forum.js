@@ -1,22 +1,19 @@
 import React from "react"
 import {connect} from 'react-redux'
 import {checkIfLoggedIn,getLoggedUserData} from '../../services/localStorage'
-import {logedIn} from '../../Actions'
+import {logedIn} from '../../Actions/index'
 
 import {TopicsMenu} from "./TopicsMenu";
 import {ForumNavContainer} from "./ForumNav";
 import ForumHeader from '../ForumHeader'
 import User from './User/User'
 import {NewQuestion} from './Questions/NewQuestion'
-import NewMessage from './Messages/NewMessage'
 import {QuestionListContainer} from './Questions/QuestionList'
 import {QuestionView} from './Questions/QuestionView'
 import {LoginForm} from './LoginForm'
 import RegisterForm from './RegisterForm'
-import {UserMenu} from './User/UserMenu'
-import MessageContainer from './Messages/MessageContainer'
-import EditProfile from './User/EditProfile'
-import NotificationsContainer from './Notifications/NotificationsContainer'
+import {UserMenu} from '../User/UserMenu'
+
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -116,13 +113,13 @@ function AppArrow() {
                             <TopicsMenu/>
 
                             <Route exact path={this.props.match.path} component={QuestionListContainer} />
-                            <Route path={`${this.props.match.path}/uzytkownik/:userId`} component={User} />
+                           {/*  <Route path={`${this.props.match.path}/uzytkownik/:userId`} component={User} /> */}
                             <Route path={`${this.props.match.path}/pytanie/:questionId`} component={QuestionView} />
                             <Route path={`${this.props.match.path}/zadaj-pytanie`} component={NewQuestion} />
-                            <Route path={`${this.props.match.path}/nowa-wiadomosc/:userId/:userNick`} component={NewMessage} />
+                           {/*  <Route path={`${this.props.match.path}/nowa-wiadomosc/:userId/:userNick`} component={NewMessage} />
                             <Route path={`${this.props.match.path}/wiadomosci`} component={MessageContainer}/>
                             <Route path={`${this.props.match.path}/edytuj-profil`} component={EditProfile}/>
-                            <Route path={`${this.props.match.path}/powiadomienia`} component={NotificationsContainer}/>
+                            <Route path={`${this.props.match.path}/powiadomienia`} component={NotificationsContainer}/> */}
 
 
                     </div>

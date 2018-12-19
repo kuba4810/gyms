@@ -137,9 +137,9 @@ class MessageContainer extends React.Component{
 
             //document.getElementById("forumNav").classList.add("invisible");
 
-            document.querySelector(".forumNav").classList.add("invisible");
+          /*   document.querySelector(".forumNav").classList.add("invisible");
             document.querySelector(".topicsMenu").classList.add("invisible");
-            document.querySelector(".forumContent").style.width="100%";
+            document.querySelector(".forumContent").style.width="100%"; */
     }
 
 

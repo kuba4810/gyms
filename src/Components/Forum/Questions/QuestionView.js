@@ -7,6 +7,7 @@ import {getFilteredQuestions, selectQuestion} from '../../../Selectors/selectQue
 import {selectCurrentQuestion,answerAdded} from '../../../Actions';
 
 import {Link} from 'react-router-dom'
+import history from '../../../history'
 
 
 class Question extends React.Component{
@@ -21,26 +22,16 @@ class Question extends React.Component{
 
     }
 
-
+    redirectToLink = (link) => {
+        history.push(`http://localhost:3000`);
+    }
 
     showAnswerDiv(){
-        /*var ansDiv = document.getElementById("ansDiv");
-
-        if(ansDiv.classList.contains("invisible")){
-            ansDiv.classList.remove("invisible");
-        }
-        else{
-            ansDiv.classList.add("invisible");
-        }*/
-
         document.querySelector(".answerQuestionDiv").classList.toggle("ansInvisible");
-        //document.querySelector(".answerQuestionDiv").classList.toggle("fadeIn");
     }
 
 
     componentDidMount(){
-
-        //this.props.selectCurrentQuestion(this.props.match.params.questionId);
 
         document.querySelector(".forumNav").classList.add("invisible");
         document.querySelector(".forumContent").style.width="100%";
@@ -189,13 +180,14 @@ class Question extends React.Component{
                             <div className="postContentTopic">
                                 <span className="colorWhite">Pytanie zadane  w kategorii </span>
                                 <Link id="categoryLink" to={"/forum?sort=" + data.category}>{data.category}</Link> przez 
-                                <Link id="userLink" to={"/forum/uzytkownik/" + data.login}> {data.login} </Link>
+
+                                <Link id="userLink" to={"/uzytkownik/profil/" + data.login}> {data.login} </Link>
                                 <br/><span className="creationDate"> {data.creating_date}</span>
                                 <hr/>
                             </div>
 
                             <div className="userAvatar transition">
-                                <Link to={"/forum/uzytkownik/" + data.login}><i className="fas fa-user"></i></Link>
+                                <Link to={"/uzytkownik/profil/" + data.login}><i className="fas fa-user"></i></Link>
                             </div>
                         </div>
 

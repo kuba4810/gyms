@@ -116,13 +116,13 @@ class Answer extends React.Component{
 
                     <div className="postContentTopic">
                         <span className="colorWhite">Odpowiedź od  </span>
-                        <Link to={"/forum/uzytkownik/" + data.login} id="userAnswerLink">{data.login}</Link> <br/>
+                        <Link to={"/uzytkownik/profil/" + data.login} id="userAnswerLink">{data.login}</Link> <br/>
                         <span className="answerDate">{data.creating_date}</span>
                         <hr/>
                     </div>
 
                     <div className="userAvatar transition">
-                        <Link to={"/forum/uzytkownik/" + data.login}><i className="fas fa-user"></i></Link>
+                        <Link to={"/uzytkownik/profil/" + data.login}><i className="fas fa-user"></i></Link>
                     </div>
                 </div>
 

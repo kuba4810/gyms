@@ -318,52 +318,54 @@ class SheduleContainer extends Component {
                        training_id = {this.state.currentTraining}
                       />
         return ( 
-            <div className="sheduleContainer">
+           <div className="topicsContent">
+             <div className="sheduleContainer">
              
-              <div className="listContainer">
-                 <div className="listHeader">
-                    <b>{this.state.sheduleListDate.day}</b> : {this.state.sheduleListDate.month}
-                 </div>
-                 <div className="listTitle">
-                    Zaplanowane treningi
-                 </div>
-
-                    {list}
-              </div>
-
-              <div className="calendarContainer">
-              
-              <div className="calendarContainerHeader">
-                  
-                     <div className="previousMonth" onClick={this.previousMonth}><i class="fas fa-angle-left"></i></div> 
-                     <div className="currentMonth">{this.state.monthNames[this.state.month]}</div>
-                     <div className="nextMonth" onClick={this.nextMonth}><i class="fas fa-angle-right"></i></div>
-
-                    <div className="year">{this.state.year}</div>
-                    <div className="checkoutCurrentDay"></div>
-                 </div>
-
-                <div className="calendar">
-                    {details}
-                    <div className="calendarHeader">
-                        <div className="dayTitle">Nd</div>
-                        <div className="dayTitle">Pon</div>
-                        <div className="dayTitle">Wt</div>
-                        <div className="dayTitle">Śr</div>
-                        <div className="dayTitle">Czw</div>
-                        <div className="dayTitle">Pt</div>
-                        <div className="dayTitle">Sob</div>
-                    </div>
-                    <div className="calendarBody">
-                      
-                        {this.state.dayItems}
-                    </div>
+             <div className="listContainer">
+                <div className="listHeader">
+                   <b>{this.state.sheduleListDate.day}</b> : {this.state.sheduleListDate.month}
+                </div>
+                <div className="listTitle">
+                   Zaplanowane treningi
                 </div>
 
-              </div>
+                   {list}
+             </div>
 
+             <div className="calendarContainer">
              
-            </div>
+             <div className="calendarContainerHeader">
+                 
+                    <div className="previousMonth" onClick={this.previousMonth}><i class="fas fa-angle-left"></i></div> 
+                    <div className="currentMonth">{this.state.monthNames[this.state.month]}</div>
+                    <div className="nextMonth" onClick={this.nextMonth}><i class="fas fa-angle-right"></i></div>
+
+                   <div className="year">{this.state.year}</div>
+                   <div className="checkoutCurrentDay"></div>
+                </div>
+
+               <div className="calendar">
+                   {details}
+                   <div className="calendarHeader">
+                       <div className="dayTitle">Nd</div>
+                       <div className="dayTitle">Pon</div>
+                       <div className="dayTitle">Wt</div>
+                       <div className="dayTitle">Śr</div>
+                       <div className="dayTitle">Czw</div>
+                       <div className="dayTitle">Pt</div>
+                       <div className="dayTitle">Sob</div>
+                   </div>
+                   <div className="calendarBody">
+                     
+                       {this.state.dayItems}
+                   </div>
+               </div>
+
+             </div>
+
+            
+           </div>
+           </div>
          );
     }
 }

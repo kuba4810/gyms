@@ -6,6 +6,7 @@ import MainPage from './Components/MainPage'
 import Gym from './Components/Gym/Gym'
 import Trainers from './Components/PersonalTrainers/PersonalTrainer'
 import Forum from './Components/Forum/Forum'
+import UserContainer from './Components/User/UserContainer'
 
 
 
@@ -18,6 +19,7 @@ class App extends Component {
                     <Route  path="/silownie" component={Gym}/>
                     <Route  path="/trenerzy" component={Trainers}/>
                     <Route  path="/forum" component={Forum}/>
+                    <Route  path="/uzytkownik" component={UserContainer}/>
                 </div>
             </Router>
         );

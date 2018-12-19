@@ -32,12 +32,14 @@ class ForumHeader extends React.Component{
             registerContent.classList.add('zoomIn')
         }
         render(){
-
+            let page = this.props.page.toLowerCase();
             return(
+                
                 <header className="animated forumHeader">
                     <div className="logo">
-                    
-                        <Link to={`/${this.props.page.toLowerCase()}`}> 
+                       
+                        <Link 
+                        to={ page === 'uzytkownik' ? `/${this.props.page.toLowerCase()}/profil` : `/${this.props.page.toLowerCase()}` }> 
                         <i className="fas fa-dumbbell"></i> {this.props.page} <i className="fas fa-dumbbell"></i>
                         </Link>
                     </div>

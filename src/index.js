@@ -7,7 +7,7 @@ import './bootstrap/css/bootstrap.css'
 import './styles/mainStyle.css'
 import './styles/forumStyle.css'
 import './styles/animations.css'
-import './styles/gymStyle.css'
+// import './styles/gymStyle.css'
 
 
 import './Fontello/css/fontello.css'

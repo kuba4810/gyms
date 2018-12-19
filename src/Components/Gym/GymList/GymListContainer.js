@@ -5,6 +5,9 @@ import GymItem from './GymItem'
 import {gymsFetched,gymSearchChanged} from '../../../Actions/index'
 import {filterGym} from '../../../Selectors/filterGym'
 import {Link} from 'react-router-dom'
+import GymHeader from './GymHeader'
+import GymSection from './GymSection'
+
 
 class GymListC extends React.Component{
 
@@ -38,20 +41,32 @@ class GymListC extends React.Component{
         
         
        return(
-        <div class="gymContainer">
-           <form>
-               <div className="form-group">
-                    <label for="city">Miasto</label>
-                    <input class="form-control" name="city" type="text" onChange={this.handleInputChange}/>
-               </div>
-           </form>
-            <Link to={"/silownie/new-gym"} className="btn btn-success" >Dodaj siłownie</Link>
+        // <div class="gymContainer">
+        //    <form>
+        //        <div className="form-group">
+        //             <label for="city">Miasto</label>
+        //             <input class="form-control" name="city" type="text" onChange={this.handleInputChange}/>
+        //        </div>
+        //    </form>
+        //     <Link to={"/silownie/new-gym"} className="btn btn-success" >Dodaj siłownie</Link>
 
-            <h3>Lista siłowni</h3>
-            <ol>
+        //     <h3>Lista siłowni</h3>
+        //     <ol>
+        //     {gyms}
+        //     </ol>
+        // </div>
+
+        <React.Fragment>
+        <GymHeader/>
+        <GymSection/>
+          <article>
+            <h1>Nasze obiekty</h1>
+            <div class="gym-list-container">
             {gyms}
-            </ol>
-        </div>
+            </div>
+          </article>
+      </React.Fragment>
+
        );
     }
      

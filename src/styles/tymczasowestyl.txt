@@ -1,0 +1,230 @@
+.gymContainer{
+    color: cornsilk;
+   background-color:#262626;
+    min-height:100vh;
+    margin:0;
+    padding-bottom: 100px;
+}
+
+.color-cornsilk{
+    color:cornsilk;
+}
+
+table{
+    background-color:cornsilk;
+    color:#262626;
+}
+
+tr{
+   border-bottom: 2px solid #151515;
+}
+
+th,td{
+    width: 200px;
+    text-align: left;
+    padding: 8px 16px;
+}
+hr{
+    border-color: cornsilk;
+}
+
+/* NEW GYM */
+/* ------------------------------------------------------------------------------ */
+
+
+    /* Form an inputs */
+    .newGymForm, .newPackageForm , .photoForm{
+        background-color: rgba(255,255,255,0);
+        width: 60%;
+        margin: 10px auto 0 auto;
+    }
+
+    .newGymForm label{
+        font-size: 20px;
+    }
+    .newGymForm input , .newGymForm textarea{
+        position:realative;
+        background-color: rgba(255,255,255,0.5);
+        border:none;
+        border-bottom: 2px solid cornsilk;
+        box-shadow: none;
+        border-radius: 0px;
+        font-size: 17px;
+        color: cornsilk;
+        letter-spacing:1px;
+      
+    }
+
+    .newGymForm input:focus{
+        border:none;
+        border-bottom: 2px solid #3863da;
+    }
+
+    .newGymForm input::placeholder, texteare::placeholder{
+        color:#262626;
+    
+    }
+    
+    .newGymForm textarea{
+        background-color: rgba(255,255,255,0.5) !important;
+    
+    }
+    
+    .newGymForm input:focus, .newGymForm textarea:focus{
+        outline:none;
+        box-shadow:none;
+        border-top:none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid #1873ce;
+        background-color: rgba(255,255,255,0.8) !important;
+        
+    }
+
+    .formTitle{
+        width:60%;
+        margin: 10px auto 10px auto;
+    }
+
+    .formTitle i{
+        font-size: 35px;
+        cursor:pointer;
+        transition:.2s ease;
+        margin-bottom: 20px;
+    }
+
+    .formTitle i:hover{
+        color: rgb(255,100,100);
+    }
+
+    .deleteOffer , .editOffer{
+        float:right;
+    }
+
+    .openingHoursForm{
+        display:flex;
+        justify-content: space-around;
+    }
+
+    .openingHoursForm .form-group{
+        width:14%;
+        text-align:center;
+    }
+
+    .openingHoursForm label{
+        font-size: 17px;
+    }
+
+    .openingHoursForm .form-group input {
+        width:100%;
+        
+    }
+
+
+    .formTitle .sendForm{
+        width:100%;
+        margin: 0 auto;
+    }
+    
+
+    .newGymOverlay{
+        position:fixed;
+        top:0;
+        z-index: 1000000;
+        background-color: rgba(255,255,255,0.5);
+        width:100%;
+        height:100vh;
+    }
+
+    .newGymOverlay .loaderContainer{
+        position: relative;
+        top: 35%;
+    }
+
+
+    .equipment{
+        width:60%;
+        margin: 0 auto;
+        display:flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .equipment input{
+        cursor:pointer;
+    }
+
+    .gymImagesUpload{
+        width:60%;
+        margin: 0 auto;
+    }
+
+    .gymImagesUploadList  {
+        display:flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .gymImagesUploadList img{
+        width:30%;
+        height: 15vh;
+        border: 2px solid black;
+        margin-top: 5px;
+    }
+
+/* Gwiazdki do oceniania */    
+/* ------------------------------------------ */
+.starDiv {
+    display: flex;
+    align-items: center;
+}
+
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.starDiv i {
+    font-size: 20px;
+    padding: 5px;
+    cursor: pointer;
+
+}
+
+.starDiv i:hover,
+.starDiv i:hover~i {
+    color: gold;
+}
+
+.starDiv .starDivTitle {
+    font-size: 30px;
+    /*background-color:black;*/
+    display: inline-block;
+    padding-right: 10px;
+
+}
+
+
+/* Komentarze siłowni */
+/* ---------------------------------------------- */
+.gymCommentForm{
+    width: 40%;
+    margin-top:30px;
+    margin-bottom:30px;
+}
+.gymCommentForm textarea{
+    background-color: rgba(255,255,255,0.5) !important;
+    color: #262626;
+    border-radius: 0;
+    transition: .4s ease;
+   
+}
+
+.gymCommentForm textarea:focus{
+    box-shadow: none;
+    background-color: rgba(255,255,255,1) !important;
+}
+.gymCommentForm button{
+    width:100%;
+    border-radius: 0;
+}
+

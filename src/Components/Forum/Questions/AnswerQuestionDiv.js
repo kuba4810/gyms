@@ -44,7 +44,9 @@ class AnswerQuestionDiv extends React.Component{
             .then( (response) => { 
                 console.log(response);
                 if(response.result == "success"){
-                    window.location.reload();
+                    console.log('Wysyłam odpowiedź do QuestionView: ',response.newAnswer);
+                    
+                   this.props.answerAdded(response.newAnswer)
                 }
                 else{
                     alert(response.message);

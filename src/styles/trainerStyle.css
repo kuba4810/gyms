@@ -1,0 +1,277 @@
+body{
+    background-color: #125c81;
+
+}
+
+.sheduleContainer{
+    display:grid;
+    grid-template-areas: 'list list list container container container container container container container container container';
+    width:90%;
+    margin: 15px auto 0 auto;
+    column-gap: 10px;
+    position: relative;
+    
+}
+
+.listContainer{
+    grid-column: list;
+    background-color: #262626;
+    /* box-shadow: 0px 0px 10px 2px #262626; */
+}
+
+.listHeader{
+    background-color: #151515;
+    color: cornsilk;
+    padding: 10px 0 10px 0;
+    text-align: center;
+    font-size: 20px;
+}
+
+.listTitle{
+    background-color: rgb(255,51,51);
+    color: cornsilk;
+    padding: 8px 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sheduleList{
+    color:cornsilk;
+    display:flex;
+    flex-direction: column;
+    min-width: 300px;
+
+}
+
+.sheduleListItem{
+    width:90%;
+    margin: 10px auto 10px auto;
+    padding: 16px 8px;
+    background-color: #001133;
+    color: cornsilk;
+    text-align:center;
+    /* border-radius: 5px; */
+    cursor:pointer;
+    transition: .4s ease;
+}
+
+.sheduleListItem:hover{
+    background-color: #0044cc;
+    /* box-shadow: 0px 1px 4px white; */
+}
+
+.calendarContainer{
+    grid-column: container;  
+    position:relative;
+    /* box-shadow: 0px 0px 10px 2px #262626;  */
+}
+
+.calendarContainerHeader{
+    background-color: #0044cc;
+    display:flex;
+    padding: 5px 0 5px 0;
+    font-size: 25px;
+    color: cornsilk;
+    align-items: center;
+}
+
+.previousMonth, .nextMonth{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:30px;
+    height:30px;
+    background-color: cornsilk;
+    border-radius: 50%;
+    color: #262626;
+    font-size: 15px;
+    cursor:pointer;
+    transition: .4s ease;
+}
+.previousMonth{
+    margin-left: 10px; 
+}
+
+.previousMonth:hover , .nextMonth:hover{
+    background-color: #00ccff;
+   
+}
+
+
+
+.currentMonth{
+    width:150px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.calendarContainerHeader div{
+    margin-right: 10px;
+}
+
+
+.changeMonth{
+    display:flex;
+    padding: 5px 0 5px 0;
+    color: cornsilk;
+    font-size: 25px;
+}
+
+.calendarHeader{
+    display:grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap:5px;
+    /* margin-bottom: 10px; */
+    background-color: #151515;
+    color: cornsilk;
+    font-size:20px;
+    padding: 8px 25px;
+ 
+}
+
+.dayTitle{
+    text-align:center;
+}
+
+.calendar{
+    position:relative;
+}
+
+.calendarBody{
+  
+    display:grid;
+    grid-template-columns: repeat(7, auto);
+    grid-row-gap:20px;
+    justify-items: center;
+    background-color: #262626;
+
+    padding: 10px 25px;
+   
+}
+
+.dayItem{
+    border-radius: 50%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 65px;
+    height:65px;
+    background-color: #262626;
+    color:cornsilk;
+    transition: .2s ease;
+    cursor:pointer;
+    font-size:20px;
+    background-color: #001133;
+    border: 2px solid #001133;
+}
+
+.dayItemIsEvent{
+    background-color: green;
+}
+.dayItemNone{
+    background-color: gray;
+}
+.dayItem:hover{
+   
+    background-color: #003399;
+    box-shadow: 0px 0px 0px 13px lightblue;
+    
+}
+
+
+.trainingDetails{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-color: rgba(63,63,63,1);
+    animation-duration: .4s;
+    z-index: 100000;
+    color: white;
+    padding: 10px;
+
+}
+.trainingDetailsHeader{
+    display:flex;
+    justify-content: flex-end;
+}
+
+.hideTrainingDetails{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:50px;
+    height:50px;
+    background-color: cornsilk;
+    cursor: pointer;
+    transition:.3s ease;
+    color:#262626;
+
+}
+
+.hideTrainingDetails:hover{
+    background-color: red;
+}
+/* .trainingContent{
+    position:fixed;
+    top:15%;
+    width:70%;
+    left:50%;
+    transform: translateX(-50%);
+    height: 70vh;
+    background-color: #fff;
+} */
+
+.trainingContentTitle{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.trainingSheduleContentMain{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    margin-top: 30px;
+    column-gap: 20px;
+}
+
+.trainingDescription{
+    grid-area: description;
+}
+.trainingDescription p{
+    text-align: left;
+    font-size: 30px;
+}
+
+.trainingDuration{
+    grid-area: duration;
+}
+
+.trainingPrice{
+    grid-area: price;
+}
+
+.trainingContent .littleSpinner{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.trainingPrimaryData ,.sheduleUserData, .trainingDuration, .trainingPrice{
+    font-size:25px;
+    text-align:center;
+    padding: 8px 16px;
+    background-color: rgb(255,51,51);
+    margin-top:5px;
+}
+
+.trainingPrimaryData{
+  
+}
+
+.trainingDescription{
+    
+    text-align: justify;
+    font-size: 20px;
+  
+   
+}

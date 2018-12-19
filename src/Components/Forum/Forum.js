@@ -5,7 +5,7 @@ import {logedIn} from '../../Actions'
 
 import {TopicsMenu} from "./TopicsMenu";
 import {ForumNavContainer} from "./ForumNav";
-import ForumHeader from './ForumHeader'
+import ForumHeader from '../ForumHeader'
 import User from './User/User'
 import {NewQuestion} from './Questions/NewQuestion'
 import NewMessage from './Messages/NewMessage'
@@ -35,11 +35,6 @@ function AppArrow() {
 
     constructor(){
         super();
-
-       /*  this.state = {
-            isLogedIn: false,
-            isEmailConfirmed: false
-        } */
     }
 
     componentDidMount(){
@@ -100,22 +95,6 @@ function AppArrow() {
             console.log('Nikt nie jest zalogowany !')
         }
 
- 
-        
-       
-      /*   console.log("Stan localStorage w Forum : " , "Zalogowany: " + localStorage.getItem("logedIn") , "EmailPotwierdzony: " + localStorage.getItem("emailConfirmed"));
-        if(localStorage.getItem("logedIn") != "false"){
-            this.setState({
-                isLogedIn:true
-            });
-
-            if(localStorage.getItem("emailConfirmed") == "true"){
-                this.setState({
-                    isEmailConfirmed: true
-                });
-            }
-        } */
-
 
     }
     render(){
@@ -128,7 +107,8 @@ function AppArrow() {
 
                 <ForumHeader 
                     isLogedIn={this.props.user.isLogedIn} 
-                    isEmailConfirmed={this.props.user.emailConfirmed}/>
+                    isEmailConfirmed={this.props.user.emailConfirmed}
+                    page={'FORUM'}/>
 
                 <main className="animated forumMain">
                     <div className="forumContent">

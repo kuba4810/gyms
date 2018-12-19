@@ -1,6 +1,4 @@
 ﻿var express = require('express')
-var messagesRoute = require('./messagesRoute');
-var gymRoute = require('./gymRoute');
 const notificationEndpoint = require('./Routes/notification.endpoints');
 var app = express()
 const {Pool} = require('pg')
@@ -12,6 +10,11 @@ var opn = require('opn');
 app.use(express.static('public'));
 
 const fileUpload = require('express-fileupload');
+
+// Routers
+var messagesRoute = require('./messagesRoute');
+var gymRoute = require('./gymRoute');
+var trainerRoute = require('./trainerRoute');
 
 // default options
 app.use(fileUpload());
@@ -38,6 +41,7 @@ app.options('*', cors());
 app.use(messagesRoute);
 app.use(gymRoute);
 app.use(notificationEndpoint);
+app.use(trainerRoute);
 /* ------------------------------ */
 
 
@@ -521,7 +525,7 @@ app.post('/insertAnswer',function(req,res){
         port: 5432,
     });
 
-    var query = "INSERT INTO kuba.answers(user_id, question_id, creating_date,  content_, pluses, minuses)	VALUES ($1,$2,Current_timestamp,$3,0,0);"
+    var query = "INSERT INTO kuba.answers(user_id, question_id, creating_date,  content_, pluses, minuses)	VALUES ($1,$2,Current_timestamp,$3,0,0) returning *;"
     var values = [data.userID,data.questionId,data.content];
 
     pool.query(query,values,function(err,response){
@@ -529,6 +533,7 @@ app.post('/insertAnswer',function(req,res){
         if(typeof(err)!==undefined){
             res.json({
                 result:"success",
+                newAnswer : response.rows[0]
             });
         }
         else{

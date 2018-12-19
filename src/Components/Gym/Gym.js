@@ -5,6 +5,7 @@ import GymListContainer from './GymList/GymListContainer'
 import GymDetailsContainer from './GymView/GymDetailsContainer'
 import NewGym from './NewGym/NewGym'
 
+// import styles  from '../../styles/gymStyle.css'
 
 class Gym extends React.Component{
     constructor(){

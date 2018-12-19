@@ -4,7 +4,8 @@ import AnswerQuestionDiv from './AnswerQuestionDiv'
 
 import {connect} from 'react-redux'
 import {getFilteredQuestions, selectQuestion} from '../../../Selectors/selectQuestion'
-import {selectCurrentQuestion} from '../../../Actions';
+import {selectCurrentQuestion,answerAdded} from '../../../Actions';
+
 import {Link} from 'react-router-dom'
 
 
@@ -72,6 +73,11 @@ class Question extends React.Component{
             },
 
         );
+    }
+    answerAdded = (answer) => {
+        console.log('Wysyłam odpowiedź do magazynu: ',answer);
+        
+        this.props.answerAdded(answer);
     }
 
     voteUp = () => {
@@ -209,7 +215,7 @@ class Question extends React.Component{
                                         Odpowiedz
                                     </div>
                                   
-                                    <AnswerQuestionDiv questionId = {this.state.qID}/>
+                                    <AnswerQuestionDiv answerAdded={this.answerAdded} questionId = {this.state.qID}/>
                                 </div>
                             </div>
                         </div>
@@ -263,6 +269,6 @@ const mapStateToProps = state => {
         question: state.questions.currentQuestion   
     };
 }
-const mapDispatchToProps = {selectCurrentQuestion}
+const mapDispatchToProps = {selectCurrentQuestion,answerAdded}
 
 export const QuestionView = connect(mapStateToProps,mapDispatchToProps)(Question);

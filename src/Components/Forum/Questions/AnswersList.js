@@ -1,6 +1,9 @@
 import React from 'react'
 import Answer from './Answer'
-class AnswersList extends React.Component{
+import {connect} from 'react-redux'
+import {answersFetched,answerAdded} from '../../../Actions/index'
+
+class Answers extends React.Component{
     constructor(){
         super();
 
@@ -16,46 +19,65 @@ class AnswersList extends React.Component{
         var data = {
             questionId: questionId
         }
-        /*data = JSON.stringify(data);*/
         fetch("http://localhost:8080/getAnswers/"+questionId, {
             method: "GET",
             mode: "cors",
             cache: "no-cache",
-            credentials: "same-origin", //
+            credentials: "same-origin", 
             headers: {
                 "Content-Type": "application/json;",
             },
             redirect: "follow",
-            referrer: "no-referrer", // no-referrer, *client
-            //body: JSON.stringify(data), // body data type must match "Content-Type" header
+            referrer: "no-referrer",
         }).then(response => response.json())
             .then(
                 (result) => {
-                    this.setState({
-                        Answers: result
-                    },()=>{console.log("Stan po załadowaniu odpowiedzi: ",this.state.Answers)});
+                    this.props.answersFetched(result);
+                    // this.setState({
+                    //     Answers: result
+                    // },()=>{console.log("Stan po załadowaniu odpowiedzi: ",this.state.Answers)});
                     console.log("Odpowiedzi: ",result);
                 },
 
             );
-    }
 
+    }    
+  
     render(){
-        if(this.state.Answers.length > 0)
-        {
-            return(
+        let answers;
+        if(this.props.answers.isLoading === false){
+            answers = this.props.answers.answerList.map( answer =>  <Answer key={answer.answer_id} answerData={answer}/> )
+        }
+        return(
+            <div>{answers}</div>
+        );
 
-             <div>
-                 { this.state.Answers.map( answer =>  <Answer key={answer.answer_id} answerData={answer}/> )}
-             </div>
-            );
-        }
-        else{
-            return(
-                <div></div>
-            );
-        }
+        // if(this.state.Answers.length > 0)
+        // {
+        //     return(
+
+        //      <div>
+        //          { this.state.Answers.map( answer =>  <Answer key={answer.answer_id} answerData={answer}/> )}
+                 
+        //      </div>
+        //     );
+        // }
+        // else{
+        //     return(
+        //         <div></div>
+        //     );
+        // }
     }
 }
+
+const mapStateToProps = state =>{
+    return {
+        answers : state.answers
+    }
+}
+
+const mapDispatchToProps = {answerAdded,answersFetched}
+
+const AnswersList = connect(mapStateToProps,mapDispatchToProps)(Answers);
 
 export default AnswersList;

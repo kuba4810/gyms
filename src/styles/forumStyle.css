@@ -12,16 +12,16 @@ hr{
 
 body {
     padding: 0;
-   
+    background-image: url("../images/forumWallpaper.jpg");
+    background-size: cover;
+    background-attachment: fixed;
     margin: 0;
     /*animation-name: fadeIn;
     animation-duration: .5s;*/
 }
 
 .forumContainer{
-    background-image: url("../images/forumWallpaper.jpg");
-    background-size: cover;
-    background-attachment: fixed;
+   
     min-height: 120vh;
     height:auto;
     padding-bottom: 100px;
@@ -294,7 +294,7 @@ textarea{
 }
 
 .topicActive {
-    color: rgb(255, 51, 51);
+    color: rgb(255, 51, 51) !important;
     background-color: white;
 }
 .topicActive a {

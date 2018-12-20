@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 class MessageItem extends React.Component{
     
@@ -70,14 +71,14 @@ class MessageItem extends React.Component{
         else{
             bgColor = "cornsilk";
         }
-        var userId = localStorage.getItem("logedIn");
+        var userId = localStorage.getItem("isLoggedIn");
         
         return(
                  <div class="message animated fadeIn">
                     <div class="messageData"><p> {message.sender==userId ? <span style={{color:"rgb(255,51,51)"}}>Ja</span> :message.login}, {message.sending_date} </p>
-                         { message.sender!=userId  &&  <a  href={"http://localhost:3000/forum/nowa-wiadomosc/"+message.sender+"/"+message.login}>Odpisz</a>  }
+                         { message.sender!=userId  &&  <a  href={"http://localhost:3000/uzytkownik/nowa-wiadomosc/"+message.sender+"/"+message.login}>Odpisz</a>  }
                          
-                         {(message.receiver == userId && message.is_read == false) ? 
+                         {(message.receiver == userId && message.is_read === false) ? 
                           <div class="setRead" onClick={this.markAsRead}>  <span class="tooltiptext">Przeczytana</span> <i class="fas fa-angle-down"></i> </div>: ""}
                           <div class="deleteMessage" onClick={this.deleteMessage}>  <span class="tooltiptext">Usuń</span> <i class="fas fa-trash-alt"></i></div> 
                      </div>

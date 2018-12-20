@@ -3,9 +3,9 @@ import React from 'react'
 class EditProfile extends React.Component{
 
     componentDidMount(){
-        document.querySelector(".forumNav").classList.add("invisible");
+/*         document.querySelector(".forumNav").classList.add("invisible");
         document.querySelector(".forumContent").style.width="100%";
-        document.querySelector(".topicsMenu").classList.add("invisible");
+        document.querySelector(".topicsMenu").classList.add("invisible"); */
     }
     render(){
         return(
@@ -16,15 +16,17 @@ class EditProfile extends React.Component{
 
 	<div class="row">
 
-      <div class="col-md-12 personal-info">
+      <div class="col-md-12 ">
        {/* <div class="alert alert-info alert-dismissable">
           <a class="panel-close close" data-dismiss="alert">×</a> 
           <i class="fa fa-coffee"></i>
           This is an <strong>.alert</strong>. Use this to show important messages to the user.
         </div>*/}
-        <h3>Dane osobowe</h3>
         
-        <form class="form-horizontal" role="form">
+        
+        <form class="form-horizontal editProfileForm" role="form">
+          <legend> <h3>Dane osobowe</h3> </legend>
+          <hr/>
           <div class="form-group">
             <label class="col-lg-3 control-label">Imię</label>
             <div class="col-lg-12">

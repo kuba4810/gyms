@@ -13,9 +13,9 @@ class NotificationsContainer extends React.Component{
     
 
         componentDidMount(){
-            document.querySelector(".forumNav").classList.add("invisible");
+            /* document.querySelector(".forumNav").classList.add("invisible");
             document.querySelector(".topicsMenu").classList.add("invisible");
-            document.querySelector(".forumContent").style.width="100%";
+            document.querySelector(".forumContent").style.width="100%"; */
 
             /* Get notifications from database */
             fetch(`http://localhost:8080/notifications/${localStorage.getItem("logedIn")}`)

@@ -47,6 +47,7 @@ router.get('/api/trainer/shedule/:trainer_id',(request,response)=>{
 // Pobiera szczegółowe dane pojedynczego treningu
 // ------------------------------------------------------------------------------------------------
 router.get('/api/trainer/training/:training_id',(request,response)=>{
+    
    
    console.log('Training details...');
    

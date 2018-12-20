@@ -15,8 +15,10 @@ class User extends React.Component{
     }
 
     componentDidMount(){
-        document.querySelector(".forumNav").classList.add("invisible");
-        document.querySelector(".forumContent").style.width="100%";
+        /* document.querySelector(".forumNav").classList.add("invisible");
+        document.querySelector(".forumContent").style.width="100%"; */
+        console.log('Zamontowano komponent USER');
+        
 
         fetch("http://localhost:8080/getUserData/" +  this.props.match.params.userId, {
             method: "GET",
@@ -57,11 +59,11 @@ class User extends React.Component{
             var button;
         switch( this.compareNick() ){
             case "SAME":
-                button = <div className="editProfile transition " id="editProfile" ><Link to="/forum/edytuj-profil">Edytuj profil</Link></div>
+                button = <div className="editProfile transition " id="editProfile" ><Link to="/uzytkownik/edytuj-profil">Edytuj profil</Link></div>
             break;
             case "DIFFERENT":
                 button = <div className="editProfile transition " id="sendMessage"> 
-                <Link to={"/forum/nowa-wiadomosc/" + data.user_id+ "/"+ this.props.match.params.userId}>Wiadomość</Link>
+                <Link to={"/uzytkownik/nowa-wiadomosc/" + data.user_id+ "/"+ this.props.match.params.userId}>Wiadomość</Link>
                 </div>
             break;
             case "NONE":
@@ -71,6 +73,7 @@ class User extends React.Component{
             return(
 
                 <div>
+        
                    <div className="topicsGroupTitle">Użytkownik {this.props.match.params.userId}</div>
                     <div className="topicsContent" id="topicsContent">
                         <div className="user">

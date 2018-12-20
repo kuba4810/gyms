@@ -12,8 +12,8 @@ class NewMessage extends React.Component{
     }
     
     componentDidMount(){
-        document.querySelector(".forumNav").classList.add("invisible");
-        document.querySelector(".forumContent").style.width="100%";
+        /* document.querySelector(".forumNav").classList.add("invisible");
+        document.querySelector(".forumContent").style.width="100%"; */
     }
     sendMessage = () => {
         var receiver = this.props.match.params.userId;

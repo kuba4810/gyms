@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import history from '../../../history'
-import {changeStorageState} from '../../../services/localStorage'
-import {loggedOut} from '../../../Actions/index'
+import history from '../../history'
+import {changeStorageState} from '../../services/localStorage'
+import {loggedOut} from '../../Actions/index'
 
 
 class Menu extends React.Component{
@@ -27,19 +27,20 @@ class Menu extends React.Component{
     }
 
     render(){
+        let user_id = localStorage.getItem('loggedId')
         return(
             <div className=" userMenu" >
                 <div className="collapse userMenuContainer" id="userMenu">
 
                     <ul className="userOptionsList">
                         <li className="usr">
-                           <Link id="userNick" to={"/forum/uzytkownik/"+this.props.user.logedNick}>
+                           <Link id="userNick" to={`/uzytkownik/profil/${this.props.user.logedNick}`}>
                               Witaj  {this.props.user.logedNick}
                            </Link>
                         </li>
 
                         <li className="msg">
-                           <Link to="/forum/wiadomosci">
+                           <Link to="/uzytkownik/wiadomosci">
                               Wiadomości  
                               {(this.props.user.messageCount !="0" && this.props.user.messageCount !="") ? 
                               <span class="badge badge-light">{this.props.user.messageCount}</span> : ""}
@@ -47,7 +48,7 @@ class Menu extends React.Component{
                         </li>
 
                         <li className="ntf">
-                           <Link to="/forum/powiadomienia">
+                           <Link to="/uzytkownik/powiadomienia">
                               Powiadomienia   
                                {(this.props.user.notificationsCount !="0" && this.props.user.notificationsCount !="") ? 
                               <span class="badge badge-light">{this.props.user.notificationsCount}</span> : ""}
@@ -55,7 +56,7 @@ class Menu extends React.Component{
                         </li>
 
                         <li className="har">
-                           <Link to="/forum/powiadomienia">
+                           <Link to="/uzytkownik/harmonogram">
                                Moje treningi
                            </Link>
                         </li>

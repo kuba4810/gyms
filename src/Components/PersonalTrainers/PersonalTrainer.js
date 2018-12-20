@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ForumHeader from '../ForumHeader'
 import {LoginForm} from '../Forum/LoginForm'
 import RegisterForm from '../Forum/RegisterForm'
-import {UserMenu} from '../Forum/User/UserMenu'
+import {UserMenu} from '../User/UserMenu'
 import TrainersListContainer from './TrainersList/TrainersListContainer'
 import SheduleContainer from './TrainerShedule/SheduleContainer'
 import '../../styles/trainerStyle.css'

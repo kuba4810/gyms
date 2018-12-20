@@ -6,7 +6,7 @@ import {logedIn} from '../../Actions/index'
 import {TopicsMenu} from "./TopicsMenu";
 import {ForumNavContainer} from "./ForumNav";
 import ForumHeader from '../ForumHeader'
-import User from './User/User'
+
 import {NewQuestion} from './Questions/NewQuestion'
 import {QuestionListContainer} from './Questions/QuestionList'
 import {QuestionView} from './Questions/QuestionView'

@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginUser from './Forum/User/LoginUser'
+import LoginUser from './User/LoginUser'
 import {Link} from 'react-router-dom'
 
 

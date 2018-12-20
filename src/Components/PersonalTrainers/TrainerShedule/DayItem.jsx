@@ -11,6 +11,23 @@ class DayItem extends Component {
     }
 
     render() { 
+
+        let divStyle;
+          
+        let dow = this.props.dow;
+        if(dow === 6){
+            divStyle ={
+                backgroundColor: '#003B71'
+            }
+        }else if(dow === 0){
+            divStyle ={
+                backgroundColor : '#2B3665'
+            }
+        }else if(dow === -1){
+            divStyle ={
+                opacity: '0'
+            }
+        }
         var isEvent=false;
         var dayNumber = this.props.dayNumber;
         if(this.props.dayNumber !== '-')
@@ -25,6 +42,7 @@ class DayItem extends Component {
         <div 
            className={`dayItem ${isEvent ? 'dayItemIsEvent' : ''} ${(dayNumber === '-') ? 'dayItemNone' : ''}` }
            onClick={this.showTrainings}
+           style={divStyle}
         >
             {this.props.dayNumber}
         </div> );

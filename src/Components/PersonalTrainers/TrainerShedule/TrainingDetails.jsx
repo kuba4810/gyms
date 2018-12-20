@@ -55,7 +55,6 @@ class TrainingDetails extends Component {
 
         setTimeout(() => {
             document.querySelector('.trainingDetails').classList.add('invisible');
-            history.push('/trenerzy/harmonogram')
         }, 400)
 
     }
@@ -70,57 +69,58 @@ class TrainingDetails extends Component {
                 <div className="trainingPrimaryData">
                     <b>{data.name}</b>, {data.date}
                 </div>
-                <div className="sheduleUserData">
+                {/* <div className="sheduleUserData">
                     Klient: {data.first_name} {data.last_name} {data.login}
-                </div>
+                </div> */}
             </div>
 
-            mainData = <div className="trainingSheduleContentMain">
-                            <div className="sheduleMainDescription">
-                                 <div className="trainingDescription">
-                                 <div>Notka:</div>
-                                 <hr/>
-                                 {data.note}
+            mainData = <div>
+                          <div className="trainingSheduleContentMain">
+
+                             <div className="sheduleMainDescription">
+                                <div className="trainingDescription">
+                                   <h3>Notatka</h3>
+                                   <hr/>
+                                   <div className="note">
+                                      {data.note}
+                                   </div>
                                 </div>
                              </div>
 
-                            <div className="trainingSheduleDetails">
-                                <div className="trainingDuration">
-                                Czas trwania: {data.duration}
-                                </div>
-                            <div className="trainingPrice">
-                             Cena:  {data.prize}zł
-                            </div>
-                        </div>
-                    </div>
+                             <div className="trainingSheduleDetails">
+                                <ul className="trainingDetailsList">
+                                   <li><b>Czas trwania:</b> {data.duration}</li>
+                                   <li><b>Cena:</b>  {data.prize}zł</li>
+                                </ul>
+                             </div>
+                          </div>
+                       </div>
+
+           
         }
 
 
         return (
             <div className="trainingDetails invisible animated">
                 <div className="trainingContent">
-
+                    {/* <div className="sheduleLittleTitle"><h3>Szczegóły treningu</h3></div> */}
                     {this.state.isLoading && <div className="littleSpinner" ></div>}
                     <div className="trainingDetailsHeader">
-                        <div className="hideTrainingDetails" onClick={this.hide} ><i class="fas fa-times"></i></div>
-                    </div>
+                        <div className="hideTrainingDetails" onClick={this.hide} ><i class="fas fa-times"></i></div> 
+                     </div>
 
                     {primaryData}
-
-                    {/* <div className="trainingSheduleContentMain">
-                        <div className="sheduleMainDescription">
-                            <div className="trainingDescription">
-                            </div>
-                        </div>
-                        <div className="trainingSheduleDetails">
-                            <div className="trainingDuration">
-                            </div>
-                            <div className="trainingPrice">
-                            </div>
-                        </div>
-                    </div> */}
-
+                    
                     {mainData}
+                   {/*  <div className="sheduleLittleTitle">Dane klienta</div> */}
+
+                   <div className="sheduleUserData">
+                    <div>
+                    <h3>Klient</h3>
+                    <hr/>
+                    </div> 
+                    {data.first_name} {data.last_name} {data.login}
+                </div>
                 </div>
 
               

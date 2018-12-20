@@ -97,7 +97,7 @@ class UserCont extends Component {
                 
                      isLogedIn={this.props.user.isLogedIn}
                      isEmailConfirmed={this.props.user.emailConfirmed}
-                     page={'UŻYTKOWNIK'}/>
+                     page={'UZYTKOWNIK'}/>
 
                      
             <div className="userContentData">

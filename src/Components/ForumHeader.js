@@ -33,13 +33,16 @@ class ForumHeader extends React.Component{
         }
         render(){
             let page = this.props.page.toLowerCase();
+            let userNick =localStorage.getItem('loggedNick');
+        
+            
             return(
                 
                 <header className="animated forumHeader">
                     <div className="logo">
                        
                         <Link 
-                        to={ page === 'uzytkownik' ? `/${this.props.page.toLowerCase()}/profil` : `/${this.props.page.toLowerCase()}` }> 
+                        to={ page === 'uzytkownik' ? `/${page}/profil/${userNick}` : `/${page}` }> 
                         <i className="fas fa-dumbbell"></i> {this.props.page} <i className="fas fa-dumbbell"></i>
                         </Link>
                     </div>

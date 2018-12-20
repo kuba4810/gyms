@@ -14,7 +14,7 @@ class EditProfile extends React.Component{
                     <div className="topicsContent" id="topicsContent">
                     <div class="container">
 
-	<div class="row">
+	<div class="row animated fadeIn">
 
       <div class="col-md-12 ">
        {/* <div class="alert alert-info alert-dismissable">

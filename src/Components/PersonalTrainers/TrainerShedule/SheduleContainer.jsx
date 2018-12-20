@@ -17,7 +17,8 @@ class SheduleContainer extends Component {
 
         let februaryDaysCount = 
            (currentYear % 4 == 0 && currentYear % 100 != 0 || currentYear % 400 == 0) ? 29 : 28;
-
+        let monthNames =['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
+        'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień']
         
         this.state = {
             isLoading : true,
@@ -28,8 +29,7 @@ class SheduleContainer extends Component {
             monthDaysCount : [31,februaryDaysCount,31,30,31,30,31,31,30,31,30,31],
             isLeapYear :  (currentYear % 4 == 0 && currentYear % 100 != 0 || currentYear % 400 == 0),
             firstAppear : true,
-            monthNames : ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec',
-                          'Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
+            monthNames : monthNames,
             dayNames : ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
             dayItems :[],
             trainingsList :[
@@ -45,8 +45,8 @@ class SheduleContainer extends Component {
                
             ],
             sheduleListDate :{
-                day:'',
-                month: ''
+                day:   currentDay,
+                month: monthNames[currentMonth]
             },
             currentTraining: 0
         }
@@ -167,12 +167,15 @@ class SheduleContainer extends Component {
             i++;
         } */
 
+        let dayOfWeek = dow;
+        console.log('Dzień tygodnia przed pętlą: ',dayOfWeek);
+        
         items = []
         let dates = this.state.trainingsList.map( t => ( {id: t.training_id, date : t.date.split(',')[0]} ) );
         for(var index=0; index < 42 ; index++ ){           
             
             if(index < dow || index >= this.state.monthDaysCount[this.state.month]+dow ){
-                items.push( <DayItem dayNumber={'-'} />)
+                items.push( <DayItem dayNumber={'-'} dow={-1} />)
             }else{
                 let itemDate = `${this.state.year}-${this.state.month+1<10 ? `0${this.state.month+1}` : this.state.month+1}-${i<10? `0${i}` : i }`
                 let propsTrainings = dates.filter( tr=> ( tr.date === itemDate ) )      
@@ -183,12 +186,18 @@ class SheduleContainer extends Component {
                    <DayItem 
                       dayNumber={`${i}`} 
                       trainings={propsTrainings} 
-                      showTrainings={this.showTrainingList.bind(this)}/>
+                      showTrainings={this.showTrainingList.bind(this)}
+                      dow={dayOfWeek}/>
                    )
                 i++;
+                if(dayOfWeek === 6) {
+                    dayOfWeek=0;
+                }        
+                else{
+                    dayOfWeek++;
+                }
             }
-
-           
+          
         } 
 
         this.setState({
@@ -319,7 +328,7 @@ class SheduleContainer extends Component {
                       />
         return ( 
            <div className="topicsContent">
-             <div className="sheduleContainer">
+             <div className="sheduleContainer animated fadeIn">
              
              <div className="listContainer">
                 <div className="listHeader">
@@ -333,7 +342,7 @@ class SheduleContainer extends Component {
              </div>
 
              <div className="calendarContainer">
-             
+             {details}
              <div className="calendarContainerHeader">
                  
                     <div className="previousMonth" onClick={this.previousMonth}><i class="fas fa-angle-left"></i></div> 
@@ -345,7 +354,7 @@ class SheduleContainer extends Component {
                 </div>
 
                <div className="calendar">
-                   {details}
+                  
                    <div className="calendarHeader">
                        <div className="dayTitle">Nd</div>
                        <div className="dayTitle">Pon</div>

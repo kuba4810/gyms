@@ -57,7 +57,7 @@ class AnswerQuestionDiv extends React.Component{
     }
 
     render(){
-        if(localStorage.getItem("loggedIn") != 'false'){
+        if(localStorage.getItem("isLoggedIn") != 'false'){
             if(localStorage.getItem("isEmailConfirmed") == "true"){
                 return(
                     <div className="answerQuestionDiv collapse" id="ansDiv">

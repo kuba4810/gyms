@@ -48,7 +48,8 @@ class SheduleContainer extends Component {
                 day:   currentDay,
                 month: monthNames[currentMonth]
             },
-            currentTraining: 0
+            currentTraining: 0,
+            currentDayClicked : currentDay
         }
     }
 
@@ -70,7 +71,8 @@ class SheduleContainer extends Component {
             else{
                 // console.log('Odebrane z serwera treningi: ',res);
                 this.setState({
-                    trainingsList : res.trainings
+                    trainingsList : res.trainings,
+                    isLoading: false
                 })
             }
         })
@@ -107,7 +109,8 @@ class SheduleContainer extends Component {
 
         this.setState({
             currentTrainingList : [...array],
-            sheduleListDate : sheduleListDate
+            sheduleListDate : sheduleListDate,
+            currentDayClicked : dayItem
 
         })
         // console.log('Znalazłem takie treningi: ',array)
@@ -175,19 +178,21 @@ class SheduleContainer extends Component {
         for(var index=0; index < 42 ; index++ ){           
             
             if(index < dow || index >= this.state.monthDaysCount[this.state.month]+dow ){
-                items.push( <DayItem dayNumber={'-'} dow={-1} />)
+                items.push( <DayItem dayNumber={'-'} dow={-1} isActive={false}/>)
             }else{
                 let itemDate = `${this.state.year}-${this.state.month+1<10 ? `0${this.state.month+1}` : this.state.month+1}-${i<10? `0${i}` : i }`
                 let propsTrainings = dates.filter( tr=> ( tr.date === itemDate ) )      
                 //  console.log('Pasujące daty: ',propsTrainings) 
                 //  console.log('ItemDate: ',itemDate);
-                 
+                let isActive = (i === this.state.currentDayClicked)
                 items.push( 
                    <DayItem 
                       dayNumber={`${i}`} 
                       trainings={propsTrainings} 
                       showTrainings={this.showTrainingList.bind(this)}
-                      dow={dayOfWeek}/>
+                      dow={dayOfWeek}
+                      isActive={isActive}
+                      />
                    )
                 i++;
                 if(dayOfWeek === 6) {
@@ -316,6 +321,14 @@ class SheduleContainer extends Component {
         })
     }
     render() { 
+        const loader = <div class="loaderContainer">
+                <div class="loader">
+                </div>
+                <div class="loaderInner">
+                </div>
+                <div class="loaderInnerSmall">
+                </div>
+            </div>
         
         console.log('Renderuje shedule container...');
         
@@ -337,7 +350,7 @@ class SheduleContainer extends Component {
                 <div className="listTitle">
                    Zaplanowane treningi
                 </div>
-
+                   {/* <center>{this.state.isLoading && loader}</center>  */}
                    {list}
              </div>
 
@@ -365,7 +378,7 @@ class SheduleContainer extends Component {
                        <div className="dayTitle">Sob</div>
                    </div>
                    <div className="calendarBody">
-                     
+                       {/* <center>{this.state.isLoading && loader}</center> */}
                        {this.state.dayItems}
                    </div>
                </div>
@@ -374,6 +387,7 @@ class SheduleContainer extends Component {
 
             
            </div>
+           <center>{this.state.isLoading && loader}</center>
            </div>
          );
     }

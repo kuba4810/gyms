@@ -8,6 +8,7 @@ import './styles/mainStyle.css'
 import './styles/forumStyle.css'
 import './styles/animations.css'
 import './styles/userStyles.css'
+import './styles/generalStyles.css'
 // import './styles/gymStyle.css'
 
 

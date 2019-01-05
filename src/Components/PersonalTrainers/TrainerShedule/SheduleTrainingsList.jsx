@@ -6,9 +6,11 @@ class SheduleTrainingsList extends Component {
    
     render() { 
         console.log('Lista dostała takie treningi', this.props.trainingsList)
-        let items = this.props.trainingsList.map(tr=>( 
+        let items='';
+        items = this.props.trainingsList.map((tr,index)=>( 
         <div 
         className="sheduleListItem  animated fadeInDown"
+        style={{animationDelay: `.${index}s`}}
         onClick={this.props.showDetails.bind(null,tr.training_id)} > 
         {tr.name},  {tr.date.split(',')[1]}
         

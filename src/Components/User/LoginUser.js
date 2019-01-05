@@ -23,7 +23,7 @@ class User extends React.Component{
 
        return(
            <div className="loginUser" data-toggle="collapse" data-target="#userMenu">
-                { condition && <span class="badge badge-success">!</span>}
+                { condition && <span class="badge badge-primary">!</span>}
                <div className="loginUserDiv"  onClick={this.showUserMenu}>
                   <i className="fas fa-user"></i>
                 </div>

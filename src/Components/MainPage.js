@@ -42,7 +42,7 @@ const AppMain =() => {
                         <img src={require("../images/gymForum.jpg")} alt="forum-dyskusyjne"/>
 
                         <div className="itemCaption">Forum Dyskusyjne</div>
-                        <div className="itemInfo animated">Porozmawiaj z ekspertami treningach</div>
+                        <div className="itemInfo animated">Porusz dowolny temat</div>
                         <div className="itemSecondInfo animated">Forum otwarte dla wszystkich</div>
                     </Link>
                 </div>

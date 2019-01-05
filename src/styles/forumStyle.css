@@ -237,9 +237,9 @@ textarea{
     top: 100px;
     margin: 0;
     padding: 0;
-    animation-name: fadeIn;
+   /*  animation-name: fadeIn;
     animation-duration: .1s;
-    animation-delay: .5s;
+    animation-delay: .5s; */
 }
 
 

@@ -11,4 +11,5 @@ class GymFooter extends Component {
   }
 }
 
+
 export default GymFooter;

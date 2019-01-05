@@ -1,42 +1,48 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import {Link} from 'react-router-dom';
 
 class HeaderGym extends React.Component {
-    render() {
-      return (
-        <React.Fragment>
-          <header>
-            <nav className="nav-left">
-              <img src="https://img.icons8.com/color/50/000000/dumbbell.png" />
-            </nav>
-  
-            <nav className="nav-middle">
-              <ul>
-                <li>
-                  <a className="active">Wyszukaj siłownie</a>
+  render() {
+    return (
+      <React.Fragment>
+      <nav className="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <a className="navbar-brand" href="#"><Link to="/"><img className="gym-header-img" src="https://img.icons8.com/color/50/000000/dumbbell.png" /></Link></a>
+        </div>
+        
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <a className="nav-link" href="#"><Link to="/silownie">Siłownie</Link></a>
                 </li>
-                <li>
-                  <a href="#">Wyszukaj trenera</a>
+                <li className="nav-item">
+                    <a className="nav-link" href="#"><Link to="/trenerzy">Trenerzy</Link></a>
                 </li>
-                <li>
-                  <a href="#">Forum</a>
+                <li className="nav-item">
+                    <a className="nav-link" href="#"><Link to="/forum">Forum</Link></a>
                 </li>
-              </ul>
-            </nav>
-  
-            <nav className="nav-right">
-              <ul>
-                <li>
-                  <a>Zaloguj się</a>
+            </ul>
+        </div>
+
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Rejestracja</a>
                 </li>
-                <li>
-                  <a>Zarejestruj się</a>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Zaloguj się</a>
                 </li>
-              </ul>
-            </nav>
-          </header>
-        </React.Fragment>
-      );
-    }
+            </ul>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </nav>
+      </React.Fragment>
+    );
   }
-   
-  export default HeaderGym;
+}
+
+export default HeaderGym;

@@ -7,6 +7,7 @@ import {filterGym} from '../../../Selectors/filterGym'
 import {Link} from 'react-router-dom'
 import GymHeader from './GymHeader'
 import GymSection from './GymSection'
+import GymFooter from './GymFooter';
 
 
 class GymListC extends React.Component{
@@ -56,15 +57,16 @@ class GymListC extends React.Component{
         //     </ol>
         // </div>
 
+        
+
         <React.Fragment>
         <GymHeader/>
         <GymSection/>
-          <article>
-            <h1>Nasze obiekty</h1>
-            <div class="gym-list-container">
-            {gyms}
+            <h2 className="text-center p-4">Dostępne obiekty:</h2>
+            <div class="row container-fluid">
+                {gyms}
             </div>
-          </article>
+        <GymFooter/>
       </React.Fragment>
 
        );

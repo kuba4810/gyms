@@ -5,6 +5,8 @@ import PackageItem from './PackageItem'
 import Spinner from '../../LoadingSpinner'
 import ImageUploader from 'react-images-upload';
 import axios from 'axios'
+import {Link} from 'react-router-dom'
+
 
 
 class NewGym extends React.Component {
@@ -482,19 +484,58 @@ class NewGym extends React.Component {
 
         return (
             <div>
+            <nav className="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <a className="navbar-brand" href="#"><Link to="/"><img className="gym-header-img" src="https://img.icons8.com/color/50/000000/dumbbell.png" /></Link></a>
+        </div>
+        
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <a className="nav-link" href="#"><Link to="/silownie">Siłownie</Link></a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#"><Link to="/trenerzy">Trenerzy</Link></a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#"><Link to="/forum">Forum</Link></a>
+                </li>
+            </ul>
+        </div>
+
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Rejestracja</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Zaloguj się</a>
+                </li>
+            </ul>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </nav>
+
+
+            <div className="text-white bg-secondary">
+                <h1 className="text-center pt-5 mt-5">Dodawanie nowej siłowni</h1>
                 {/* Spinner */}
                 {this.state.gymIsAdding && <Spinner />}
 
                 {/* Podstawowe dane */}
                 {/* ------------------------------------------------------------------------------- */}
 
-                <div className="formTitle">
-                    <h3>Podstawowe dane</h3>
+                <div className="formTitle text-center mt-4">
+                    <h4>Podstawowe dane</h4>
                     <hr />
                 </div>
 
                 <form className="newGymForm primaryData animated" onSubmit={this.handleSubmit}>
-                    <div className="form-group">
+                    <div className="form-group col-6 mx-auto">
                         {/* name */}
                         <label htmlFor="name">
                         *Nazwa <span className="inputError"> {this.state.errors.name} </span>
@@ -557,13 +598,13 @@ class NewGym extends React.Component {
 
                 {/* Godziny otwarcia */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="formTitle">
-                    <h3>Harmonogram</h3>
+                <div className="formTitle text-center">
+                    <h4>Harmonogram</h4>
                     Dodaj godziny otwarcia Twojej siłowni
                     <hr />
                 </div>
 
-                <form className="openingHoursForm newGymForm">
+                <form className="openingHoursForm newGymForm col-6 mx-auto">
 
 
                     <div className="form-group">
@@ -632,8 +673,8 @@ class NewGym extends React.Component {
 
                 {/* Oferty */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="formTitle">
-                    <h3>Oferta</h3>
+                <div className="formTitle text-center col-6 mx-auto">
+                    <h4>Oferta</h4>
                     Dodaj oferty jakie są dostępne w Twojej siłowni (Siłownia,Basen,Sauna...)
                    <hr />
                 </div>
@@ -644,13 +685,13 @@ class NewGym extends React.Component {
                     </ul>
                 </div>
 
-                <div className="formTitle addOffer">
+                <div className="formTitle addOffer col-6 mx-auto text-center">
                     <i className="fas fa-plus-circle showOfferForm"
                         onClick={this.showOfferForm} data-toggle="collapse" data-target="#offerForm">
                     </i>
                 </div>
 
-                <form id="offerForm" className="newGymForm offerForm collapse" onSubmit={this.handleOfferSubmit}>
+                <form id="offerForm" className="newGymForm offerForm collapse col-6 mx-auto" onSubmit={this.handleOfferSubmit}>
                     <label htmlFor="offerName">Nazwa oferty</label>
                     <input name="offerName" type="text" className="form-control" />
 
@@ -841,6 +882,7 @@ class NewGym extends React.Component {
                     </div>
                 </div>
 
+            </div>
             </div>
         );
     }

@@ -6,28 +6,25 @@ class GymItem extends React.Component{
         var gymData = this.props.gymData;
       return(
         <React.Fragment>
-              <div class="gym-list-box">
-                <div class="gym-list-header">
-                  <div class="img-holder">
-                    <div class="gym-list-img" />
-                  </div>
-                  <div class="gym-list-name">
-                    <Link to={`silownie/view/${gymData.gym_id}/${gymData.gym_name.split(' ').join('-')}`}> {gymData.gym_name} </Link>,{gymData.city}
-                  </div>
-                  <div class="gym-list-stars">{gymData.evaluation}</div>
+              
+                <div class="col-md-6 col-xl-4 p-4">
+                    <div class="card text-white bg-dark ">
+                            <div class="card-header d-flex justify-content-between">
+                                    <div><img src="https://img.icons8.com/color/50/000000/dumbbell.png" class="rounded-circle"/></div>
+                                    <div><Link to={`silownie/view/${gymData.gym_id}/${gymData.gym_name.split(' ').join('-')}`}> {gymData.gym_name} </Link>,{gymData.city}</div>
+                                    <div>{gymData.evaluation}</div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">{gymData.description}</p>
+                                <p class="card-text">Sauna, siłownia</p>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <p class="card-text">Godziny otwarcia</p>
+                            </div>
+                    </div>
                 </div>
-                <div class="gym-list-body">
-                  <div class="gym-list-description">
-                    <p>
-                      {gymData.description}
-                    </p>
-                  </div>
-                </div>
-                <div class="gym-list-footer">
-                  <div class="gym-list-offer">sauna, siłownia</div>
-                  <div class="gym-list-hours">Godziny otwarcia</div>
-                </div>
-              </div>
+
       </React.Fragment>
       );
     }

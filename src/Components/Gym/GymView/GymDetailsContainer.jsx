@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import {Link} from 'react-router-dom'
 
 import { getGymDetails } from "../../../services/gymService";
 import {
@@ -7,6 +8,9 @@ import {
   newCommentSent,
   evaluation_update
 } from "../../../Actions/index";
+
+
+
 
 class GymDetailsCont extends React.Component {
   componentDidMount() {
@@ -96,6 +100,7 @@ class GymDetailsCont extends React.Component {
         alert("Wystąpił błąd, spróbuj ponownie później !");
       });
   };
+
   render() {
     const data = this.props.gymDetails.gym.gymData;
 
@@ -183,7 +188,7 @@ class GymDetailsCont extends React.Component {
           <i class="fas fa-check" /> {eq}{" "}
         </div>
       ));
-
+      
       // Opinie
       comments = (
         <table>
@@ -202,6 +207,10 @@ class GymDetailsCont extends React.Component {
         </table>
       );
     }
+
+
+
+
     // return (
     // <div class="color-cornsilk">
     //     <h2> Witam, jestem widokiem siłowni <em>{this.props.match.params.gym_name}</em> :D </h2>
@@ -258,45 +267,101 @@ class GymDetailsCont extends React.Component {
 
     if (this.props.gymDetails.isLoading === false) {
       return (
-        <div class="container">
-          <div class="section">
-            <div class="col span_2_of_3">
-              <div class="blog-post">
-                <h1 class="blog-title">
-                  {this.props.gymDetails.gym.gymData.gym_name}
-                </h1>
-              </div>
+        
+        <React.Fragment>
+        <nav className="navbar navbar-expand-md bg-dark navbar-dark">
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <a className="navbar-brand" href="#"><img src="https://img.icons8.com/color/50/000000/dumbbell.png"/></a>
+        </div>
+        
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Siłownie</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Trenerzy</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Forum</a>
+                </li>
+            </ul>
+        </div>
 
-              <div class="blog-post">
-                <h1 class="blog-title">Zdjęcia</h1>
-                <p class="blog-content">Conajmniej 3 klocki ze zdjęciami </p>
-              </div>
+        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
+            <ul className="navbar-nav">
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Rejestracja</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Zaloguj się</a>
+                </li>
+            </ul>
+        </div>
 
-              <div class="blog-post">
-                <h1 class="blog-title">O Siłowni</h1>
-                <h2 class="date">Opublikowane 15 Grudzień 2018</h2>
-                <p class="blog-content">{this.props.gymDetails.gym.gymData.description}
-                </p>
-              </div>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span className="navbar-toggler-icon"></span>
+        </button>
 
-              <div class="blog-post">
-                <h1 class="blog-title">Oferta</h1>
-                <p class="blog-content">{offer}</p>
-              </div>
+    </nav>
 
-              <div class="blog-post">
-                <h1 class="blog-title">Harmonogram</h1>
-                <p class="blog-content">{openingHours}</p>
-              </div>
 
-              <div class="blog-post">
-                <h1 class="blog-title">Cennik</h1>
-                <p class="blog-content">{packages}</p>
-              </div>
 
+  <div className="container-fluid">
+  <div className="card mb-3 col-6 text-white bg-dark mt-5">
+  <div className="card-body">
+    <h5 className="card-title">Nazwa siłowni</h5>
+    <p className="card-text">{this.props.gymDetails.gym.gymData.gym_name}</p>
+    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  </div>
+
+
+  <div className="card mb-3 col-6 text-white bg-dark">
+  <div className="card-body">
+    <h5 className="card-title">Zdjęcia</h5>
+    <p className="card-text">{this.props.gymDetails.gym.gymData.gym_name}</p>
+    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  </div>
+
+  <div className="card mb-3 col-6 text-white bg-dark">
+  <div className="card-body">
+    <h5 className="card-title ">O siłowni</h5>
+    <p className="card-text">{this.props.gymDetails.gym.gymData.description}</p>
+    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  </div>             
+
+  <div className="card mb-3 col-6 text-white bg-dark">
+  <div className="card-body">
+    <h5 className="card-title">Oferta</h5>
+    <p className="card-text">{offer}</p>
+    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  </div>   
+
+  <div className="card mb-3 col-6 text-white bg-dark">
+  <div className="card-body">
+    <h5 className="card-title">Harmonogram</h5>
+    <p className="card-text">{openingHours}</p>
+    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  </div>   
+
+  <div className="card mb-3 col-6 text-white bg-dark">
+  <div className="card-body">
+    <h5 className="card-title">Cennik</h5>
+    <p className="card-text">{packages}</p>
+    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  </div>   
+  </div>
+
+  
 
               {(localStorage.getItem('isLoggedIn') === 'true') &&
-            <form onSubmit={this.sendComment} className='gymCommentForm' >
+            <form onSubmit={this.sendComment} className='gymCommentForm col-6 text-center' >
                 <legend><h3>Wystaw opinie</h3></legend>
                 <div className="form-group">
                 <textarea className="form-control" name="text" id="" cols="30" rows="10"></textarea>
@@ -305,31 +370,20 @@ class GymDetailsCont extends React.Component {
             </form>
             }
 
-              <div class="blog-post">
-                <h1 class="blog-title">Komentarze</h1>
-                <p class="blog-content">{comments}</p>
+            <div className="container mt-3">
+              <h2>Media Object</h2>
+              <p>Create a media object with the .media and .media-body classes:</p>
+              <div className="media border p-3">
+                <img src="img_avatar3.png" alt="John Doe" className="mr-3 mt-3 rounded-circle" style={{width: 60+"px"}}/>
+                <div className="media-body">
+                  <h4>John Doe <small><i>Posted on February 19, 2016</i></small></h4>
+                  <p>{comments}</p>      
+                </div>
               </div>
-
             </div>
-            
+              
 
-            <aside class="col span_1_of_3">
-              <div class="side-post">
-                <p class="side-content">MAPA. Znajdziesz nas TUTAJ:</p>
-              </div>
-
-              <div class="side-post">
-                <p class="side-content">
-                  {data.email}
-                </p>
-              </div>
-
-              <div class="side-post">
-                <p class="side-content">Godziny Otwarcia</p>
-              </div>
-            </aside>
-          </div>
-        </div>
+        </React.Fragment>
       );
     }
      else {

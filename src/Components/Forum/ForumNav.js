@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {searchQuestions,changeCategory} from '../../Actions'
+import {searchQuestions,changeCategory,clearForumSearching} from '../../Actions'
 import {Link} from 'react-router-dom'
 
 
@@ -51,6 +51,11 @@ class ForumNav extends React.Component{
 
 
     }
+
+    clearSearching = () =>{
+        this.props.clearForumSearching();
+        this.props.changeCategory('WSZYSTKIE');
+    }
     render(){
         return(
             <div className="forumNav" id="forumNav">
@@ -67,12 +72,14 @@ class ForumNav extends React.Component{
                         <i className="fas fa-search"></i>
                     </div>
                 </div>
+                
+              
     
-    
+               
                 <div className="askQuestion">
                     <Link to="/forum/zadaj-pytanie">Zadaj pytanie</Link>
                 </div>
-    
+               
     
                 <div className="categories">
                     <div className="categoriesTitle">
@@ -120,7 +127,8 @@ class ForumNav extends React.Component{
                     
                   
                 </div>
-                
+
+                <div className="clearSearching" onClick={this.clearSearching}> Wyszyść filtr </div>
     
                 <div className="socialMedia">
                     <div className="media animated"><a href="#"><i className="fab fa-facebook-square"></i></a></div>
@@ -142,6 +150,6 @@ const mapStateToProps = state => {
     };
 }
 
-const mapDispatchToProps = {searchQuestions,changeCategory}
+const mapDispatchToProps = {searchQuestions,changeCategory,clearForumSearching}
 
 export const ForumNavContainer = connect(mapStateToProps,mapDispatchToProps)(ForumNav);

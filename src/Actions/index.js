@@ -20,6 +20,12 @@ export const changeCategory = (category) => ({
   category
 });
 
+// Czyszczenie wyszukiwarki
+export const clearForumSearching = () => (
+  {
+    type : 'CLEAR_FORUM_SEARCHING'
+  }
+)
 
 // Wybrano pytanie 
 export const selectCurrentQuestion = (qId) => ({

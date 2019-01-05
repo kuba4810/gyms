@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {Pool} = require('pg');
 const pg = require('pg');
-
+const client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
 // Mark message as READ 
 // ------------------------------------------------------------------------------------------------
 router.get('/markMessageAsRead/:messageId', function(req, res) {
@@ -90,7 +90,7 @@ router.get('/getMessages/:user_id',function(request,response){
 
    
     var user_id = request.params.user_id;
-    console.log('Użytkownik id: ',user_id)
+    console.log('GetMessages...')
     
 
     var query = `SELECT message_id ,login ,sender,receiver, sending_date,message_content,is_read, receiver_deleted,sender_deleted 
@@ -101,6 +101,7 @@ router.get('/getMessages/:user_id',function(request,response){
     client.query(query,values)
     .then(res=>res.rows)
     .then(res=>{
+        console.log('Pobrane wiadomości: ',res);        
         response.json(res);
     })
     .catch(err=>{

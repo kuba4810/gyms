@@ -7,7 +7,8 @@ var EmailTemplate = require('email-templates').EmailTemplate;
 var randomstring = require("randomstring");
 var nodemailer = require('nodemailer');
 var opn = require('opn');
-app.use(express.static('public'));
+
+app.use(express.static('/public'));
 
 const fileUpload = require('express-fileupload');
 
@@ -499,7 +500,9 @@ app.get('/getUserData/:user_id',function(req,res){
         port: 5432,
     });
 
-    var query = "SELECT users.* , user_statistics.*	FROM kuba.users natural join kuba.user_statistics WHERE users.login = $1;";
+    var query = `SELECT users.* , user_statistics.*	
+                 FROM kuba.users natural join kuba.user_statistics 
+                 WHERE users.login = $1`;
     var values = [user_id];
 
     pool.query(query,values,function(err,response){

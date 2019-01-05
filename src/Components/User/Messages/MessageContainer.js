@@ -1,6 +1,7 @@
 import React from 'react'
 import Messages from './Messages'
 import { timingSafeEqual } from 'crypto';
+import {NavLink} from 'react-router-dom'
 
 class MessageContainer extends React.Component{
 
@@ -10,9 +11,11 @@ class MessageContainer extends React.Component{
         this.state = {
             messages: [],
             messageType: "received",
-            showRead: false,
+            isLoading: true,
+            showRead: true,
             messageContainerAlert : "",
-            alertTimeout : null
+            alertTimeout : null,
+            title : 'ODEBRANE'
         }
     }
 
@@ -93,11 +96,21 @@ class MessageContainer extends React.Component{
     }
 
     filterReceiveMessages=()=>{
-        this.setState({messageType: "received"});
+        this.setState(
+            {
+                messageType: "received",
+                title: 'ODEBRANE'
+            }
+            );
     }
 
     filterSentMessages=()=>{
-        this.setState({messageType: "sent"});
+        this.setState(
+            {
+                messageType: "sent",
+                title: 'WYSŁANE'
+            }
+            );
     }
 
     changeMessageState=()=>{
@@ -118,7 +131,10 @@ class MessageContainer extends React.Component{
     
 
     componentDidMount(){
-
+        console.log('Pobieram wiadomości...');
+        console.log('Obecny adres w MessageContainer: ',this.props.match);
+        
+        
         var userId = localStorage.getItem("loggedId");
         console.log('Id użytkownika: ',userId);
 
@@ -131,8 +147,12 @@ class MessageContainer extends React.Component{
           
         }).then(response => response.json())
             .then( (response) => {
-                this.setState({messages : response});
-                console.log(response);               
+                this.setState(
+                    {
+                        messages : response,
+                        isLoading : false
+                    });
+                console.log('Pobrane wiadomości: ',response);               
             }).catch(()=>{console.log("Nie udało się wczytać wiadomości !")})
 
             //document.getElementById("forumNav").classList.add("invisible");
@@ -148,6 +168,14 @@ class MessageContainer extends React.Component{
 
         var userId = localStorage.getItem("loggedId");
         var messages=[];
+        const loader = <div class="loaderContainer">
+                            <div class="loader">
+                            </div>
+                             <div class="loaderInner">
+                            </div>
+                            <div class="loaderInnerSmall">
+                            </div>
+                        </div>
 
         if(this.state.messageType == "received"){
             if(this.state.showRead){
@@ -176,7 +204,7 @@ class MessageContainer extends React.Component{
         return(
                  <div>
                        <div className="topicsGroupTitle">
-                             WIADOMOŚCI
+                             {this.state.title}
                        </div>
         
                         <div className="topicsContent" id="topicsContent"> 
@@ -186,13 +214,19 @@ class MessageContainer extends React.Component{
                                 <div class="row messageOptionRow">
                                     <div className="col-lg-12">
                                          <ul className="messageListOption ">
-                                             <li onClick={this.filterReceiveMessages}>Skrzynka odbiorcza</li>
+                                             <li to={'/uzytkownik/wiadomosci/odebrane'} onClick={this.filterReceiveMessages}>Skrzynka odbiorcza</li>
                                              <li onClick={this.filterSentMessages}>Pozycje wysłane</li>
                                              <li>
+
                                              <div class="custom-control custom-checkbox mb-3">
                                             
-                                             <input  type="checkbox" class="custom-control-input" id="customCheck" name="example1" />
-                                             <label onClick={ this.changeMessageState} class="custom-control-label" for="customCheck">Pokaż przeczytane</label>
+                                             { this.state.title === 'ODEBRANE' && <div>
+                                                  <input  type="checkbox" class="custom-control-input" id="customCheck" name="example1" />
+                                                  <label onClick={ this.changeMessageState} class="custom-control-label" for="customCheck">
+                                                     Ukryj przeczytane
+                                                  </label>
+                                               </div>}
+
                                             </div>
                                              </li>
                                          </ul>
@@ -201,6 +235,7 @@ class MessageContainer extends React.Component{
                                      </div>
 
                                      <div className="col-12 messageList">
+                                         {this.state.isLoading && loader}
                                          <Messages filterFunctions={filterFunctions} messageType={this.state.messageType} delete={this.deleteMessage} mark={this.markAsRead} messages={messages} /> 
                                     </div>
                            

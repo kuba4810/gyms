@@ -1,11 +1,13 @@
 import React from 'react'
+import history from '../../../history'
 
 class NewMessage extends React.Component{
 
     constructor(){
         super(...arguments);
         this.state = {
-            messageContent : ""
+            messageContent : "",
+            messageAlert : null
         }
 
 
@@ -17,7 +19,7 @@ class NewMessage extends React.Component{
     }
     sendMessage = () => {
         var receiver = this.props.match.params.userId;
-        var sender = parseInt(localStorage.getItem("logedIn"));
+        var sender = parseInt(localStorage.getItem("loggedId"));
         var text = this.state.messageContent;
 
         var data ={
@@ -40,6 +42,7 @@ class NewMessage extends React.Component{
             }
         }).then(response => response.json())
             .then( (response) => { 
+                history.push('/uzytkownik/wiadomosci')
                 //alert("Wiadomość została wysłana !");
                 //setTimeout(()=>{window.location = "http://localhost:3000/forum/wiadomosci"});
             }).catch();

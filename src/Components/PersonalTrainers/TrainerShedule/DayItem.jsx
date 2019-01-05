@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 class DayItem extends Component {
 
-    state = {  }
+    constructor(){
+        super();
+        this.state = { 
+            isActive : false,
+            change : false
+         }
+    }
 
     showTrainings = ()=>{
         if(this.props.trainings ){
@@ -9,10 +15,28 @@ class DayItem extends Component {
             this.props.showTrainings(table,this.props.dayNumber)
         }
     }
+   
+    componentDidMount(){
+        this.setState({
+            isActive : this.props.isActive
+        })
+      
+        
+    }
 
+    componentDidUpdate(prev,next){
+        console.log('Nowe propsy !');
+        
+        if(prev.isActive !== next.isActive){
+           this.render();
+        }
+    }
     render() { 
 
+        console.log('Renderuje day...');
+        
         let divStyle;
+       
           
         let dow = this.props.dow;
         if(dow === 6){
@@ -40,7 +64,9 @@ class DayItem extends Component {
      
         return ( 
         <div 
-           className={`dayItem ${isEvent ? 'dayItemIsEvent' : ''} ${(dayNumber === '-') ? 'dayItemNone' : ''}` }
+           className={`dayItem 
+                       ${isEvent ? 'dayItemIsEvent' : ''}
+                       ${(dayNumber === '-') ? 'dayItemNone' : ''}` }
            onClick={this.showTrainings}
            style={divStyle}
         >

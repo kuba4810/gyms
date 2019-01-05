@@ -98,7 +98,7 @@ class User extends React.Component{
                         </ul>
     
         
-                        { button }
+                        {  localStorage.getItem('isLoggedIn') === 'true' && button }
                        
                        
                     </div>

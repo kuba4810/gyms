@@ -183,6 +183,12 @@ body{
     
 }
 
+.activeDay{
+    
+    /* background-color: #003399; */
+    box-shadow: 0px 0px 0px 10px lightblue;
+}
+
 
 .trainingDetails{
     position:absolute;

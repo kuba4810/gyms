@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-
+import {formatDate} from '../../../services/dateService'
 class MessageItem extends React.Component{
     
 
@@ -59,7 +59,6 @@ class MessageItem extends React.Component{
     }
 
 
-   
 
     render(){
         var user_id = localStorage.getItem("loggedId");
@@ -71,11 +70,11 @@ class MessageItem extends React.Component{
         else{
             bgColor = "cornsilk";
         }
-        var userId = localStorage.getItem("isLoggedIn");
+        var userId = localStorage.getItem("loggedId");
         
         return(
                  <div class="message animated fadeIn">
-                    <div class="messageData"><p> {message.sender==userId ? <span style={{color:"rgb(255,51,51)"}}>Ja</span> :message.login}, {message.sending_date} </p>
+                    <div class="messageData"><p> {message.sender==userId ? <span style={{color:"rgb(255,51,51)"}}>Ja</span> :message.login}, {formatDate(message.sending_date)} </p>
                          { message.sender!=userId  &&  <a  href={"http://localhost:3000/uzytkownik/nowa-wiadomosc/"+message.sender+"/"+message.login}>Odpisz</a>  }
                          
                          {(message.receiver == userId && message.is_read === false) ? 

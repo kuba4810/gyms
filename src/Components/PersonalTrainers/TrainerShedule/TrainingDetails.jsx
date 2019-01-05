@@ -63,6 +63,7 @@ class TrainingDetails extends Component {
         let data = this.state.training;
         let primaryData = ''
         let mainData =''
+        let clientData =''
 
         if (!this.state.isLoading) {
             primaryData = <div className="trainingContentTitle">
@@ -96,6 +97,13 @@ class TrainingDetails extends Component {
                           </div>
                        </div>
 
+       clientData = <div className="sheduleUserData">
+                        <div>
+                           <h3>Klient</h3>
+                           <hr/>
+                        </div> 
+                        {data.first_name} {data.last_name} {data.login}
+                    </div>
            
         }
 
@@ -114,16 +122,10 @@ class TrainingDetails extends Component {
                     {mainData}
                    {/*  <div className="sheduleLittleTitle">Dane klienta</div> */}
 
-                   <div className="sheduleUserData">
-                    <div>
-                    <h3>Klient</h3>
-                    <hr/>
-                    </div> 
-                    {data.first_name} {data.last_name} {data.login}
-                </div>
+                  
                 </div>
 
-              
+              {clientData}
 
             </div>);
     }

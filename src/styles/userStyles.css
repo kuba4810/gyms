@@ -14,9 +14,13 @@
 /* Edit profile */
 /* --------------------------------------------------------------------------------------------- */
 
+.editProfileForm{
+    width:100%;
+}
 .editProfileForm label{
     font-size: 20px;
     font-weight: bold;
+    width:100%;
 }
 
 .editProfileForm input[type="text"], .editProfileForm input[type="password"]{
@@ -34,4 +38,33 @@
 .editProfileForm input[type="text"]:focus{
     box-shadow:none;
     background-color: rgba(63,63,63,1);
+}
+.editProfileRow .col-lg-4{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.editProfileRow .userAvatar{
+    width:120px;
+    height:120px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.editProfileRow label{
+    font-size: 20px;
+}
+
+.editProfileRow input{
+    font-size: 20px;
+}
+
+.editProfileRow hr{
+    border-color: #262626 !important;
+}
+
+.editProfileForm .btn{
+    width:50%;
+    border-radius:0;
 }

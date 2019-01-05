@@ -101,7 +101,7 @@ class UserCont extends Component {
 
                      
             <div className="userContentData">
-                <div className="topicsMenu">
+               { localStorage.getItem('isLoggedIn') === 'true' && <div className="topicsMenu">
                     <NavLink to={ `/uzytkownik/profil/${user_nick}` } activeClassName ="topicActive" className="topic">
                        Profil
                     </NavLink>
@@ -127,7 +127,7 @@ class UserCont extends Component {
                     <div className="topic">NAJWIĘCEJ ODPOWIEDZI</div>
                     <div className="topic">BEZ ODPOWIEDZI</div>
                     <div className="topic" style={{padding: "23px 0px"}}>CZĘSTO ODWIEDZANE</div> */}
-                </div>
+                </div>}
                 
                             {/* <Route exact path={this.props.match.path} component={QuestionListContainer} /> */}
                             <Route path={`${this.props.match.path}/profil/:userId`} component={User} />

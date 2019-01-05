@@ -8,7 +8,7 @@ import {selectCurrentQuestion,answerAdded} from '../../../Actions';
 
 import {Link} from 'react-router-dom'
 import history from '../../../history'
-
+import {formatDate} from '../../../services/dateService'
 
 class Question extends React.Component{
     constructor(){
@@ -182,7 +182,7 @@ class Question extends React.Component{
                                 <Link id="categoryLink" to={"/forum?sort=" + data.category}>{data.category}</Link> przez 
 
                                 <Link id="userLink" to={"/uzytkownik/profil/" + data.login}> {data.login} </Link>
-                                <br/><span className="creationDate"> {data.creating_date}</span>
+                                <br/><span className="creationDate"> {formatDate(data.creating_date)}</span>
                                 <hr/>
                             </div>
 

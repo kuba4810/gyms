@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-
+import {formatDate} from '../../../services/dateService'
 class Answer extends React.Component{
     constructor(props) {
         super(props);
@@ -117,7 +117,7 @@ class Answer extends React.Component{
                     <div className="postContentTopic">
                         <span className="colorWhite">Odpowiedź od  </span>
                         <Link to={"/uzytkownik/profil/" + data.login} id="userAnswerLink">{data.login}</Link> <br/>
-                        <span className="answerDate">{data.creating_date}</span>
+                        <span className="answerDate">{formatDate(data.creating_date)} </span>
                         <hr/>
                     </div>
 

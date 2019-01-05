@@ -16,21 +16,24 @@ class Answer extends React.Component{
     voteUp = () => {
         if(localStorage.getItem("logedIn")!="false")
         {
-            var data = JSON.stringify({
-                Type:1,
-                AID: this.props.answerData.answer_id
-            });
-            fetch("http://localhost:5000/updateAnswerVotes",{
-                method: "POST",
-              
-                headers: {
-                    "Content-Type": "application/json;",
-                },
-              
-                body: data, 
+            var data = {
+                user_id : localStorage.getItem('loggedId'),
+                answer_id:this.props.answerData.answer_id,
+                value : '1'
+            };
+            fetch("http://localhost:8080/api/answer/vote", {
+                    method: "POST",
+                    mode: "cors",
+                    cache: "no-cache",
+                    credentials: "same-origin", //
+                
+                    body: JSON.stringify(data), // body data type must match "Content-Type" header
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
             }).then(response => response.json())
                 .then( (response)=> {
-                    this.setState({votes: response});
+                    this.setState({votes: response.votes_count});
                 })
         }
         else{
@@ -50,21 +53,24 @@ class Answer extends React.Component{
     voteDown = () =>{
         if(localStorage.getItem("logedIn")!="false")
         {
-            var data = JSON.stringify({
-                Type:-1,
-                AID: this.props.answerData.answer_id
-            });
-            fetch("http://localhost:5000/updateAnswerVotes",{
+            var data = {
+                user_id : localStorage.getItem('loggedId'),
+                answer_id:this.props.answerData.answer_id,
+                value : '0'
+            };
+            fetch("http://localhost:8080/api/answer/vote", {
                 method: "POST",
-              
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin", //
+             
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
                 headers: {
-                    "Content-Type": "application/json;",
-                },
-              
-                body: data, 
+                    "Content-Type": "application/json"
+                }
             }).then(response => response.json())
                 .then( (response)=> {
-                    this.setState({votes: response});
+                    this.setState({votes: response.votes_count});
                 })
         }
         else{

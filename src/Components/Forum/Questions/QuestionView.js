@@ -74,22 +74,28 @@ class Question extends React.Component{
     voteUp = () => {
         if(localStorage.getItem("loggedIn")!="false")
         {
-            var data = JSON.stringify({
-                Type:1,
-                QID:this.state.qID
-            });
-            fetch("http://localhost:5000/updateQuestionVote",{
+            var data = {
+                user_id : localStorage.getItem('loggedId'),
+                question_id:this.state.qID,
+                value : '1'
+            };
+            fetch("http://localhost:8080/api/question/vote", {
                 method: "POST",
-              
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin", //
+             
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
                 headers: {
-                    "Content-Type": "application/json;",
-                },
-              
-                body: data, 
+                    "Content-Type": "application/json"
+                }
             }).then(response => response.json())
                 .then( (response)=> {
-                    this.setState({votes: response});
+                     this.setState({votes: response.votes_count});
                 })
+                .catch(err=>{
+                    alert('Wystąpił błąd, spróbuj ponownie później !');
+                 })
         }
         else{
             var buttons = document.getElementsByClassName("confirmationButton");
@@ -104,22 +110,28 @@ class Question extends React.Component{
     voteDown = () =>{
         if(localStorage.getItem("loggedIn")!="false")
         {
-            var data = JSON.stringify({
-                Type:-1,
-                QID:this.state.qID
-            });
-            fetch("http://localhost:5000/updateQuestionVote",{
+            var data = {
+                user_id : localStorage.getItem('loggedId'),
+                question_id:this.state.qID,
+                value : '0'
+            };
+            fetch("http://localhost:8080/api/question/vote", {
                 method: "POST",
-              
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin", //
+             
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
                 headers: {
-                    "Content-Type": "application/json;",
-                },
-              
-                body: data, 
+                    "Content-Type": "application/json"
+                }
             }).then(response => response.json())
                 .then( (response)=> {
-                    this.setState({votes: response});
-                })
+                    this.setState({votes: response.votes_count});
+             })
+             .catch(err=>{
+                alert('Wystąpił błąd, spróbuj ponownie później !');
+             })
         }
         else{
             var buttons = document.getElementsByClassName("confirmationButton");

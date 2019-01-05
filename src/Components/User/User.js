@@ -114,9 +114,9 @@ class User extends React.Component{
                             <li><span className="title">Udzielone odpowiedzi:</span> <span className="value"
                                                                                            id="usrAnswers"> {data.answers} </span></li>
                             <li><span className="title">Napisane komentarze:</span> <span className="value"
-                                                                                          id="usrVotesUp"> {data.votes_up} </span></li>
+                                                                                          id="usrVotesUp"> 0 </span></li>
                             <li><span className="title">Oddanych głosów:</span> <span className="value"
-                                                                                      id="usrVotesDown"> {data.voted_down} </span></li>
+                                                                                      id="usrVotesDown"> {data.voted_down + data.votes_up} </span></li>
     
     
                         </ul>

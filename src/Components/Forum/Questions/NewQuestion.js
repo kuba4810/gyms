@@ -94,7 +94,7 @@ class  Question extends React.Component{
                             </div>
         
                             <h3>Treść pytania</h3>
-                            <textarea className="questionContent" cols="30" rows="20" name="content"></textarea>
+                            <textarea className="questionContent" cols="30" rows="10" name="content"></textarea>
         
                             <button type="submit" className="saveQuestion">Zadaj pytanie</button>
                         </form>

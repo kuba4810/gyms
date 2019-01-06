@@ -22,6 +22,9 @@ class Login extends React.Component{
         loginContent.classList.remove('zoomIn');
         loginContent.classList.add('fadeOutDown');
         
+        loginForm.classList.remove('fadeIn');
+        loginForm.classList.add('fadeOut');
+        
         setTimeout(()=>{
             loginForm.classList.add("invisible");
         },500)
@@ -107,7 +110,7 @@ class Login extends React.Component{
 
     render(){
         return(
-            <div className="login invisible" id={"loginForm"}>
+            <div className="login invisible animated" id={"loginForm"}>
                 <div className="loginContent animated">
                     <div className="close transition" onClick={this.hideLoginForm}><i className="fas fa-times"></i></div>
                     <div className="imgcontainer">

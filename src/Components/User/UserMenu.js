@@ -29,10 +29,10 @@ class Menu extends React.Component{
     render(){
         let user_id = localStorage.getItem('loggedId')
         return(
-            <div className=" userMenu" >
+            <div className="userMenu" >
                 <div className="collapse userMenuContainer" id="userMenu">
 
-                    <ul className="userOptionsList">
+                    <ul className="userOptionsList animated slideOutUp">
                         <li className="usr">
                            <Link id="userNick" to={`/uzytkownik/profil/${this.props.user.logedNick}`}>
                               Witaj  {this.props.user.logedNick}

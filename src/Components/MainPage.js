@@ -62,7 +62,7 @@ const AppFooter = () =>{
 
 const mainPage = () => {
     return(
-        <div>
+        <div className="animated fadeIn">
             <AppHeader/>
             <AppMain/>
             <AppFooter/>

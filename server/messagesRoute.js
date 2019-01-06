@@ -95,7 +95,7 @@ router.get('/getMessages/:user_id',function(request,response){
 
     var query = `SELECT message_id ,login ,sender,receiver, sending_date,message_content,is_read, receiver_deleted,sender_deleted 
                 FROM kuba.users  INNER JOIN kuba.messages ON( users.user_id = messages.sender)
-                WHERE (receiver = $1 and receiver_deleted = false) OR (sender =$1 and sender_deleted = false)  ORDER BY sending_date ASC;`
+                WHERE (receiver = $1 and receiver_deleted = false) OR (sender =$1 and sender_deleted = false)  ORDER BY sending_date DESC;`
     var values = [user_id];
 
     client.query(query,values)

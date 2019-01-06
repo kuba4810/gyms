@@ -15,6 +15,9 @@ class RegisterForm extends React.Component{
         registerContent.classList.remove('zoomIn');
         registerContent.classList.add('fadeOutDown')
 
+        registerForm.classList.remove('fadeIn');
+        registerForm.classList.add('fadeOut');
+
         setTimeout(()=>{
             registerForm.classList.add("invisible");
         },500);
@@ -62,7 +65,7 @@ class RegisterForm extends React.Component{
     }
     render(){
         return(
-            <div className="register invisible" id="registerForm">
+            <div className="register invisible animated" id="registerForm">
 
                 <div className="registerContent animated">
                     <div className="close transition" onClick={this.hideRegisterForm}><i className="fas fa-times"></i></div>

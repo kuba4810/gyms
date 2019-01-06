@@ -16,6 +16,8 @@ class ForumHeader extends React.Component{
             var loginContent = document.querySelector('.loginContent');
 
             loginForm.classList.remove("invisible");
+            loginForm.classList.remove("fadeOut");
+            loginForm.classList.add('fadeIn');
             
             loginContent.classList.remove('fadeOutDown');
             loginContent.classList.add('zoomIn');
@@ -27,6 +29,8 @@ class ForumHeader extends React.Component{
             var registerContent = document.querySelector('.registerContent');
             
             registerForm.classList.remove('invisible');
+            registerForm.classList.remove("fadeOut");
+            registerForm.classList.add('fadeIn');
             
             registerContent.classList.remove("fadeOutDown");
             registerContent.classList.add('zoomIn')

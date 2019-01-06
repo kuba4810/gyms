@@ -55,6 +55,8 @@ class  Question extends React.Component{
         var loginContent = document.querySelector('.loginContent');
 
         loginForm.classList.remove("invisible");
+        loginForm.classList.remove("fadeOut");
+        loginForm.classList.add('fadeIn');
         
         loginContent.classList.remove('fadeOutDown');
         loginContent.classList.add('zoomIn');

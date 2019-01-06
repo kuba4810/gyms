@@ -77,10 +77,10 @@ class ForumNav extends React.Component{
     
                
                 <div className="askQuestion">
-                    <Link to="/forum/zadaj-pytanie">Zadaj pytanie</Link>
+                    <Link to="/forum/zadaj-pytanie"><span>Nowe pytanie</span></Link>
                 </div>
                
-    
+      <div className="clearSearching" onClick={this.clearSearching}> Wyszyść filtr </div>
                 <div className="categories">
                     <div className="categoriesTitle">
                         Kategorie pytań
@@ -128,7 +128,7 @@ class ForumNav extends React.Component{
                   
                 </div>
 
-                <div className="clearSearching" onClick={this.clearSearching}> Wyszyść filtr </div>
+              
     
                 <div className="socialMedia">
                     <div className="media animated"><a href="#"><i className="fab fa-facebook-square"></i></a></div>

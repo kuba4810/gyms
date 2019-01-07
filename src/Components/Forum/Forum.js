@@ -48,10 +48,10 @@ function AppArrow() {
                 console.log('Dane użytkownika: ',userData);
                 
 
-                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/msgCount`)
+                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/msgCount`)
                               .then(res=> res.json());
 
-                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/ntfCount`)
+                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/ntfCount`)
                               .then(res=> res.json());
 
                 Promise.all([msgCount,ntfCount])

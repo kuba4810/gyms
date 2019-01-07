@@ -191,6 +191,7 @@ app.post('/register',function(request,response){
 /* ------------------------------ */
 
 app.post('/logIn',function(request,response){
+console.log('Log in...');
 
 var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
     client.connect((err)=>{
@@ -198,7 +199,16 @@ var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:54
 }); 
 
 let data = request.body;
+console.log(data);
+
 let values =[data.Login,data.Password]
+let schema = data.type === 'user' ? 'kuba' : 'trainers';
+let user_table = data.type === 'user' ? 'users' : 'trainer';
+let table_name = data.type === 'user' ? 'user_messages' : 'trainer_messages';
+let column_name = data.type === 'user' ? 'user_id' : 'trainer_id';
+
+
+
 
 var responseData = {
     messageCount:0,
@@ -208,9 +218,10 @@ var responseData = {
         login:'',
         isEmailConfirmed : ''
     }
+
 }
 
-client.query(`SELECT * FROM kuba.users WHERE login = $1 and passw = $2`,values)
+client.query(`SELECT * FROM ${schema}.${user_table} WHERE login = $1 and passw = $2`,values)
     .then(res=>{
         if(res.rows.length == 0){
             return Promise.reject({
@@ -220,18 +231,26 @@ client.query(`SELECT * FROM kuba.users WHERE login = $1 and passw = $2`,values)
         }
         else{
             let userData = {
-                user_id: res.rows[0].user_id,
+                user_id: res.rows[0][column_name],
                 login: data.Login,
                 isEmailConfirmed : res.rows[0].is_email_confirmed
            }
            console.log("Dane użytkownika: ",userData);
+            var query = `SELECT count(*) as "msg_count" 
+            FROM ${schema}.${table_name} m_t natural join kuba.messages ms
+            WHERE m_t.${column_name} = $1 and ms.is_read = false`
 
+            console.log('Query: ',query);
+            
+           
             responseData = Object.assign({},responseData,{userData: userData});
-            return client.query(`SELECT count(*) as "msg_count" From kuba.messages WHERE receiver = $1 and is_read = false`,[res.rows[0].user_id])
+            return client.query(query,[res.rows[0][column_name]])
         }
     }).then(res=>{
         responseData = Object.assign({},responseData,{messageCount: res.rows[0].msg_count})
-        return client.query(`SELECT count(*) as "ntf_count" From kuba.notifications WHERE user_id = $1`,[responseData.userData.user_id])
+        return client.query(`SELECT count(*) as "ntf_count" 
+        FROM ${schema}.${table_name} natural join kuba.notifications
+        WHERE ${column_name} = $1 and is_read = false`,[responseData.userData.user_id])
     }).then((res)=>{
         responseData = Object.assign({},responseData,{notificationsCount: res.rows[0].ntf_count})
         console.log("Dane użytkownika wraz z liczbą wiadomości i powiadomień : ",responseData);
@@ -261,7 +280,7 @@ client.query(`SELECT * FROM kuba.users WHERE login = $1 and passw = $2`,values)
 
 // Pobiera liczbę nowych wiadomości danego użytkownika
 // ------------------------------------------------------------------------------------------------
-app.get('/api/user/:user_id/msgCount',(request,response)=>{
+app.get('/api/user/:user_id/:type/msgCount',(request,response)=>{
     console.log('msgCount...');
     // Połączenie z bazą
     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
@@ -270,9 +289,18 @@ app.get('/api/user/:user_id/msgCount',(request,response)=>{
             console.log(err);
            }
     }); 
+    
+    // Ustalanie nazw schematów, tabel i kolumn
+    let schema = request.params.type === 'user' ? 'kuba' : 'trainers';
+    let table_name = request.params.type === 'user' ? 'user_messages' : 'trainer_messages';
+    let column_name =request.params.type === 'user' ? 'user_id' : 'trainer_id';
 
-    client.query(`SELECT count(*) as "msg_count" FROM kuba.messages
-                  WHERE receiver = $1 and is_read = false`,[request.params.user_id])
+    console.log(request.params.type,schema,table_name,column_name);
+    
+            
+    client.query(`SELECT count(*) as "msg_count" 
+            FROM ${schema}.${table_name} m_t natural join kuba.messages ms
+            WHERE m_t.${column_name} = $1 and ms.is_read = false`,[request.params.user_id])
     .then( res => {
         if( res.rows.length > 0 ){
             response.json({
@@ -297,7 +325,7 @@ app.get('/api/user/:user_id/msgCount',(request,response)=>{
 
 // Pobiera liczbę nowych powiadomień danego użytkownika
 // ------------------------------------------------------------------------------------------------
-app.get('/api/user/:user_id/ntfCount',(request,response)=>{
+app.get('/api/user/:user_id/:type/ntfCount',(request,response)=>{
     // Połączenie z bazą
     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
     client.connect((err)=>{
@@ -306,8 +334,15 @@ app.get('/api/user/:user_id/ntfCount',(request,response)=>{
        }
     }); 
 
-    client.query(`SELECT count(*) as "ntf_count" FROM kuba.notifications
-                  WHERE user_id = $1 and is_read = false`,[request.params.user_id])
+     // Ustalanie nazw schematów, tabel i kolumn
+     let schema = request.params.type === 'user' ? 'kuba' : 'trainers';
+     let table_name = request.params.type === 'user' ? 'user_notifications' : 'trainer_notifications';
+     let column_name =request.params.type === 'user' ? 'user_id' : 'trainer_id';
+     
+     console.log(request.params.type,schema,table_name,column_name);
+    client.query(`SELECT count(*) as "ntf_count" 
+                  FROM kuba.${table_name} natural join kuba.notifications
+                  WHERE ${column_name} = $1 and is_read = false`,[request.params.user_id])
     .then( res => {
         if( res.rows.length > 0 ){
             response.json({
@@ -415,9 +450,19 @@ app.get('/getAnswers/:question_id',function(req,res){
 
 /* NEW MESSAGE */
 /* ------------------------------ */
-app.post('/newMessage',function(req,res){
-    var data = req.body;
+app.post('/newMessage',function(request,response){
+    /* 
+        body: {
+            sender: int,
+            receiver: int,
+            text: string,
+            receiver_type: 'user' or 'trainer',
+            sender_type: 'user' or 'trainer'
+        }
+    */
+    var data = request.body;
     console.log(data);
+    
 
     const pool = new Pool({
         user: 'postgres',
@@ -427,17 +472,16 @@ app.post('/newMessage',function(req,res){
         port: 5432,
     });
     
-    var query = "INSERT INTO kuba.messages(sender, receiver, sending_date, message_content, is_read, receiver_deleted, sender_deleted) VALUES($1,$2,CURRENT_TIMESTAMP,$3,false,false,false)"
-    var values = [data.sender,data.receiver,data.text];
+    var query = `INSERT INTO kuba.messages(sending_date, message_content, is_read, receiver_deleted, sender_deleted)
+                 VALUES(CURRENT_TIMESTAMP,$1,false,false,false) returning *`
+    var values = [data.text];
 
-    pool.query(query,values, (err, response) => {
-
-        //console.log("Odpowiedź: ",response);
-        //console.log("Error: ",err);
-        res.json({"State":"Wysłano"});
-        pool.end()
-
-    });
+    client.query(query,values)
+    .then(res=>{
+        response.send({
+            res
+        })
+    })
 
 });
 

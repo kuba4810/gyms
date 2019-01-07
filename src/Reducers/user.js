@@ -5,6 +5,7 @@ export const user = (state = {
     emailConfirmed: false,
     messageCount:'',
     notificationsCount : '',
+    type: ''
 },action) => {
 
     switch(action.type){

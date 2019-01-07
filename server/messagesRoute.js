@@ -82,20 +82,31 @@ router.post("/deleteMessage",(req,res)=>{
 
 // Get all messages
 // ------------------------------------------------------------------------------------------------
-router.get('/getMessages/:user_id',function(request,response){
+router.get('/getMessages/:user_id/:type',function(request,response){
+    console.log('GetMessages...')
+    
+    // Łączenie z bazą 
     var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
     client.connect((err)=>{
       
      });
 
-   
+    //  Pobiera parametry żądania
     var user_id = request.params.user_id;
-    console.log('GetMessages...')
+    var type = request.params.type;
     
+    // Sprawdza typ użytkownika i ustala odpowiednie nazwy schematów, tabel i kolumn
+     let table_name = (type === 'user') ? 'user_messages' : 'trainer_messages';
+     let schema_name = (type === 'user') ? 'kuba' : 'trainers';
+     let id_name = (type === 'user') ? 'user_id' : 'trainer_id';
+    
+    var query = `SELECT m.*, ${table_name}.* 
+                 FROM  ${schema_name}.${table_name} natural join kuba.messages m
+                    WHERE ${id_name} = $1 and sender_deleted = false`
 
-    var query = `SELECT message_id ,login ,sender,receiver, sending_date,message_content,is_read, receiver_deleted,sender_deleted 
-                FROM kuba.users  INNER JOIN kuba.messages ON( users.user_id = messages.sender)
-                WHERE (receiver = $1 and receiver_deleted = false) OR (sender =$1 and sender_deleted = false)  ORDER BY sending_date DESC;`
+    // var query = `SELECT message_id ,login ,sender,receiver, sending_date,message_content,is_read, receiver_deleted,sender_deleted 
+    //             FROM kuba.users  INNER JOIN kuba.messages ON( users.user_id = messages.sender)
+    //             WHERE (receiver = $1 and receiver_deleted = false) OR (sender =$1 and sender_deleted = false)  ORDER BY sending_date DESC;`
     var values = [user_id];
 
     client.query(query,values)

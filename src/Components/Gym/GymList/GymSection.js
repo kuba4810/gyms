@@ -18,8 +18,7 @@ class SectionGym extends Component {
                 <div className="input-group-prepend ">
                   <span className="input-group-text" id="inputGroup-sizing-default">Wyszukaj</span>
                 </div>
-                <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
-                    onClick={}/>
+                <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
               </div>
             </div>
             </div>

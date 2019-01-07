@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
-import ymSection from 'GymSection.js' 
+ 
 
 class SectionGym extends Component {
   state = {};

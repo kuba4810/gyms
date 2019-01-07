@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
+import ymSection from 'GymSection.js' 
 
 class SectionGym extends Component {
   state = {};
@@ -17,7 +18,8 @@ class SectionGym extends Component {
                 <div className="input-group-prepend ">
                   <span className="input-group-text" id="inputGroup-sizing-default">Wyszukaj</span>
                 </div>
-                <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+                    onClick={}/>
               </div>
             </div>
             </div>

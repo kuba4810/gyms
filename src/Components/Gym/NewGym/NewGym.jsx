@@ -607,7 +607,7 @@ class NewGym extends React.Component {
                 <form className="openingHoursForm newGymForm col-6 mx-auto">
 
 
-                    <div className="form-group">
+                    <div className="form-group col-1">
                         <label>Pon</label>
                         <input type="time" name="monO" className="form-control"
                             value={this.state.monO} onChange={this.handleChange} />
@@ -616,7 +616,7 @@ class NewGym extends React.Component {
                         value={this.state.monC} onChange={this.handleChange}/>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group col-2">
                         <label>Wt</label>
                         <input type="time" name="tueO" className="form-control"
                         value={this.state.tueO} onChange={this.handleChange} />
@@ -625,7 +625,7 @@ class NewGym extends React.Component {
                         value={this.state.tueC} onChange={this.handleChange}/>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group col-2">
                         <label htmlFor="">Śr</label>
                         <input type="time" name="wedO" className="form-control"
                          value={this.state.wedO} onChange={this.handleChange}/>
@@ -634,7 +634,7 @@ class NewGym extends React.Component {
                         value={this.state.wedC} onChange={this.handleChange}/>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group col-2">
                         <label htmlFor="">Czw</label>
                         <input type="time" name="thuO" className="form-control" 
                         value={this.state.thuO} onChange={this.handleChange}/>
@@ -643,7 +643,7 @@ class NewGym extends React.Component {
                         value={this.state.thuC} onChange={this.handleChange}/>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group col-2">
                         <label htmlFor="">Pt</label>
                         <input type="time" name="friO" className="form-control" 
                         value={this.state.friO} onChange={this.handleChange}/>
@@ -652,7 +652,7 @@ class NewGym extends React.Component {
                         value={this.state.friC} onChange={this.handleChange} />
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group col-2">
                         <label htmlFor="">Sob</label>
                         <input type="time" name="satO" className="form-control"
                         value={this.state.satO} onChange={this.handleChange} />
@@ -661,7 +661,7 @@ class NewGym extends React.Component {
                         value={this.state.satC} onChange={this.handleChange}/>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group col-2">
                         <label htmlFor="">Nd</label>
                         <input type="time" name="sunO" className="form-control" 
                         value={this.state.sunO} onChange={this.handleChange}/>
@@ -706,14 +706,14 @@ class NewGym extends React.Component {
                 {/* Pakiety */}
                 {/* ------------------------------------------------------------------------------- */}
 
-                <div className="formTitle">
+                <div className="formTitle col-6 mx-auto">
                     <h3>Cennik</h3>
                     Dodaj pakiety jakie Twoja siłownia oferuje. <br />
                     Przykład: 1 wejście, 6zł , 1raz
                    <hr />
                 </div>
 
-                <div className="formTitle">
+                <div className="formTitle text-center">
                     <ul className="list-group">
                         {currentPackages}
                     </ul>
@@ -725,7 +725,7 @@ class NewGym extends React.Component {
                     </i>
                 </div>
 
-                <form id="packageForm" className=" newGymForm packageForm collapse" onSubmit={this.handlePackageSubmit}>
+                <form id="packageForm" className=" newGymForm packageForm collapse col-6 mx-auto" onSubmit={this.handlePackageSubmit}>
 
                     <label htmlFor="packageName">Nazwa pakietu</label>
                     <input name="packageName" type="text" className="form-control" />
@@ -743,13 +743,13 @@ class NewGym extends React.Component {
 
                 {/* Wyposażenie */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="formTitle">
+                <div className="formTitle col-6 mx-auto">
                     <h3>Wyposażenie</h3>
                     Zaznacz dostępne w Twojej siłowni wyposażenie.
                    <hr />
                 </div>
 
-                <form className="equipment">
+                <form className="equipment col-6 mx-auto">
                    <div className="form-group">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" value='Atlas' onChange={this.handleCheck}/>
@@ -849,13 +849,13 @@ class NewGym extends React.Component {
 
                 {/* Zdjęcie */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="formTitle">
+                <div className="formTitle col-6 mx-auto">
                     <h3>Zdjęcia</h3>
                     Dodaj zdjęcia do swojej siłowni
                    <hr />
                 </div>
 
-               <div className="gymImagesUpload">
+               <div className="gymImagesUpload col-6 mx-auto">
                     <ImageUploader
                             withIcon={true}
                             buttonText='Choose images'
@@ -874,7 +874,7 @@ class NewGym extends React.Component {
 
                 {/* Przycisk do wysyłania */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="newGymButtons">
+                <div className="newGymButtons col-6 mx-auto mb-5">
                     <div className="formTitle">
                         <div className="btn btn-success sendForm" onClick={this.handleSubmit}>
                             Wyślij formularz

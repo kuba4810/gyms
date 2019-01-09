@@ -130,8 +130,8 @@ class UserCont extends Component {
                 </div>}
                 
                             {/* <Route exact path={this.props.match.path} component={QuestionListContainer} /> */}
-                            <Route path={`${this.props.match.path}/profil/:userId`} component={User} />
-                            <Route path={`${this.props.match.path}/nowa-wiadomosc/:userId/:userNick`} component={NewMessage} />
+                            <Route path={`${this.props.match.path}/profil/:user_login`} component={User} />
+                            <Route path={`${this.props.match.path}/nowa-wiadomosc/:user_login`} component={NewMessage} />
                             <Route path={`${this.props.match.path}/wiadomosci`} component={MessageContainer}/>
                             <Route path={`${this.props.match.path}/edytuj-profil`} component={EditProfile}/>
                             <Route path={`${this.props.match.path}/powiadomienia`} component={NotificationsContainer}/>

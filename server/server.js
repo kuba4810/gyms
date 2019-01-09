@@ -238,7 +238,7 @@ client.query(`SELECT * FROM ${schema}.${user_table} WHERE login = $1 and passw =
            console.log("Dane użytkownika: ",userData);
             var query = `SELECT count(*) as "msg_count" 
             FROM ${schema}.${table_name} m_t natural join kuba.messages ms
-            WHERE m_t.${column_name} = $1 and ms.is_read = false`
+            WHERE m_t.${column_name} = $1 and ms.is_read = false and m_t.type='receiver'`
 
             console.log('Query: ',query);
             
@@ -295,12 +295,15 @@ app.get('/api/user/:user_id/:type/msgCount',(request,response)=>{
     let table_name = request.params.type === 'user' ? 'user_messages' : 'trainer_messages';
     let column_name =request.params.type === 'user' ? 'user_id' : 'trainer_id';
 
+    let query = `SELECT count(*) as "msg_count" 
+    FROM ${schema}.${table_name} m_t natural join kuba.messages ms
+    WHERE m_t.${column_name} = $1 and ms.is_read = false and m_t.type='receiver'`;
+    console.log('Query: ',query)
     console.log(request.params.type,schema,table_name,column_name);
     
             
-    client.query(`SELECT count(*) as "msg_count" 
-            FROM ${schema}.${table_name} m_t natural join kuba.messages ms
-            WHERE m_t.${column_name} = $1 and ms.is_read = false`,[request.params.user_id])
+    client.query(query,[request.params.user_id])
+   
     .then( res => {
         if( res.rows.length > 0 ){
             response.json({
@@ -460,27 +463,67 @@ app.post('/newMessage',function(request,response){
             sender_type: 'user' or 'trainer'
         }
     */
+    
     var data = request.body;
-    console.log(data);
+    let new_messae_id;
+    let sender_message_query;
+    let receiver_message_query;
+
+    console.log('NewMessage...: ',request.body);
     
 
-    const pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
-    
+    //  Zapytanie wstawiania rekordu dla tabeli messages
     var query = `INSERT INTO kuba.messages(sending_date, message_content, is_read, receiver_deleted, sender_deleted)
                  VALUES(CURRENT_TIMESTAMP,$1,false,false,false) returning *`
+
+    // Generowanie zapytania dla odbiorcy
+    if(data.sender_type === 'user'){
+        sender_message_query = `INSERT INTO kuba.user_messages
+                               (user_id, message_id, type)
+                               VALUES ($1,$2,'sender');`
+    }else{
+        sender_message_query = `INSERT INTO trainers.trainer_messages
+                                (trainer_id, message_id, type)
+                                 VALUES ($1,$2,'sender');`
+    }
+    console.log('Sender query: ', sender_message_query);
+    
+    // Generowanie zapytania dla nadawcy 
+    if(data.receiver_type === 'user'){
+        receiver_message_query = `INSERT INTO kuba.user_messages
+                               (user_id, message_id, type)
+                               VALUES ($1,$2,'receiver');`
+    }else{
+        receiver_message_query = `INSERT INTO trainers.trainer_messages
+                                (trainer_id, message_id, type)
+                                 VALUES ($1,$2,'receiver');`
+    }
+    console.log('Receiver query: ', receiver_message_query);
     var values = [data.text];
 
+
+    // Insert to messages
     client.query(query,values)
     .then(res=>{
+        new_message_id = res.rows[0].message_id;
+        // Insert for sender
+        return client.query(sender_message_query,[data.sender,new_message_id])
+    })
+    .then(res=>{
+        // Insert for receiver
+        return client.query(receiver_message_query,[data.receiver,new_message_id])
+    })
+    .then(res=>{
         response.send({
-            res
+            response : 'success'
         })
+    })
+    .catch(err=>{
+        console.log('Podczas wysyłania wiadomości wystąpił błąd: ',err);
+        response.send({
+            response:'failed'
+        })
+        
     })
 
 });
@@ -534,31 +577,53 @@ var pool = new Pool({
 
 /* USER DATA */
 /* ------------------------------ */
-app.get('/getUserData/:user_id',function(req,res){
-    var user_id = req.params.user_id;
-    console.log("Parametr: ",user_id);
+app.get('/getUserData/:login',function(request,response){
+    var login = request.params.login;
 
-    var pool = new Pool({
-        user: 'postgres',
-        host: '178.128.245.212',
-        database: 'postgres',
-        password: 'irondroplet',
-        port: 5432,
-    });
+    console.log("Parametr: ",login);
 
-    var query = `SELECT users.* , user_statistics.*	
-                 FROM kuba.users natural join kuba.user_statistics 
+    var query = `SELECT users.*,us.*
+                 FROM kuba.users natural join kuba.user_statistics us
                  WHERE users.login = $1`;
-    var values = [user_id];
+    var values = [login];
 
-    pool.query(query,values,function(err,response){
+    client.query(query,values)
+    .then(res=>{
+
+        if(res.rows.length > 0) {
+            response.send({
+                response : 'success',
+                type: 'user',
+                data: res.rows[0]
+            })
+            return Promise.reject('Done');
+        }  
+        else{
+            return client.query(`SELECT trainer.*
+            FROM trainers.trainer
+            WHERE login = $1`,[login])
+        }
+    })
+    .then(res=>{
+        response.send({
+            response : 'success',
+            type: 'trainer',
+            data: res.rows[0]
+        })
+    })
+    .catch(err=>{
+        if(err!=='Done'){
+            response.send({
+                response: 'failed'
+            })
+        }
+        console.log(err);
+        
+    })
+    
 
 
-        console.log("Odpowiedź z bazy: ",response.rows[0]);
-        res.json(response.rows[0]);
-        pool.end();
-    });
-
+  
 });
 
 /* ANSWER */

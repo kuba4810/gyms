@@ -12,10 +12,10 @@ class MessageContainer extends React.Component{
             messages: [],
             messageType: "received",
             isLoading: true,
-            showRead: true,
+            showRead: false,
             messageContainerAlert : "",
             alertTimeout : null,
-            title : 'ODEBRANE'
+            title : 'ODEBRANE',
         }
     }
 
@@ -114,9 +114,7 @@ class MessageContainer extends React.Component{
     }
 
     changeMessageState=()=>{
-       this.setState({showRead: !this.state.showRead});
-        
-        
+       this.setState({showRead: !this.state.showRead});      
     }
 
     filterSearchMessage=()=>{
@@ -133,12 +131,12 @@ class MessageContainer extends React.Component{
     componentDidMount(){
         console.log('Pobieram wiadomości...');
         console.log('Obecny adres w MessageContainer: ',this.props.match);
-        
+        let type = localStorage.getItem('type');
         
         var userId = localStorage.getItem("loggedId");
         console.log('Id użytkownika: ',userId);
 
-        fetch("http://localhost:8080/getMessages/"+ userId,{
+        fetch(`http://localhost:8080/getMessages/${userId}/${type}`,{
             method: "GET",
           
             headers: {
@@ -179,16 +177,26 @@ class MessageContainer extends React.Component{
 
         if(this.state.messageType == "received"){
             if(this.state.showRead){
-                messages = this.state.messages.filter( message =>(message.receiver == userId && message.receiver_deleted == false) )
+                messages = this.state.messages.filter( message =>
+                    ( message.type === 'receiver' && 
+                      message.receiver_deleted == false &&
+                      message.is_read == false
+                     ))
                 
             }
             else{
-                messages = this.state.messages.filter( message =>(message.receiver == userId && message.is_read === false && message.receiver_deleted == false) )
+                messages = this.state.messages.filter( message =>
+                    ( message.type === 'receiver' && 
+                      message.receiver_deleted == false
+                     ))
             }
             
         }
         else if(this.state.messageType == "sent"){
-           messages = this.state.messages.filter( message =>(message.sender == userId  && message.sender_deleted == false) )
+                 messages = this.state.messages.filter( message =>
+                     (
+                        message.type === 'sender'  && message.sender_deleted == false
+                     ))
         }
 
         else{
@@ -221,8 +229,8 @@ class MessageContainer extends React.Component{
                                              <div class="custom-control custom-checkbox mb-3">
                                             
                                              { this.state.title === 'ODEBRANE' && <div>
-                                                  <input  type="checkbox" class="custom-control-input" id="customCheck" name="example1" />
-                                                  <label onClick={ this.changeMessageState} class="custom-control-label" for="customCheck">
+                                                  <input onClick={ this.changeMessageState} checked={this.state.showRead}  type="checkbox" class="custom-control-input" id="customCheck" name="example1" />
+                                                  <label  class="custom-control-label" for="customCheck">
                                                      Ukryj przeczytane
                                                   </label>
                                                </div>}

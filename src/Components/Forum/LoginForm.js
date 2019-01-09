@@ -146,7 +146,7 @@ class Login extends React.Component{
                                     
                                 </label> <br/>
 
-                                <label class="loginFormCheckContainer">Zaloguj jako trener
+                                <label class="loginFormCheckContainer">Jestem trenerem
                                 <input type="checkbox" onChange={this.handleCheck}/>
                                 <span class="checkmark"></span>
                                 </label>

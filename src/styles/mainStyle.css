@@ -110,13 +110,22 @@ body {
 
 }
 
+@keyframes hrWidth{
+    from{
+        width:0%
+    }
+    to{
+        width:70%;
+    }
+}
 .mainPageHeader hr {
     position: relative;
     margin: 0 auto;
-    width:80%;
+    width:0%;
     border-color: white;
-   /* animation: hrAppear;
-    animation-duration:1s;*/
+    border-width:2px;
+    animation-name: hrWidth;
+    animation-duration: .4s;
     animation-delay:1s;
     
 }

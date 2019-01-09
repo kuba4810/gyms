@@ -141,7 +141,7 @@ textarea{
     cursor: pointer;
 }
 
-.loginUser span {
+.loginUser .userInfo {
     position:absolute;
     top:0;
     left:0;
@@ -1001,6 +1001,7 @@ li:last-child {
     font-size: 100px;
     display: flex;
     justify-content: center;
+    position: relative;
 
 }
 

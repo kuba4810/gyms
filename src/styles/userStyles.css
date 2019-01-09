@@ -137,3 +137,8 @@
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+  .loggedType{
+      position: absolute;
+      right:0%;
+      bottom: 0%;
+  }

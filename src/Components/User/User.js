@@ -8,8 +8,8 @@ class User extends React.Component{
         super(...arguments);
 
         this.state = {
-            userData : null
- 
+            userData : null,
+            type: ''
         }
  
     }
@@ -20,7 +20,7 @@ class User extends React.Component{
         console.log('Zamontowano komponent USER');
         
 
-        fetch("http://localhost:8080/getUserData/" +  this.props.match.params.userId, {
+        fetch("http://localhost:8080/getUserData/" +  this.props.match.params.user_login, {
             method: "GET",
             mode: "cors",
             cache: "no-cache",
@@ -31,8 +31,9 @@ class User extends React.Component{
             redirect: "follow",
             referrer: "no-referrer", // no-referrer, *client
         }).then(response => response.json())
-            .then((response) => { this.setState({userData: response})
-                                        });
+            .then((response) => {
+                 this.setState({userData: response.data,type:response.type})
+             });
                                     
     }
 
@@ -52,7 +53,7 @@ class User extends React.Component{
     }
     render(){
         var data = this.state.userData;
-        
+        var type = this.state.type;
 
         
         if(data!== null){
@@ -63,7 +64,7 @@ class User extends React.Component{
             break;
             case "DIFFERENT":
                 button = <div className="editProfile transition " id="sendMessage"> 
-                <Link to={"/uzytkownik/nowa-wiadomosc/" + data.user_id+ "/"+ this.props.match.params.userId}>Wiadomość</Link>
+                <Link to={"/uzytkownik/nowa-wiadomosc/" + this.props.match.params.userId}>Wiadomość</Link>
                 </div>
             break;
             case "NONE":
@@ -80,20 +81,23 @@ class User extends React.Component{
     
                     <div className="userPersonalData animated fadeIn">
                         <div className="profileImage">
+                            
                             <i className="fas fa-user"></i>
                         </div>
     
     
                         <ul className="userDataList ">
-                            <li><span className="title">Zarejestrowany od:</span> <span className="value" id="joinDate"> {data.join_date.substring(0,10)} </span></li>
+                            {type === 'user' ? <li><span className="title">Zarejestrowany od:</span> <span className="value" id="joinDate"> {data.join_date.substring(0,10)} </span></li>:null}
     
                             <li><span className="title">Imię:</span> <span className="value" id="firstName"> {data.first_name} </span></li>
                             <li><span className="title">Nazwisko:</span> <span className="value" id="lastName"> {data.last_name} </span>
                             </li>
+                            {type === 'user'?  <div>
                             <li><span className="title">Wzrost:</span> <span className="value" id="height">  {data.height} cm </span></li>
                             <li><span className="title">Masa:</span> <span className="value" id="mass">  {data.mass} kg  </span></li>
                             <li><span className="title">Ulubione Ćwiczenie:</span> <span className="value"
                                                                                          id="favExc">  {data.favourite_exercise} </span></li>
+                            </div>:null}
     
                         </ul>
     
@@ -105,7 +109,8 @@ class User extends React.Component{
     
     
     
-                    <div className="userForumData  animated fadeIn">
+                   {type==='user' ? 
+                   <div className="userForumData  animated fadeIn">
                         <p className="userForumDataTitle"> Aktywność użytkownika:</p>
     
                         <ul className="userForumDataList">
@@ -121,6 +126,7 @@ class User extends React.Component{
     
                         </ul>
                     </div>
+                  :null}
     
                 </div>
                     </div>

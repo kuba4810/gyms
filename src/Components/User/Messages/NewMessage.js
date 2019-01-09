@@ -7,28 +7,57 @@ class NewMessage extends React.Component{
         super(...arguments);
         this.state = {
             messageContent : "",
-            messageAlert : null
+            messageAlert : null,
+            isLoading: true,
+            sender_data : null
         }
 
 
     }
     
     componentDidMount(){
-        /* document.querySelector(".forumNav").classList.add("invisible");
-        document.querySelector(".forumContent").style.width="100%"; */
+        let user_login = this.props.match.params.user_login;
+
+
+        
+        fetch(`http://localhost:8080/api/message/sender-login-data/${user_login}`)
+            .then(res=>res.json())
+            .then(res=>{
+                console.log(res);
+                if(res.response === 'success'){
+                    
+                    
+                    this.setState({
+                        sender_data : res.data,
+                        isLoading : false
+                    },()=>{
+                        console.log(this.state);
+                        
+                    })
+                }
+            })
+            .catch(err=>{
+                alert('Wystąpił błąd, spróbuj ponownie później !');
+            })
     }
     sendMessage = () => {
-        var receiver = this.props.match.params.userId;
         var sender = parseInt(localStorage.getItem("loggedId"));
+        var sender_type = localStorage.getItem('type');
         var text = this.state.messageContent;
+        
 
         var data ={
             sender: sender,
-            receiver: receiver,
-            text: text
-        };
+            receiver: this.state.sender_data.user_id,
+            text: text,
+            sender_type : sender_type,
+            receiver_type:this.state.sender_data.user_type
 
+        };
         console.log(data);
+
+        
+        
 
         fetch("http://localhost:8080/newMessage", {
             method: "POST",
@@ -47,7 +76,7 @@ class NewMessage extends React.Component{
                 //setTimeout(()=>{window.location = "http://localhost:3000/forum/wiadomosci"});
             }).catch();
 
-        console.log("Dane wiadomości -  Nadawca: ",sender," Odbiorca: ",receiver," Treść: ",this.state.messageContent);
+        // console.log("Dane wiadomości -  Nadawca: ",sender," Odbiorca: ",receiver," Treść: ",this.state.messageContent);
     }
 
     handleTextCange = (event) => {
@@ -63,18 +92,19 @@ class NewMessage extends React.Component{
         
                         <div className="topicsContent" id="topicsContent">
         
+                       {this.state.isLoading === false && 
                         <div className="writeMessageDiv">
         
-                            <p>Nowa wiadomość do: <b>{this.props.match.params.userNick}</b></p>
-        
-                            <label htmlFor="comment">Treść</label>
-                            <textarea ref="messageContent" className="form-control messageContent" name="messageText" rows="5" value={this.state.messageContent} onChange={this.handleTextCange} ></textarea>
-        
-                            <button type="button" className="sendMessage btn btn-success" onClick={this.sendMessage}>
-                                Wyślij
-                            </button>
-        
-                        </div>
+                        <p>Nowa wiadomość do: <b>{this.state.sender_data.login}</b></p>
+    
+                        <label htmlFor="comment">Treść</label>
+                        <textarea ref="messageContent" className="form-control messageContent" name="messageText" rows="5" value={this.state.messageContent} onChange={this.handleTextCange} ></textarea>
+    
+                        <button type="button" className="sendMessage btn btn-success" onClick={this.sendMessage}>
+                            Wyślij
+                        </button>
+    
+                    </div>}
                     </div>
                     </div>
         

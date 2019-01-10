@@ -13,12 +13,25 @@ class NotificationsContainer extends React.Component{
     
 
         componentDidMount(){
-            /* document.querySelector(".forumNav").classList.add("invisible");
-            document.querySelector(".topicsMenu").classList.add("invisible");
-            document.querySelector(".forumContent").style.width="100%"; */
+           
 
             /* Get notifications from database */
-            fetch(`http://localhost:8080/notifications/${localStorage.getItem("logedIn")}`)
+
+            let data = {
+                user_id : localStorage.getItem('loggedId'),
+                user_type : localStorage.getItem('type')
+            }
+            fetch(`http://localhost:8080/notifications`,{
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin", //
+             
+                body: JSON.stringify(data), 
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
                 .then( response => response.json() )
                     .then( response => {
                         console.log("Powiadomienia: ",response);

@@ -64,7 +64,7 @@ class User extends React.Component{
             break;
             case "DIFFERENT":
                 button = <div className="editProfile transition " id="sendMessage"> 
-                <Link to={"/uzytkownik/nowa-wiadomosc/" + this.props.match.params.userId}>Wiadomość</Link>
+                <Link to={"/uzytkownik/nowa-wiadomosc/" + this.props.match.params.user_login}>Wiadomość</Link>
                 </div>
             break;
             case "NONE":
@@ -75,7 +75,7 @@ class User extends React.Component{
 
                 <div>
         
-                   <div className="topicsGroupTitle">Użytkownik {this.props.match.params.userId}</div>
+                   <div className="topicsGroupTitle">Użytkownik {this.props.match.params.user_login}</div>
                     <div className="topicsContent" id="topicsContent">
                         <div className="user">
     

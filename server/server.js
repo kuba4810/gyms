@@ -236,6 +236,7 @@ client.query(`SELECT * FROM ${schema}.${user_table} WHERE login = $1 and passw =
                 isEmailConfirmed : res.rows[0].is_email_confirmed
            }
            console.log("Dane użytkownika: ",userData);
+            // Msg count    
             var query = `SELECT count(*) as "msg_count" 
             FROM ${schema}.${table_name} m_t natural join kuba.messages ms
             WHERE m_t.${column_name} = $1 and ms.is_read = false and m_t.type='receiver'`
@@ -248,9 +249,17 @@ client.query(`SELECT * FROM ${schema}.${user_table} WHERE login = $1 and passw =
         }
     }).then(res=>{
         responseData = Object.assign({},responseData,{messageCount: res.rows[0].msg_count})
-        return client.query(`SELECT count(*) as "ntf_count" 
-        FROM ${schema}.${table_name} natural join kuba.notifications
-        WHERE ${column_name} = $1 and is_read = false`,[responseData.userData.user_id])
+        // Ntf count
+        if(data.type==='user'){
+            return client.query(`SELECT count(*) as "ntf_count" 
+            FROM kuba.user_notifications natural join kuba.notifications
+            WHERE user_id=$1 and is_read = false`,[responseData.userData.user_id])
+        }else{
+            return client.query(`SELECT count(*) as "ntf_count" 
+            FROM trainers.trainer_notifications natural join kuba.notifications
+            WHERE trainer_id=$1 and is_read = false`,[responseData.userData.user_id])
+        }
+      
     }).then((res)=>{
         responseData = Object.assign({},responseData,{notificationsCount: res.rows[0].ntf_count})
         console.log("Dane użytkownika wraz z liczbą wiadomości i powiadomień : ",responseData);
@@ -338,15 +347,22 @@ app.get('/api/user/:user_id/:type/ntfCount',(request,response)=>{
     }); 
 
      // Ustalanie nazw schematów, tabel i kolumn
-     let schema = request.params.type === 'user' ? 'kuba' : 'trainers';
-     let table_name = request.params.type === 'user' ? 'user_notifications' : 'trainer_notifications';
-     let column_name =request.params.type === 'user' ? 'user_id' : 'trainer_id';
-     
-     console.log(request.params.type,schema,table_name,column_name);
-    client.query(`SELECT count(*) as "ntf_count" 
-                  FROM kuba.${table_name} natural join kuba.notifications
-                  WHERE ${column_name} = $1 and is_read = false`,[request.params.user_id])
+    let query;
+    let values = [request.params.user_id];
+    if(request.params.type === 'user'){
+        query = `SELECT count(*) as "ntf_count" 
+                 FROM kuba.user_notifications natural join kuba.notifications
+                 WHERE user_id = $1 and is_read = false`
+    }else{
+        query = `SELECT count(*) as "ntf_count" 
+                 FROM trainers.trainer_notifications natural join kuba.notifications
+                 WHERE trainer_id = $1 and is_read = false`
+    }
+
+    client.query(query,values)
     .then( res => {
+        console.log(res.rows);
+        
         if( res.rows.length > 0 ){
             response.json({
                 response: 'success',

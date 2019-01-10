@@ -2,21 +2,31 @@ var express = require('express');
 var router = express.Router();
 const pg = require('pg');
 var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
-
+client.connect();
 
 // Get all notifications for specified user
-router.get('/notifications/:user_id', (request,response) => {
+router.post('/notifications/', (request,response) => {
 
-    var client = new pg.Client('postgresql://postgres:irondroplet@178.128.245.212:5432/postgres');
-    client.connect((err)=>{
-       if(!err){
-        console.log('Nie udało się połączyć z bazą !: ',err);
-       }
-     });
-     var user_id = request.params.user_id;
+    console.log('Notifications... ',request.body);
+   
+     /* Body
+        {
+            user_id
+            user_type
+        }
+     */
+     let user_id = request.body.user_id;
+     let user_type = request.body.user_type;
+     let query;
+     let values = [user_id];
 
-     var query = "SELECT * FROM kuba.notifications WHERE user_id = $1";
-     var values = [user_id];
+     if(user_type === 'trainer'){
+         query = `SELECT tn.trainer_id, n.* FROM trainers.trainer_notifications tn natural join kuba.notifications n
+                  WHERE trainer_id = $1`
+     }else{
+          query = `SELECT un.user_id, n.* FROM kuba.user_notifications un natural join kuba.notifications n
+                   WHERE user_id = $1`
+     }
 
      client.query(query,values)
         .then(res=>res.rows)
@@ -36,7 +46,7 @@ router.get('/notifications/:user_id', (request,response) => {
             console.log('Wystąpił błąd, spróbuj ponownie później !',err);
         })
         .finally(()=>{
-            client.end();
+           
         })
 });
 

@@ -35,8 +35,8 @@ class User extends React.Component{
                 data-toggle="collapse" 
                 data-target="#userMenu" 
                 onClick={this.moveUserList}>
-                { condition && <span class="userInfo badge badge-primary">!</span>}
-                {badge}
+                { condition && <span class="userInfo badge badge-success">!</span>}
+                {/* badge */}
                <div className="loginUserDiv"  /* onClick={this.showUserMenu} */>
                   <i className="fas fa-user"></i>
                 </div>

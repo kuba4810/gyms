@@ -19,6 +19,8 @@ class EditProfile extends React.Component{
         fetch(`http://localhost:8080/getUserData/${localStorage.getItem('loggedNick')}`)
         .then(res=>res.json())
         .then(res=>{
+          console.log(res);
+          
           this.setState({
             first_name : res.first_name,
             last_name : res.last_name,

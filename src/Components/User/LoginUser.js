@@ -26,13 +26,17 @@ class User extends React.Component{
        let msg = this.props.user.messageCount;
        let ntf = this.props.user.notificationsCount;
        let condition = (msg !== '0' && msg !== '') || (ntf !== '0' && ntf !== '');
+       let badge = localStorage.getItem('type') === 'user' ?
+                   <span class="loggedType badge badge-primary">U</span>:
+                   <span class="loggedType badge badge-success">T</span>
 
        return(
            <div className="loginUser"
                 data-toggle="collapse" 
                 data-target="#userMenu" 
                 onClick={this.moveUserList}>
-                { condition && <span class="badge badge-primary">!</span>}
+                { condition && <span class="userInfo badge badge-success">!</span>}
+                {badge}
                <div className="loginUserDiv"  /* onClick={this.showUserMenu} */>
                   <i className="fas fa-user"></i>
                 </div>

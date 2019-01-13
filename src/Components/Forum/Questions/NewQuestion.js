@@ -36,7 +36,7 @@ class  Question extends React.Component{
             cache: "no-cache",
             credentials: "same-origin", //
          
-            body: JSON.stringify(data), // body data type must match "Content-Type" header
+            body: JSON.stringify(data), 
             headers: {
                 "Content-Type": "application/json"
             }
@@ -65,7 +65,20 @@ class  Question extends React.Component{
 
     render(){
 
-        if(localStorage.getItem("isLoggedIn") != 'false'){
+        if(localStorage.getItem('type') === 'trainer'){
+            return(
+                <div>
+                <div className="topicsGroupTitle">NOWE PYTANIE</div>
+                 <div className="topicsContent" id="topicsContent">
+                 <div className="confirmationButton" /* onClick={this.showLoginForm} */ >
+                     Zaloguj się jako użytkownik by móc zadawać pytania !
+                 </div>
+            </div>
+           </div>
+              
+              );
+        }
+        else if(localStorage.getItem("isLoggedIn") != 'false'){
             if(localStorage.getItem("isEmailConfirmed") == "true"){
                 return(
 

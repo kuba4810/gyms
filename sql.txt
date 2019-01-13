@@ -1,0 +1,9 @@
+I) SprawdŸ typ odbiorcy
+      1.) Endpoint /api/user/user-type
+      2.) Wyœlij ¿¹danie od klienta i dodaj do obiektu data	
+
+SELECT m.*, trainer_messages.* ,
+(select login from kuba.users where user_id = (select user_id from kuba.user_messages where type='sender' and message_id = m.message_id)) as "user_sender",
+(select login from trainers.trainer where trainer_id = (select trainer_id from trainers.trainer where type='sender' and message_id = m.message_id)) as "trainer_sender"											   
+                 FROM  trainers.trainer_messages natural join kuba.messages m 
+                 WHERE trainer_id = 2 and sender_deleted = false;

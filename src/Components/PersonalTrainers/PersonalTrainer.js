@@ -20,10 +20,6 @@ class Trainer extends Component {
     }
 
     componentDidMount(){
-        // console.log('Rok : ',(new Date()).getFullYear() );
-        // console.log('Miesiąc : ',(new Date()).getMonth() );
-        // console.log('Dzień miesiąca : ',(new Date()).getDate() );
-        // console.log('Dzień tygodnia: ',(new Date()).getDay())
         let isLoggedIn = checkIfLoggedIn();
        
         console.log('W magazynie mówią że zalogowany to : ', this.props.user.isLogedIn);
@@ -35,10 +31,10 @@ class Trainer extends Component {
                 console.log('Dane użytkownika: ',userData);
                 
 
-                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/msgCount`)
+                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/msgCount`)
                               .then(res=> res.json());
 
-                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/ntfCount`)
+                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/ntfCount`)
                               .then(res=> res.json());
 
                 Promise.all([msgCount,ntfCount])

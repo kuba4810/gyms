@@ -55,29 +55,41 @@ class MessageItem extends React.Component{
     }
 
     componentDidMount(){
-        //console.log("Propsy w MessageItem: ", this.props);
+        console.log("Propsy w MessageItem: ", this.props.message);
     }
 
 
 
     render(){
         var user_id = localStorage.getItem("loggedId");
+        var user_type = localStorage.getItem('type');
         var message = this.props.message;
+
         var bgColor;
-        if( message.is_read == true && message.receiver == parseInt(user_id)){
+
+        if( message.is_read == true && message.type=='receiver' ){
             bgColor = "gray";
         }
         else{
             bgColor = "cornsilk";
         }
-        var userId = localStorage.getItem("loggedId");
         
         return(
                  <div class="message animated fadeIn">
-                    <div class="messageData"><p> {message.sender==userId ? <span style={{color:"rgb(255,51,51)"}}>Ja</span> :message.login}, {formatDate(message.sending_date)} </p>
-                         { message.sender!=userId  &&  <a  href={"http://localhost:3000/uzytkownik/nowa-wiadomosc/"+message.sender+"/"+message.login}>Odpisz</a>  }
+                    <div class="messageData">
+                        <p> {message.type=='sender' ? 
+                            <span style={{color:"rgb(255,51,51)"}}>Ja</span>:
+                            (message.user_sender  ? message.user_sender : message.trainer_sender)}, 
+                            {formatDate(message.sending_date)} 
+                        </p>
+
+                         { message.type === 'receiver'  &&  
+                                <Link  to={"/uzytkownik/nowa-wiadomosc/"+(message.user_sender  ? message.user_sender : message.trainer_sender)}
+                                    >Odpowiedz
+                                </Link>  
+                         }
                          
-                         {(message.receiver == userId && message.is_read === false) ? 
+                         {(message.type == 'receiver' && message.is_read === false) ? 
                           <div class="setRead" onClick={this.markAsRead}>  <span class="tooltiptext">Przeczytana</span> <i class="fas fa-angle-down"></i> </div>: ""}
                           <div class="deleteMessage" onClick={this.deleteMessage}>  <span class="tooltiptext">Usuń</span> <i class="fas fa-trash-alt"></i></div> 
                      </div>

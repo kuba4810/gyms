@@ -23,10 +23,6 @@ class UserCont extends Component {
 
     componentDidMount(){
 
-        console.log('Magazyn ( User ): ',this.props.user);
-        
-        
-
         let isLoggedIn = checkIfLoggedIn();
        
         console.log('W magazynie mówią że zalogowany to : ', this.props.user.isLogedIn);
@@ -38,10 +34,10 @@ class UserCont extends Component {
                 console.log('Dane użytkownika: ',userData);
                 
 
-                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/msgCount`)
+                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/msgCount`)
                               .then(res=> res.json());
 
-                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/ntfCount`)
+                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/ntfCount`)
                               .then(res=> res.json());
 
                 Promise.all([msgCount,ntfCount])
@@ -130,8 +126,8 @@ class UserCont extends Component {
                 </div>}
                 
                             {/* <Route exact path={this.props.match.path} component={QuestionListContainer} /> */}
-                            <Route path={`${this.props.match.path}/profil/:userId`} component={User} />
-                            <Route path={`${this.props.match.path}/nowa-wiadomosc/:userId/:userNick`} component={NewMessage} />
+                            <Route path={`${this.props.match.path}/profil/:user_login`} component={User} />
+                            <Route path={`${this.props.match.path}/nowa-wiadomosc/:user_login`} component={NewMessage} />
                             <Route path={`${this.props.match.path}/wiadomosci`} component={MessageContainer}/>
                             <Route path={`${this.props.match.path}/edytuj-profil`} component={EditProfile}/>
                             <Route path={`${this.props.match.path}/powiadomienia`} component={NotificationsContainer}/>

@@ -10,7 +10,8 @@ class Login extends React.Component{
 
         this.state = {
             loginState : "",
-            isLoading : false
+            isLoading : false,
+            loggInAsTrainer : false
         }
         
     }
@@ -31,18 +32,27 @@ class Login extends React.Component{
       
     }
 
+    handleCheck = (e)=>{
+        console.log(e.target.checked); 
+        this.setState({
+            loggInAsTrainer : e.target.checked
+        })       
+    }
+
     handleLogin = (event) =>{
 
         this.setState({
-            isLoading: true
+            isLoading: true,
+            loginState : ''
         })
 
         var login = event.target.uname.value;
         var password = event.target.psw.value;
-
+        var type = this.state.loggInAsTrainer ? 'trainer' : 'user';
         var data = {
             Login: login,
-            Password: password
+            Password: password,
+            type : type
         };
 
         fetch("http://localhost:8080/logIn", {
@@ -73,7 +83,7 @@ class Login extends React.Component{
                 let uData = response.data.userData;
                 console.log('Do storage wysyłam takie dane: ', uData);
                 
-                changeStorageState(true,uData.user_id,uData.login,uData.isEmailConfirmed)
+                changeStorageState(true,uData.user_id,uData.login,uData.isEmailConfirmed,type)
 
                 // Aktualizuj magazyn
                 var data = {
@@ -82,11 +92,12 @@ class Login extends React.Component{
                 }        
                 
                 this.props.logedIn({
-                    loggedId: uData.id,
+                    loggedId: uData.user_id,
                     logedNick: uData.login,
                     emailConfirmed: uData.isEmailConfirmed,
                     messageCount: response.data.messageCount,
-                    notificationsCount: response.data.notificationsCount
+                    notificationsCount: response.data.notificationsCount,
+                    type: type
 
                 })
                 
@@ -135,7 +146,10 @@ class Login extends React.Component{
                                     
                                 </label> <br/>
 
-
+                                <label class="loginFormCheckContainer">Jestem trenerem
+                                <input type="checkbox" onChange={this.handleCheck}/>
+                                <span class="checkmark"></span>
+                                </label>
                                
                         </form>
                     </div>

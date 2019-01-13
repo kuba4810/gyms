@@ -78,6 +78,61 @@ app.post('/newQuestion',(request,response) =>{
 });
 
 
+// Question vote
+// ------------------------------------------------------------------------------------------------
+app.post('/api/question/vote',(request,response)=>{
+    /* 
+           Body structure:
+               {
+                   user_id,
+                   question_id,
+                   value (0 or 1) where 0 means vote down, 1 means vote up
+               }    
+       */
+      console.log('Question vote...',request.body);
+      
+      let data = request.body;
+      let question_column='';
+      let user_column =''
+   
+      // Votes count ( for response )
+      let votes_count = 0;
+   
+      // Check which column update
+      question_column = data.value === '0' ? 'minuses' : 'pluses';
+      user_column = data.value === '0' ? 'voted_down' : 'votes_up';
+   
+      let query = `UPDATE kuba.questions
+                   SET ${question_column} = ${question_column}+1
+                   WHERE question_id = $1 returning *`;
+      let values =[data.question_id];
+   
+      client.query(query,values)
+      .then(res=>{     
+          votes_count = res.rows[0].pluses - res.rows[0].minuses;
+      })
+      .then(()=>{
+          return client.query(`UPDATE kuba.user_statistics 
+                               SET ${user_column} = ${user_column} +1
+                               WHERE user_id = $1`,[data.user_id])
+      })
+      .then(res=>{
+           response.send({
+               response : 'success',
+               votes_count : votes_count
+           })
+      })
+      .catch(err=>{
+          console.log(err);
+          
+          response.send({
+              response : 'Wystąpił błąd, spróbuj ponownie później !'
+          })
+      })
+   
+   });
+
+
 /* ANSWERS */
 /* ------------------------------ */
 app.get('/getAnswers/:question_id',(request,response)=>{
@@ -126,5 +181,62 @@ app.post('/insertAnswer',(request,response)=>{
     })
 
 });
+
+
+// Answer vote
+// ------------------------------------------------------------------------------------------------
+app.post('/api/answer/vote',(request,response)=>{
+    /* 
+           Body structure:
+               {
+                   user_id,
+                   answer_id,
+                   value (0 or 1) where 0 means vote down, 1 means vote up
+               }    
+       */
+      console.log('Answer vote...',request.body);
+      
+      let data = request.body;
+      let answer_column='';
+      let user_column =''
+   
+      // Votes count ( for response )
+      let votes_count = 0;
+   
+      // Check which column update
+      answer_column = data.value === '0' ? 'minuses' : 'pluses';
+      user_column = data.value === '0' ? 'voted_down' : 'votes_up';
+   
+      let query = `UPDATE kuba.answers
+                   SET ${answer_column} = ${answer_column}+1
+                   WHERE answer_id = $1 returning *`;
+                   
+      let values =[data.answer_id];
+   
+      client.query(query,values)
+      .then(res=>{   
+        console.log(res);            
+        votes_count = res.rows[0].pluses - res.rows[0].minuses;
+      })
+      .then(()=>{
+          return client.query(`UPDATE kuba.user_statistics 
+                               SET ${user_column} = ${user_column} +1
+                               WHERE user_id = $1`,[data.user_id])
+      })
+      .then(res=>{
+           response.send({
+               response : 'success',
+               votes_count : votes_count
+           })
+      })
+      .catch(err=>{
+          console.log(err);
+          
+          response.send({
+              response : 'Wystąpił błąd, spróbuj ponownie później !'
+          })
+      })
+   
+   });
 
 }

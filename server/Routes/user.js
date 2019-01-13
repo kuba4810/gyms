@@ -1,5 +1,85 @@
 
+const sendMail = require('../Services/email');
+
 module.exports = (app,client)=>{
+
+      
+/* REGISTER */
+app.post('/register',function(request,response){
+
+    var data = request.body;
+    console.log("Dane do rejestracji : ", data)
+    var values = [data.login,data.password,data.email]
+    let verification_code;
+
+    //INSERT INTO USERS
+    let userQuery = `INSERT INTO kuba.users 
+    (first_name, last_name, login, passw, email, join_date, height, mass, favourite_exercise, is_blocked, is_email_confirmed)
+    VALUES('','',$1,$2,$3,CURRENT_TIMESTAMP,0,0,'',false,false)
+    returning *`;
+
+    // Sprawdź czy login zajęty
+    client.query(`SELECT * FROM kuba.users WHERE login = $1`,[data.login])
+        .then(res=>{
+            if(res.rows.length > 0){
+                response.json({
+                    response: 'failed',
+                    message : "Ten login jest już zajęty !"
+                })
+                return Promise.reject('')
+                
+            }else{
+                // Sprawdź czy email zajęty
+                 return client.query(`SELECT * FROM kuba.users WHERE email = $1`,[data.email])
+            }
+        }).then(res=>{            
+            if(res.rows.length > 0){
+                response.json({
+                    response:'failed',
+                    message : 'E-mail już w użyciu'
+                })
+                return Promise.reject('')
+            }
+            else{
+                // Dodaj użytkownika do bazy
+                 return client.query(userQuery,values)
+            }
+        }).then(res=>{
+            let user_id = res.rows[0].user_id;
+            verification_code = randomstring.generate(15);
+            // Dodaj kod weryfikacyjny
+             return client.query(`INSERT INTO kuba.email_verification_codes 
+            (user_id,verification_code)
+            VALUES($1,$2) returning *`,[user_id,verification_code])
+        
+        }).then((res)=>{
+            let user_id = res.rows[0].user_id;
+            let result = sendEmail(user_id,verification_code,data.email,data.login);
+            if(result === 'Failed'){
+                return Promise.reject(`Email sending failed !`)
+            }
+            console.log('Wysłałem maila, dostałem odpowiedź: ',result);
+
+            response.json({
+                response: 'success',
+                message: 'Udało się zarejestrować !'
+            })
+        }).catch(err=>{
+            console.log(err);
+            client.end();
+          if(err !== ''){
+            response.json({
+                response:'failed',
+                message: 'Wystąpił błąd, spróbuj ponownie później bądź skontaktuj się z administratorem'
+            });
+          }
+        })                       
+
+});
+
+
+
+/* ------------------------------ */
  
 /* LOG IN */
 /* -------------------------------------------------------------------------------------- */

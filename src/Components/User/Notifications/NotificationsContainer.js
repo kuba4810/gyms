@@ -21,6 +21,8 @@ class NotificationsContainer extends React.Component{
                 user_id : localStorage.getItem('loggedId'),
                 user_type : localStorage.getItem('type')
             }
+            console.log('Dane do wysłania: ',data);
+            
             fetch(`http://localhost:8080/notifications`,{
                 method: "POST",
                 mode: "cors",

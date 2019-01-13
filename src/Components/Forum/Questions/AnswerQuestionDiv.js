@@ -25,7 +25,7 @@ class AnswerQuestionDiv extends React.Component{
     sendAnswer = () => {
         var answerContent = document.getElementById("answerContent").value;
         var data = {
-            userID: localStorage.getItem("logedIn"),
+            userID: localStorage.getItem("loggedId"),
             questionId: this.props.questionId,
             content: answerContent
 

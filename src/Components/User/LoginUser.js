@@ -36,7 +36,7 @@ class User extends React.Component{
                 data-target="#userMenu" 
                 onClick={this.moveUserList}>
                 { condition && <span class="userInfo badge badge-success">!</span>}
-                {/* badge */}
+                {badge}
                <div className="loginUserDiv"  /* onClick={this.showUserMenu} */>
                   <i className="fas fa-user"></i>
                 </div>

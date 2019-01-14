@@ -105,9 +105,7 @@ module.exports = (app,client) => {
         .catch(err=>{
             console.log('Wystąpił błąd: ',err);
         })
-        .finally(()=>{
-            // client.end();
-        })
+
     
     
     

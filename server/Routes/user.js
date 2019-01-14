@@ -66,7 +66,6 @@ app.post('/register',function(request,response){
             })
         }).catch(err=>{
             console.log(err);
-            client.end();
           if(err !== ''){
             response.json({
                 response:'failed',

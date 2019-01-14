@@ -3,7 +3,6 @@ const fileUpload = require('express-fileupload');
 const pg = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const path = require('path');
 
 var app = express();
 
@@ -29,7 +28,13 @@ app.options('*', cors());
 app.get('/forum/*', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`);
 });
+app.get('/forum', (req, res) => {
+    res.sendFile(`${__dirname}/public/index.html`);
+});
 app.get('/silownie/*', (req, res) => {
+    res.sendFile(`${__dirname}/public/index.html`);
+});
+app.get('/silownie', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`);
 });
 
@@ -37,7 +42,14 @@ app.get('/trenerzy/*', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`);
 });
 
+app.get('/trenerzy', (req, res) => {
+    res.sendFile(`${__dirname}/public/index.html`);
+});
+
 app.get('/uzytkownik/*', (req, res) => {
+    res.sendFile(`${__dirname}/public/index.html`);
+});
+app.get('/uzytkownik', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`);
 });
 
@@ -53,4 +65,4 @@ app.use(gymRoute);
  
 
 var port = 8080;
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Server listening on port ${port} !`))

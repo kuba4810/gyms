@@ -308,9 +308,7 @@ router.post('/api/gym/vote',(request,response)=>{
            console.log(err);
            
        })
-       .finally(()=>{
-           client.end()
-       })
+
 });
 
 // Wystawianie komentarza do siłowni
@@ -350,9 +348,6 @@ router.post('/api/gym/comment',(request,response)=>{
            response.json({
                response:'failed'
            })
-       })
-       .finally(()=>{
-           client.end()
        })
 })
 

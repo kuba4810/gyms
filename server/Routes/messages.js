@@ -105,9 +105,7 @@ module.exports = (app,client) => {
         .catch(err=>{
             console.log('Wystąpił błąd: ',err);
         })
-        .finally(()=>{
-            // client.end();
-        })
+
     
     
     
@@ -284,5 +282,52 @@ app.post('/newMessage',function(request,response){
         
     })
 
+});
+
+app.get('/updateMsgNot/:user_id',(req,res)=>{
+    var user_id = req.params.user_id;
+
+    var responseData = {
+        messageCounter:'',
+        notificationsCounter: ''
+    }
+    
+
+    var pool2 = new Pool({
+        user: 'postgres',
+        host: '178.128.245.212',
+        database: 'postgres',
+        password: 'irondroplet',
+        port: 5432,
+    });
+
+    query = 'SELECT count(*) as "msg_count" From kuba.messages WHERE receiver = $1 and is_read = false';
+        values = [user_id];
+        pool2.query(query,values,function(err,response){
+            console.log("Liczba wiadomości:",response.rows[0].msg_count);
+            responseData = {...responseData,messageCount:response.rows[0].msg_count}
+            console.log("Stan obiektu:",responseData);    
+                      
+        });
+
+        /*---------------------------------------------------- */
+        pool2 = new Pool({
+            user: 'postgres',
+            host: '178.128.245.212',
+            database: 'postgres',
+            password: 'irondroplet',
+            port: 5432,
+        });
+
+        query = 'SELECT count(*) as "ntf_count" From kuba.notifications WHERE user_id = $1';
+        values = [user_id];
+        pool2.query(query,values,function(err,resp){
+            console.log("Liczba powiadomień:",resp.rows[0].ntf_count);
+            responseData = {...responseData,notificationsCount:resp.rows[0].ntf_count}
+            console.log("Stan obiektu:",responseData);
+            res.json(responseData
+            )
+            pool2.end();  
+        });
 });
 };

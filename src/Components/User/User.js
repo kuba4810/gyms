@@ -39,7 +39,7 @@ class User extends React.Component{
 
     compareNick(){
         console.log("Zalogowany nick: ",localStorage.getItem("loggedNick"))
-         if(localStorage.getItem("loggedNick") === this.props.match.params.userId){
+         if(localStorage.getItem("loggedNick") === this.props.match.params.user_login){
              return "SAME";
 
          }

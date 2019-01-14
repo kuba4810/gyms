@@ -84,8 +84,8 @@ class NewMessage extends React.Component{
        // console.log(event.target.value);
     }
     render(){
-        if(localStorage.getItem("logedIn") != 'false'){
-            if(localStorage.getItem("emailConfirmed") == "true"){
+        if(localStorage.getItem("isLoggedIn") != 'false'){
+            if(localStorage.getItem("isEmailConfirmed") == "true"){
                 return(
                     <div>
                         <div className="topicsGroupTitle">NOWA WIADOMOŚĆ</div>
@@ -115,7 +115,7 @@ class NewMessage extends React.Component{
             else{
                 return(
                     <div>
-                         <div className="topicsGroupTitle">NAJNOWSZE</div>
+                         <div className="topicsGroupTitle">NOWA WIADOMOŚĆ</div>
                           <div className="topicsContent" id="topicsContent">
                              <div className="confirmationButton" > <a href="http://localhost:3000/potwierdz-email">Potwierdź E-mail by móc wysyłać wiadomości</a></div>
                          

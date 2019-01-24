@@ -484,42 +484,6 @@ class NewGym extends React.Component {
 
         return (
             <div>
-            <nav className="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <a className="navbar-brand" href="#"><Link to="/"><img className="gym-header-img" src="https://img.icons8.com/color/50/000000/dumbbell.png" /></Link></a>
-        </div>
-        
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <a className="nav-link" href="#"><Link to="/silownie">Siłownie</Link></a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#"><Link to="/trenerzy">Trenerzy</Link></a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#"><Link to="/forum">Forum</Link></a>
-                </li>
-            </ul>
-        </div>
-
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Rejestracja</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Zaloguj się</a>
-                </li>
-            </ul>
-        </div>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
-        </button>
-
-    </nav>
-
 
             <div className="text-white bg-secondary">
                 <h1 className="text-center pt-5 mt-5">Dodawanie nowej siłowni</h1>
@@ -604,76 +568,79 @@ class NewGym extends React.Component {
                     <hr />
                 </div>
 
-                <form className="openingHoursForm newGymForm col-6 mx-auto">
+                <form className="openingHoursForm newGymForm col-lg-8 col-md-10 col-sm-12 mx-auto d-flex  justify-content-around ">
 
 
-                    <div className="form-group col-1">
+                    <div className="form-group col-2 ">
                         <label>Pon</label>
-                        <input type="time" name="monO" className="form-control"
+                        <input type="time" name="monO" className="form-control  col-12"
                             value={this.state.monO} onChange={this.handleChange} />
 
-                        <input type="time" name="monC" className="form-control" 
+                        <input type="time" name="monC" className="form-control col-12" 
                         value={this.state.monC} onChange={this.handleChange}/>
                     </div>
 
                     <div className="form-group col-2">
                         <label>Wt</label>
-                        <input type="time" name="tueO" className="form-control"
+                        <input type="time" name="tueO" className="form-control col-12"
                         value={this.state.tueO} onChange={this.handleChange} />
 
-                        <input type="time" name="tueC" className="form-control" 
+                        <input type="time" name="tueC" className="form-control col-12" 
                         value={this.state.tueC} onChange={this.handleChange}/>
                     </div>
 
                     <div className="form-group col-2">
                         <label htmlFor="">Śr</label>
-                        <input type="time" name="wedO" className="form-control"
+                        <input type="time" name="wedO" className="form-control col-12"
                          value={this.state.wedO} onChange={this.handleChange}/>
 
-                        <input type="time" name="wedC" className="form-control" 
+                        <input type="time" name="wedC" className="form-control col-12" 
                         value={this.state.wedC} onChange={this.handleChange}/>
                     </div>
 
                     <div className="form-group col-2">
                         <label htmlFor="">Czw</label>
-                        <input type="time" name="thuO" className="form-control" 
+                        <input type="time" name="thuO" className="form-control col-12" 
                         value={this.state.thuO} onChange={this.handleChange}/>
 
-                        <input type="time" name="thuC" className="form-control" 
+                        <input type="time" name="thuC" className="form-control col-12" 
                         value={this.state.thuC} onChange={this.handleChange}/>
                     </div>
+    
+                </form>
 
-                    <div className="form-group col-2">
+                <form className="openingHoursForm newGymForm col-lg-8 col-md-10 col-sm-12 mx-auto d-flex  justify-content-around ">
+                <div className="form-group col-2">
                         <label htmlFor="">Pt</label>
-                        <input type="time" name="friO" className="form-control" 
+                        <input type="time" name="friO" className="form-control col-12" 
                         value={this.state.friO} onChange={this.handleChange}/>
 
-                        <input type="time" name="friC" className="form-control"
+                        <input type="time" name="friC" className="form-control col-12"
                         value={this.state.friC} onChange={this.handleChange} />
                     </div>
 
                     <div className="form-group col-2">
                         <label htmlFor="">Sob</label>
-                        <input type="time" name="satO" className="form-control"
+                        <input type="time" name="satO" className="form-control col-12"
                         value={this.state.satO} onChange={this.handleChange} />
 
-                        <input type="time" name="satC" className="form-control" 
+                        <input type="time" name="satC" className="form-control col-12" 
                         value={this.state.satC} onChange={this.handleChange}/>
                     </div>
 
                     <div className="form-group col-2">
                         <label htmlFor="">Nd</label>
-                        <input type="time" name="sunO" className="form-control" 
+                        <input type="time" name="sunO" className="form-control col-12" 
                         value={this.state.sunO} onChange={this.handleChange}/>
 
-                        <input type="time" name="sunC" className="form-control" 
+                        <input type="time" name="sunC" className="form-control col-12" 
                         value={this.state.sunC} onChange={this.handleChange}/>
                     </div>
-                </form>
+                    </form>
 
                 {/* Oferty */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="formTitle text-center col-6 mx-auto">
+                <div className="formTitle text-center col-6 mx-auto pt-5">
                     <h4>Oferta</h4>
                     Dodaj oferty jakie są dostępne w Twojej siłowni (Siłownia,Basen,Sauna...)
                    <hr />
@@ -706,20 +673,20 @@ class NewGym extends React.Component {
                 {/* Pakiety */}
                 {/* ------------------------------------------------------------------------------- */}
 
-                <div className="formTitle col-6 mx-auto">
+                <div className="formTitle col-6 mx-auto text-center">
                     <h3>Cennik</h3>
                     Dodaj pakiety jakie Twoja siłownia oferuje. <br />
                     Przykład: 1 wejście, 6zł , 1raz
                    <hr />
                 </div>
 
-                <div className="formTitle text-center">
+                <div className="formTitle">
                     <ul className="list-group">
                         {currentPackages}
                     </ul>
                 </div>
 
-                <div className="formTitle addPackages">
+                <div className="formTitle addPackages col-6 mx-auto text-center">
                     <i className="fas fa-plus-circle showPackageForm"
                         onClick={this.showOfferForm} data-toggle="collapse" data-target="#packageForm">
                     </i>
@@ -743,13 +710,13 @@ class NewGym extends React.Component {
 
                 {/* Wyposażenie */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="formTitle col-6 mx-auto">
+                <div className="formTitle col-6 mx-auto text-center">
                     <h3>Wyposażenie</h3>
                     Zaznacz dostępne w Twojej siłowni wyposażenie.
                    <hr />
                 </div>
 
-                <form className="equipment col-6 mx-auto">
+                <form className="equipment col-10 mx-auto d-flex justify-content-around">
                    <div className="form-group">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" value='Atlas' onChange={this.handleCheck}/>
@@ -849,7 +816,7 @@ class NewGym extends React.Component {
 
                 {/* Zdjęcie */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="formTitle col-6 mx-auto">
+                <div className="formTitle mx-auto clo-6 text-center">
                     <h3>Zdjęcia</h3>
                     Dodaj zdjęcia do swojej siłowni
                    <hr />
@@ -874,7 +841,7 @@ class NewGym extends React.Component {
 
                 {/* Przycisk do wysyłania */}
                 {/* ------------------------------------------------------------------------------- */}
-                <div className="newGymButtons col-6 mx-auto mb-5">
+                <div className="newGymButtons mx-auto text-center pb-5">
                     <div className="formTitle">
                         <div className="btn btn-success sendForm" onClick={this.handleSubmit}>
                             Wyślij formularz

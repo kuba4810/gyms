@@ -190,21 +190,36 @@ class GymDetailsCont extends React.Component {
       ));
       
       // Opinie
+      // comments = (
+      //   <table>
+      //     <tr>
+      //       <th>Użytkownik</th>
+      //       <th>Data</th>
+      //       <th>Treść</th>
+      //     </tr>
+      //     {this.props.gymDetails.gym.comments.map(com => (
+      //       <tr>
+      //         {" "}
+      //         <td> {com.login} </td> <td>{com.creation_date}</td>{" "}
+      //         <td> {com.content} </td>{" "}
+      //       </tr>
+      //     ))}
+      //   </table>
+      // );
+
+
       comments = (
-        <table>
-          <tr>
-            <th>Użytkownik</th>
-            <th>Data</th>
-            <th>Treść</th>
-          </tr>
-          {this.props.gymDetails.gym.comments.map(com => (
-            <tr>
-              {" "}
-              <td> {com.login} </td> <td>{com.creation_date}</td>{" "}
-              <td> {com.content} </td>{" "}
-            </tr>
-          ))}
-        </table>
+        <div className="container mt-3">
+        <h2>Komentarze</h2>
+        {this.props.gymDetails.gym.comments.map(com => (
+          <div className="media border p-3">
+          <img src="https://img.icons8.com/color/48/c0392b/administrator-male.png" alt="" className="mr-3 mt-3 rounded-circle" style={{width: 60+"px"}}/>
+              <div className= "media-body">
+                <h4>{com.login}<small><i>{com.creation_date}</i></small></h4>
+                <p>{com.content}</p>
+              </div>
+              </div>))}
+        </div>
       );
     }
 
@@ -269,43 +284,7 @@ class GymDetailsCont extends React.Component {
       return (
         
         <React.Fragment>
-        <nav className="navbar navbar-expand-md bg-dark navbar-dark">
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <a className="navbar-brand" href="#"><img src="https://img.icons8.com/color/50/000000/dumbbell.png"/></a>
-        </div>
         
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Siłownie</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Trenerzy</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Forum</a>
-                </li>
-            </ul>
-        </div>
-
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Rejestracja</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Zaloguj się</a>
-                </li>
-            </ul>
-        </div>
-
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span className="navbar-toggler-icon"></span>
-        </button>
-
-    </nav>
-
-
 
   <div className="container-fluid">
   <div className="card mb-3 col-6 text-white bg-dark mt-5">
@@ -361,7 +340,7 @@ class GymDetailsCont extends React.Component {
   
 
               {(localStorage.getItem('isLoggedIn') === 'true') &&
-            <form onSubmit={this.sendComment} className='gymCommentForm col-6 text-center' >
+            <form onSubmit={this.sendComment} className='gymCommentForm col-6 text-center mx-auto pt-5 mt-5' >
                 <legend><h3>Wystaw opinie</h3></legend>
                 <div className="form-group">
                 <textarea className="form-control" name="text" id="" cols="30" rows="10"></textarea>
@@ -370,17 +349,8 @@ class GymDetailsCont extends React.Component {
             </form>
             }
 
-            <div className="container mt-3">
-              <h2>Media Object</h2>
-              <p>Create a media object with the .media and .media-body classes:</p>
-              <div className="media border p-3">
-                <img src="img_avatar3.png" alt="John Doe" className="mr-3 mt-3 rounded-circle" style={{width: 60+"px"}}/>
-                <div className="media-body">
-                  <h4>John Doe <small><i>Posted on February 19, 2016</i></small></h4>
-                  <p>{comments}</p>      
-                </div>
-              </div>
-            </div>
+            <p>{comments}</p>      
+
               
 
         </React.Fragment>

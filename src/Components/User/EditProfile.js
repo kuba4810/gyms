@@ -1,150 +1,72 @@
 import React from 'react'
-
+import UserDataForm from './EditProfile/UserDataForm'
+import TrainerDataForm from './EditProfile/TrainerDataForm'
 class EditProfile extends React.Component{
   constructor(){
     super();
-    this.state ={
-      first_name: '',
-      last_name: '',
-      height: '',
-      mass : '',
-      favourite_exercise : '',
-      passw : '',
-      email: '',
-      confirm_password : ''
+    this.state = {
+      isLoading : true,
+      data : null
     }
   }
 
-    componentDidMount(){
-        fetch(`http://localhost:8080/getUserData/${localStorage.getItem('loggedNick')}`)
-        .then(res=>res.json())
-        .then(res=>{
-          console.log(res);
-          
-          this.setState({
-            first_name : res.first_name,
-            last_name : res.last_name,
-            height : res.height,
-            mass : res.mass,
-            favourite_exercise : res.favourite_exercise,
-            passw : res.passw,
-            email : res.email
-          })
+    componentDidMount() {
+
+      let data = {
+        id: localStorage.getItem('loggedId'),
+        type: localStorage.getItem('type')
+      }
+
+      fetch(`http://localhost:8080/api/user`, {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin", 
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
         })
-        .catch(err=>{
+        .then(res => res.json())
+        .then(res => {
+          if (res.response === 'success') {
+            console.log(res);
+            
+            this.setState({
+              isLoading: false,
+              data: res.data
+            })
+          }
+        })
+        .catch(err => {
           alert('Wystąpił błąd, spróbuj ponownie później !');
         })
     }
 
-    handleChange = (e) => {
-      let value = e.target.value;
-      this.setState({
-          [e.target.name]: value
-      })
-  
-  }
-    
+     
     render(){
+
+        let form = '';
+
+        // Jeśli dane zostały pobrane z api
+        if(this.state.isLoading === false){
+          // Jeśli zalogowany jest użytkownikiem
+          if(localStorage.getItem('type')==='user'){
+
+            form = <UserDataForm data = {this.state.data} />
+
+          // Jeśli zalogowany jest trenerem 
+          } else if(localStorage.getItem('type')==='trainer')
+          {
+            form = <TrainerDataForm data = {this.state.data} />
+          }
+        }
         return(
             <div>
                 <div className="topicsGroupTitle">EDYCJA PROFILU</div>
-                    <div className="topicsContent" id="topicsContent">
-                    <div class="container-fluid">
-                   
-
-	<div class="row editProfileRow animated fadeIn">
-
-       <div className="col-lg-4">
-          <div className="userAvatar">
-            <i className="fas fa-user"></i>
-          </div>
-
-             <label for='userAvatar'>Dodaj zdjęcie</label>
-            <input type='file' name='userAvatar'/>
-
-          
-       </div> 
-      <div className="col-lg-8 ">
-       {/* <div class="alert alert-info alert-dismissable">
-          <a class="panel-close close" data-dismiss="alert">×</a> 
-          <i class="fa fa-coffee"></i>
-          This is an <strong>.alert</strong>. Use this to show important messages to the user.
-        </div>*/}
-        
-        
-         <form class="form-horizontal editProfileForm" role="form">
-         
-          <div class="form-group">
-            <label class="col-lg-12 control-label">Imię</label>
-            <div class="col-lg-12">
-              <input class="form-control" name='first_name'
-                     type="text" value={this.state.first_name} onChange={this.handleChange} />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-12 control-label">Nazwisko</label>
-            <div class="col-lg-12">
-              <input class="form-control" name='last_name' 
-                     type="text" value={this.state.last_name} onChange={this.handleChange} />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-12 control-label">Wzrost:</label>
-            <div class="col-lg-12"> 
-              <input class="form-control" name='height' 
-                     type="text" value={this.state.height} onChange={this.handleChange} />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-md-3 control-label">Masa:</label>
-            <div class="col-lg-12">
-            <input className='form-control' name='mass' 
-                   type='text' value={this.state.mass} onChange={this.handleChange} />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-12 control-label">Ulubione ćwiczenie:</label>
-            <div class="col-lg-12">
-              <input class="form-control" name='favourite_exercise'  
-                     type="text" value={this.state.favourite_exercise} onChange={this.handleChange} />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-12 control-label">Mail:</label>
-            <div class="col-lg-12">
-              <input class="form-control" name='email'
-                     type="text" value={this.state.email} onChange={this.handleChange}/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-12 control-label">Hasło:</label>
-            <div class="col-lg-12">
-              <input class="form-control" name='passw'
-                     type="password" value={this.state.passw} onChange={this.handleChange}/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-12 control-label">Potwierdź hasło:</label>
-            <div class="col-lg-12">
-              <input class="form-control" type="password" name='confirm_password'
-                     value={this.state.confirm_password} onChange={this.handleChange}  />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-lg-12 control-label"></label>
-            <div class="col-lg-12">
-              <input type="button" class="btn btn-success" value="Zapisz zmiany"/>
-              <span></span>
-              <input type="reset" class="btn btn-danger" value="Wyczyść"/>
-            </div>
-          </div>
-        </form>
-      </div>
-  </div>
-</div>
-
-                    </div>
+                <div className="topicsContent" id="topicsContent">                   
+                  {form}
+                </div>
             </div> 
 
         );

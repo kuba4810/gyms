@@ -113,13 +113,8 @@ function AppArrow() {
                             <TopicsMenu/>
 
                             <Route exact path={this.props.match.path} component={QuestionListContainer} />
-                           {/*  <Route path={`${this.props.match.path}/uzytkownik/:userId`} component={User} /> */}
                             <Route path={`${this.props.match.path}/pytanie/:questionId`} component={QuestionView} />
                             <Route path={`${this.props.match.path}/zadaj-pytanie`} component={NewQuestion} />
-                           {/*  <Route path={`${this.props.match.path}/nowa-wiadomosc/:userId/:userNick`} component={NewMessage} />
-                            <Route path={`${this.props.match.path}/wiadomosci`} component={MessageContainer}/>
-                            <Route path={`${this.props.match.path}/edytuj-profil`} component={EditProfile}/>
-                            <Route path={`${this.props.match.path}/powiadomienia`} component={NotificationsContainer}/> */}
 
 
                     </div>

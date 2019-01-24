@@ -1,3 +1,8 @@
  .loginUser .badge{
     border-radius:0;
 }
+
+.color-red{
+    color: red;
+    font-size: 15px !important;
+}

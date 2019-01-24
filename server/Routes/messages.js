@@ -284,6 +284,8 @@ app.post('/newMessage',function(request,response){
 
 });
 
+
+
 app.get('/updateMsgNot/:user_id',(req,res)=>{
     var user_id = req.params.user_id;
 

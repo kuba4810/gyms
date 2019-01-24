@@ -8,7 +8,7 @@ class SectionGym extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="jumbotron text-center bg-secondary mt-5" style={{marginBottom:0}}>
+        <div className="jumbotron text-center bg-secondary" style={{marginBottom:0}}>
           <h3>Znajdź siłownię lub fitness w Twoim rejonie</h3>
           <h5>Pełne oferty siłowni wraz z opiniami i galerią</h5>
 

@@ -12,8 +12,8 @@ hr{
 
 body {
     padding: 0;
-    background-image: url("../images/forumWallpaper.jpg");
-     /* background: #1B1B1B; */
+    /* background-image: url("../images/forumWallpaper.jpg"); */
+     background: #1B1B1B;
      /*
 background: -moz-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(28,28,28,1) 91%, rgba(19,19,19,1) 100%);
 background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(76,76,76,1)), color-stop(51%, rgba(0,0,0,1)), color-stop(60%, rgba(17,17,17,1)), color-stop(91%, rgba(28,28,28,1)), color-stop(100%, rgba(19,19,19,1)));

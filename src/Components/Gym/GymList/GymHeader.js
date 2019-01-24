@@ -1,48 +1,102 @@
 import React, { Component } from "react";
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux'
+
+import {checkIfLoggedIn,getLoggedUserData} from '../../../services/localStorage'
+import {logedIn} from '../../../Actions'
+import ForumHeader from '../../ForumHeader'
+import {LoginForm} from '../../Forum/LoginForm'
+import RegisterForm from '../../Forum/RegisterForm'
+import {UserMenu} from '../../User/UserMenu'
+
+import '../../../styles/userStyles.css'
 
 class HeaderGym extends React.Component {
-  render() {
+  
+    constructor(props) {
+        super(props);
+        this.state = {  }
+    }
+
+    componentDidMount(){
+        let isLoggedIn = checkIfLoggedIn();
+       
+        console.log('W magazynie mówią że zalogowany to : ', this.props.user.isLogedIn);
+        
+
+        if(isLoggedIn !== this.props.user.isLogedIn){
+            if(isLoggedIn){
+                let userData = getLoggedUserData();
+                console.log('Dane użytkownika: ',userData);
+                
+
+                let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/msgCount`)
+                              .then(res=> res.json());
+
+                let ntfCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/ntfCount`)
+                              .then(res=> res.json());
+
+                Promise.all([msgCount,ntfCount])
+                .then( values =>{
+                    console.log("Pobrane dane: ",values);
+                    let data
+
+                    if( values[0].response !== 'failed' && values[1].response !== 'failed' ){
+                         data = {
+                            loggedId: userData.id,
+                            emailConfirmed: userData.isEmailConfirmed,
+                            logedNick: userData.nick,
+                            messageCount: values[0].data,
+                            notificationsCount: values[1].data
+                        }
+                    }
+                    else{
+                        data = {
+                            loggedId: userData.id,
+                            emailConfirmed: userData.isEmailConfirmed,
+                            logedNick: userData.nick,
+                            messageCount: '',
+                            notificationsCount: ''
+                        }
+                    }
+
+                    this.props.logedIn(data);
+
+                    
+                })
+                .catch(err=>{
+                    console.log("Wystąpił błąd !",err);
+                })
+            }
+           
+        } 
+        else{
+            console.log('Nikt nie jest zalogowany !')
+        }
+    }
+
+    render() {
     return (
       <React.Fragment>
-      <nav className="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <a className="navbar-brand" href="#"><Link to="/"><img className="gym-header-img" src="https://img.icons8.com/color/50/000000/dumbbell.png" /></Link></a>
-        </div>
-        
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <a className="nav-link" href="#"><Link to="/silownie">Siłownie</Link></a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#"><Link to="/trenerzy">Trenerzy</Link></a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#"><Link to="/forum">Forum</Link></a>
-                </li>
-            </ul>
-        </div>
-
-        <div className="justify-content-around collapse navbar-collapse" id="collapsibleNavbar">
-            <ul className="navbar-nav">
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Rejestracja</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Zaloguj się</a>
-                </li>
-            </ul>
-        </div>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                <span class="navbar-toggler-icon"></span>
-        </button>
-
-    </nav>
+        <LoginForm/>
+        <RegisterForm/>
+        <UserMenu/>
+        <ForumHeader 
+            isLogedIn={this.props.user.isLogedIn} 
+            isEmailConfirmed={this.props.user.emailConfirmed}
+            page={'SIŁOWNIE'}/>
       </React.Fragment>
     );
   }
 }
 
-export default HeaderGym;
+const mapDispatchToProps = { logedIn };
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    };
+}
+
+const Header = connect(mapStateToProps,mapDispatchToProps)(HeaderGym);
+
+export default Header;

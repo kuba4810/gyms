@@ -98,10 +98,7 @@ router.get('/api/gym/:gym_id',(request,response)=>{
     })
     .finally(()=>{
         console.log('Rozłączam baze...');
-        client.end(err=>{
-            console.log(err);
-            
-        });
+
         
     })
 

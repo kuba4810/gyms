@@ -9,7 +9,7 @@ module.exports = sendEmail =(user_id,verification_code,email,login) =>{
         service: 'gmail',
         auth: {
           user: 'silownie.info@gmail.com',
-          pass: 'Impala67'
+          pass: 'Irondroplet'
         }
       });
       

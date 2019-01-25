@@ -18,7 +18,7 @@ class HeaderGym extends React.Component {
         this.state = {  }
     }
 
-    componentDidMount(){
+   /*  componentDidMount(){
         let isLoggedIn = checkIfLoggedIn();
        
         console.log('W magazynie mówią że zalogowany to : ', this.props.user.isLogedIn);
@@ -73,7 +73,7 @@ class HeaderGym extends React.Component {
         else{
             console.log('Nikt nie jest zalogowany !')
         }
-    }
+    } */
 
     render() {
     return (
@@ -81,10 +81,7 @@ class HeaderGym extends React.Component {
         <LoginForm/>
         <RegisterForm/>
         <UserMenu/>
-        <ForumHeader 
-            isLogedIn={this.props.user.isLogedIn} 
-            isEmailConfirmed={this.props.user.emailConfirmed}
-            page={'SIŁOWNIE'}/>
+        
       </React.Fragment>
     );
   }

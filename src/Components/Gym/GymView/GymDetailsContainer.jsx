@@ -291,7 +291,7 @@ class GymDetailsCont extends React.Component {
   <div className="card-body">
     <h5 className="card-title">Nazwa siłowni</h5>
     <p className="card-text">{this.props.gymDetails.gym.gymData.gym_name}</p>
-    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+
   </div>
   </div>
 
@@ -300,7 +300,7 @@ class GymDetailsCont extends React.Component {
   <div className="card-body">
     <h5 className="card-title">Zdjęcia</h5>
     <p className="card-text">{this.props.gymDetails.gym.gymData.gym_name}</p>
-    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+
   </div>
   </div>
 
@@ -308,7 +308,7 @@ class GymDetailsCont extends React.Component {
   <div className="card-body">
     <h5 className="card-title ">O siłowni</h5>
     <p className="card-text">{this.props.gymDetails.gym.gymData.description}</p>
-    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+
   </div>
   </div>             
 
@@ -316,7 +316,7 @@ class GymDetailsCont extends React.Component {
   <div className="card-body">
     <h5 className="card-title">Oferta</h5>
     <p className="card-text">{offer}</p>
-    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+
   </div>
   </div>   
 
@@ -324,7 +324,7 @@ class GymDetailsCont extends React.Component {
   <div className="card-body">
     <h5 className="card-title">Harmonogram</h5>
     <p className="card-text">{openingHours}</p>
-    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+
   </div>
   </div>   
 
@@ -332,7 +332,7 @@ class GymDetailsCont extends React.Component {
   <div className="card-body">
     <h5 className="card-title">Cennik</h5>
     <p className="card-text">{packages}</p>
-    <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+
   </div>
   </div>   
   </div>

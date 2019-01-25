@@ -4,11 +4,12 @@ import {Link} from 'react-router-dom'
 class GymItem extends React.Component{
     render(){
         var gymData = this.props.gymData;
+        let description = gymData.description.slice(0,150);
       return(
         <React.Fragment>
               
                 <div class="col-md-6 col-xl-4 p-4">
-                    <div class="card text-white bg-dark ">
+                    <div class="card text-white bg-dark h-100">
                             <div class="card-header d-flex justify-content-between">
                                     <div><img src="https://img.icons8.com/color/50/000000/dumbbell.png" class="rounded-circle"/></div>
                                     <div><Link to={`silownie/view/${gymData.gym_id}/${gymData.gym_name.split(' ').join('-')}`}> {gymData.gym_name} </Link>,{gymData.city}</div>
@@ -16,7 +17,7 @@ class GymItem extends React.Component{
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">Special title treatment</h5>
-                                <p class="card-text">{gymData.description}</p>
+                                <p class="card-text ">{description}...</p>
                                 <p class="card-text">Sauna, siłownia</p>
                             </div>
                             <div class="card-footer d-flex justify-content-between">

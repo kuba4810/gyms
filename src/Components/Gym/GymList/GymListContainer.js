@@ -63,7 +63,7 @@ class GymListC extends React.Component{
         <GymHeader/>
         <GymSection filter={this.handleInputChange}/>
             <h2 className="text-center p-4">Dostępne obiekty:</h2>
-            <div class="row container-fluid">
+            <div class="row container-fluid ">
                 {gyms}
             </div>
         <GymFooter/>

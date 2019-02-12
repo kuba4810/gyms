@@ -3,13 +3,52 @@ module.exports = (app, client) => {
 
     /* GET ALL QUESTIONS */
     /* ------------------------------ */
-    app.get('/getAllQuestions', (request, response) => {
+    app.get('/getAllQuestions/:sort_type', (request, response) => {
         console.log('Questions...');
 
+        const sort = request.params.sort_type;
+        let query = '';
 
-        client.query(`SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+        // Different query depending of sort type
+        switch(sort){
+
+            // Newest
+            case 'newest':
+                query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+                         FROM kuba.questions natural join kuba.users  
+                         ORDER BY Creating_Date DESC`
+                break;
+
+            // Oldest
+            case 'oldest':
+                query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
                 FROM kuba.questions natural join kuba.users  
-                ORDER BY Creating_Date DESC`)
+                ORDER BY Creating_Date ASC`
+                break;
+
+            // Most answered
+            case 'most_answered':
+                 query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+                 FROM kuba.questions natural join kuba.users  
+                 ORDER BY how_many_answers DESC`              
+                break;
+
+            // Without answers
+            case 'without_answers':
+                 query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+                 FROM kuba.questions natural join kuba.users  
+                 WHERE how_many_answers = 0`
+                break;
+
+            // Most rated
+            case 'most_rated':
+                 query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+                 FROM kuba.questions natural join kuba.users  
+                 ORDER BY pluses DESC`
+                break;
+        }
+
+        client.query(query)
             .then(res => {
                 response.json(
                     res.rows

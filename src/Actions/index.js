@@ -45,6 +45,12 @@ export const answerAdded = (answer) => ({
   answer
 })
 
+// Zmieniono typ sortowania
+export const sortChanged = (sort) => ({
+  type : 'SORT_TYPE_CHANGED',
+  sort
+})
+
 // SIŁOWNIE
 // ------------------------------------------------------------------------------------------------
 

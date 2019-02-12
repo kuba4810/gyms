@@ -25,33 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.options('*', cors());
 
-app.get('/forum/*', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
-app.get('/forum', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
-app.get('/silownie/*', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
-app.get('/silownie', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
 
-app.get('/trenerzy/*', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
-
-app.get('/trenerzy', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
-
-app.get('/uzytkownik/*', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
-app.get('/uzytkownik', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
-});
 
 /* ------------------------------ */
 
@@ -61,6 +35,7 @@ require('./Routes/trainers')(app,client);
 require('./Routes/notifications')(app,client);
 require('./Routes/user')(app,client);
 require('./Routes/questions')(app,client);
+require('./Routes/static')(app);
 app.use(gymRoute);
  
 

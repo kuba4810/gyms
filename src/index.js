@@ -14,7 +14,7 @@ import './styles/generalStyles.css'
 
 import './Fontello/css/fontello.css'
 
-import App from './App'
+import App from './Components/App';
 
 
 

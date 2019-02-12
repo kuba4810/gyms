@@ -31,8 +31,8 @@ class Menu extends React.Component{
         return(
             <div className="userMenu" >
                 <div className="collapse userMenuContainer" id="userMenu">
-
-                    <ul className="userOptionsList animated slideOutUp">
+                
+                    <ul className="userOptionsList animated slideOutUp ">
                         <li className="usr">
                            <Link id="userNick" to={`/uzytkownik/profil/${this.props.user.logedNick}`}>
                               Witaj  {this.props.user.logedNick}

@@ -5,10 +5,13 @@ import AnswerQuestionDiv from './AnswerQuestionDiv'
 import {connect} from 'react-redux'
 import {getFilteredQuestions, selectQuestion} from '../../../Selectors/selectQuestion'
 import {selectCurrentQuestion,answerAdded} from '../../../Actions';
+import {is_question_voted, question_vote} from '../../../services/API/user';
 
 import {Link} from 'react-router-dom'
 import history from '../../../history'
 import {formatDate} from '../../../services/dateService'
+import { unwatchFile } from 'fs';
+import { booleanLiteral } from 'babel-types';
 
 class Question extends React.Component{
     constructor(){
@@ -17,7 +20,10 @@ class Question extends React.Component{
         this.state = {
             Question:null,
             qID :this.props.match.params.questionId,
-            votes : 0
+            votes : 0,
+            isVoted : null,
+            voteValue : null
+
         }
 
     }
@@ -31,39 +37,41 @@ class Question extends React.Component{
     }
 
 
-    componentDidMount(){
+    componentDidMount = async () => {
 
         document.querySelector(".forumNav").classList.add("invisible");
         document.querySelector(".forumContent").style.width="100%";
         var questionId = this.props.match.params.questionId;
-        console.log("Id pytania: " ,questionId);
+        const userId = localStorage.getItem('loggedId');
+        let question;
+        let res;
 
-        var data = {
-            questionId: questionId
+        // Get question data
+        // ---------------------------------------------------------------
+        res = await fetch("http://localhost:8080/getQuestion/"+questionId);
+        res = await res.json();
+
+        this.setState({
+            Question : res,
+            votes : (res.pluses - res.minuses)
+        })
+
+        // Check if question was voted
+        // ---------------------------------------------------------------
+        res = await is_question_voted(questionId,userId);
+
+        if(res.response === 'success'){
+            this.setState({
+                isVoted : res.value,
+                voteValue : res.vote_value
+            },()=>{
+                console.log('Question View State : ',this.state);
+                
+            })
         }
-        /*data = JSON.stringify(data);*/
-        fetch("http://localhost:8080/getQuestion/"+questionId, {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin", //
-            headers: {
-                "Content-Type": "application/json;",
-            },
-            redirect: "follow",
-            referrer: "no-referrer", // no-referrer, *client
-           //body: JSON.stringify(data), // body data type must match "Content-Type" header
-        }).then(response => response.json())
-            .then(
-            (result) => {
-                this.setState({
-                    Question: result,
-                    votes : (result.pluses - result.minuses)
-                },()=>{console.log("Stan po załadowaniu pytania: ",this.state.Question)});
-                console.log("Rezultat: ",result);
-            },
 
-        );
+    
+        
     }
     answerAdded = (answer) => {
         console.log('Wysyłam odpowiedź do magazynu: ',answer);
@@ -71,8 +79,136 @@ class Question extends React.Component{
         this.props.answerAdded(answer);
     }
 
-    voteUp = () => {
-        if(localStorage.getItem("loggedIn")!="false")
+    // Vote function
+    // Sends prepared data to API
+    // Updates local state
+    vote = async (value) =>{
+        
+        // Prepare data to send
+        let data = null;
+
+        if(this.state.voteValue === -1){
+            
+            data = {
+                user_id : localStorage.getItem('loggedId'),
+                question_id : this.props.match.params.questionId,
+                previous_vote : this.state.voteValue,
+                next_vote : value
+            }
+
+        } else if(this.state.voteValue === value){
+
+            data = {
+                user_id : localStorage.getItem('loggedId'),
+                question_id : this.props.match.params.questionId,
+                previous_vote : this.state.voteValue,
+                next_vote : -1
+            }
+
+        } else {
+            data = {
+                user_id : localStorage.getItem('loggedId'),
+                question_id : this.props.match.params.questionId,
+                previous_vote : this.state.voteValue,
+                next_vote : value
+            }
+        }
+        
+
+        // Execute function from API
+        try {
+            
+            let res = await question_vote(data);
+
+            // If success, change state
+            if(res.response === 'success'){
+                switch(value){
+                    case 0:
+
+                        // #1 Wasn't voted, next value is 0
+                        if(this.state.isVoted === false){
+
+                            this.setState({
+                                votes : this.state.votes-1,
+                                isVoted : true,
+                                voteValue : value
+                            })
+                        }
+                        // #2 Was voted and prev value was 0
+                        else if ( this.state.isVoted === true &&
+                                  this.state.voteValue === 0){
+
+                                    this.setState({
+                                        votes : this.state.votes+1,
+                                        isVoted : false,
+                                        voteValue : -1
+                                    })
+
+                                  }                       
+
+                        // #3 Was voted and prev value was 1
+                        else if ( this.state.isVoted === true &&
+                            this.state.voteValue === 1){
+
+                                this.setState({
+                                    votes : this.state.votes-2,
+                                    isVoted : true,
+                                    voteValue : value
+                                })
+
+                            }
+
+                        break;
+                    case 1:
+                        // #4 Wasn't voted, next value is 1
+                        if(this.state.isVoted === false){
+
+                            this.setState({
+                                votes : this.state.votes+1,
+                                isVoted : true,
+                                voteValue : value
+                            })
+                        }
+                        // #5 Was voted and prev value was 0
+                        else if ( this.state.isVoted === true &&
+                                this.state.voteValue === 0){
+
+                                    this.setState({
+                                        votes : this.state.votes+2,
+                                        isVoted : true,
+                                        voteValue : value
+                                    })
+
+                                }                       
+
+                        // #6 Was voted and prev value was 1
+                        else if ( this.state.isVoted === true &&
+                            this.state.voteValue === 1){
+
+                                this.setState({
+                                    votes : this.state.votes-1,
+                                    isVoted : false,
+                                    voteValue : -1
+                                })
+
+                            }
+                        break;
+                }
+            }
+            else{
+                throw 'failed';
+            }
+
+        } catch (error) {
+           
+            console.log(error);            
+            alert('Wystąpił błąd, spróbuj ponownie później !');
+        }
+        
+    }
+
+    /* voteUp = () => {
+        if(localStorage.getItem("isLoggedIn")!=="false")
         {
             var data = {
                 user_id : localStorage.getItem('loggedId'),
@@ -108,7 +244,7 @@ class Question extends React.Component{
     }
 
     voteDown = () =>{
-        if(localStorage.getItem("loggedIn")!="false")
+        if(localStorage.getItem("isLoggedIn")!=="false")
         {
             var data = {
                 user_id : localStorage.getItem('loggedId'),
@@ -141,7 +277,7 @@ class Question extends React.Component{
             }
             document.getElementById("confirmationButton").classList.remove("invisible");
          }
-    }
+    } */
 
     showLoginForm = () => {
         var loginForm = document.getElementById("loginForm");
@@ -158,9 +294,54 @@ class Question extends React.Component{
     render(){
 
         var data = this.state.Question;
+        let voteArrows='';
 
-        if(this.state.Question !=null)
+        if(this.state.Question !=null && this.state.isVoted!==null)
         {
+
+
+            // Buttons for vote
+            if(this.state.isVoted === false){
+                voteArrows =  
+
+                <div> 
+                    <div className="plus" onClick={this.vote.bind(this,1)}>
+                         <i className="fas fa-caret-up"></i>
+                    </div>
+                    <div className="minus" onClick={this.vote.bind(this,0)}>
+                         <i className="fas fa-caret-down"></i>
+                    </div>
+                </div>
+
+            } else if( this.state.isVoted && this.state.voteValue === 0 ){
+                voteArrows = 
+
+                   <div> 
+                      <div className="plus" onClick={this.vote.bind(this,1)}>
+                         <i className="fas fa-caret-up"></i>
+                      </div>
+                      <div className="minus" onClick={this.vote.bind(this,0)}
+                           style={{'color' : 'red'}}>
+                         <i className="fas fa-caret-down"></i>
+                     </div>
+                   </div>
+
+            } else if(this.state.isVoted && this.state.voteValue === 1){
+                voteArrows = 
+
+                    <div> 
+                        <div className="plus" onClick={this.vote.bind(this,1)}
+                             style={{'color' : 'green'}}>
+                            <i className="fas fa-caret-up"></i>
+                        </div>
+                        <div className="minus" onClick={this.vote.bind(this,0)}>
+                            <i className="fas fa-caret-down"></i>
+                        </div>
+                    </div>                
+            }
+                       
+
+            // Return
             return(
                 <div>
                     <div className="topicsGroupTitle">{data.topic}</div>
@@ -173,13 +354,11 @@ class Question extends React.Component{
 
 
                                 <div className="evaluationsButtons">
-                                    <div className="plus" onClick={this.voteUp}>
-
-                                        <i className="fas fa-caret-up"></i>
-                                    </div>
-                                    <div className="minus" onClick={this.voteDown}>
-                                        <i className="fas fa-caret-down"></i>
-                                    </div>
+                                {
+                                    voteArrows
+                                }
+                              
+                                   
                                 </div>
                                 <span className="colorWhite votesCounter">
                                     {this.state.votes}
@@ -203,7 +382,9 @@ class Question extends React.Component{
                             </div>
                         </div>
 
-                        <div className="confirmationButton invisible" id="confirmationButton"onClick={this.showLoginForm}> Zaloguj się by móc odpowiadać</div>
+                        <div className="confirmationButton invisible" id="confirmationButton" onClick={this.showLoginForm}>
+                             Zaloguj się by móc odpowiadać
+                        </div>
 
                         <div className="postContentMain">
                             <div className="postContent">

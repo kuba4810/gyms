@@ -1,7 +1,8 @@
 import React from "react"
 import {connect} from 'react-redux'
 import {checkIfLoggedIn,getLoggedUserData} from '../../services/localStorage'
-import {logedIn} from '../../Actions/index'
+import {logedIn,updateMsgNtf} from '../../Actions/index'
+import {fetch_msg_ntf_count} from '../../services/API/user';
 
 import {TopicsMenu} from "./TopicsMenu";
 import {ForumNavContainer} from "./ForumNav";
@@ -34,7 +35,7 @@ function AppArrow() {
         super();
     }
 
-    componentDidMount(){
+    componentDidMount = async ()=>{
         
 
         let isLoggedIn = checkIfLoggedIn();
@@ -88,8 +89,20 @@ function AppArrow() {
             }
            
         } 
-        else{
-            console.log('Nikt nie jest zalogowany !')
+        else if(isLoggedIn === this.props.user.isLogedIn && isLoggedIn){
+
+            let id = localStorage.getItem('loggedId');
+            let type = localStorage.getItem('type');
+
+            let data = await fetch_msg_ntf_count(id,type);
+
+            if(data.response === 'success'){
+                
+                this.props.updateMsgNtf({
+                    msg : data.msg,
+                    ntf : data.ntf
+                })
+            }
         }
 
 
@@ -130,7 +143,7 @@ function AppArrow() {
 
     }
 
-const mapDispatchToProps = { logedIn };
+const mapDispatchToProps = { logedIn ,updateMsgNtf};
 const mapStateToProps = state => {
     return {
         user: state.user

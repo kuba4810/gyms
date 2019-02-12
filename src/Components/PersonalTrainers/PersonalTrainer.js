@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { directive } from 'babel-types';
 import {connect} from 'react-redux'
 import {checkIfLoggedIn,getLoggedUserData} from '../../services/localStorage'
-import {logedIn} from '../../Actions'
+import {logedIn,updateMsgNtf} from '../../Actions/index'
+import {fetch_msg_ntf_count} from '../../services/API/user';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import ForumHeader from '../ForumHeader'
@@ -19,7 +20,7 @@ class Trainer extends Component {
         this.state = {  }
     }
 
-    componentDidMount(){
+    componentDidMount = async () => {
         let isLoggedIn = checkIfLoggedIn();
        
         console.log('W magazynie mówią że zalogowany to : ', this.props.user.isLogedIn);
@@ -71,8 +72,20 @@ class Trainer extends Component {
             }
            
         } 
-        else{
-            console.log('Nikt nie jest zalogowany !')
+        else if(isLoggedIn === this.props.user.isLogedIn && isLoggedIn){
+
+            let id = localStorage.getItem('loggedId');
+            let type = localStorage.getItem('type');
+
+            let data = await fetch_msg_ntf_count(id,type);
+
+            if(data.response === 'success'){
+                
+                this.props.updateMsgNtf({
+                    msg : data.msg,
+                    ntf : data.ntf
+                })
+            }
         }
     }
     render() { 
@@ -130,7 +143,7 @@ class Trainer extends Component {
 
 
  
-const mapDispatchToProps = { logedIn };
+const mapDispatchToProps = { logedIn ,updateMsgNtf};
 const mapStateToProps = state => {
     return {
         user: state.user

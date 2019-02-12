@@ -4,7 +4,8 @@ import ForumHeader from '../ForumHeader'
 
 import {connect} from 'react-redux'
 import {checkIfLoggedIn,getLoggedUserData} from '../../services/localStorage'
-import {logedIn} from '../../Actions/index'
+import {logedIn,updateMsgNtf} from '../../Actions/index'
+import {fetch_msg_ntf_count} from '../../services/API/user';
 
 import {LoginForm} from '../Forum/LoginForm'
 import RegisterForm from '../Forum/RegisterForm'
@@ -21,7 +22,7 @@ import {NavLink} from 'react-router-dom'
 class UserCont extends Component {
     state = {  }
 
-    componentDidMount(){
+    componentDidMount = async () => {
 
         let isLoggedIn = checkIfLoggedIn();
        
@@ -74,8 +75,20 @@ class UserCont extends Component {
             }
            
         } 
-        else{
-            console.log('Nikt nie jest zalogowany !')
+        else if(isLoggedIn === this.props.user.isLogedIn && isLoggedIn){
+
+            let id = localStorage.getItem('loggedId');
+            let type = localStorage.getItem('type');
+
+            let data = await fetch_msg_ntf_count(id,type);
+
+            if(data.response === 'success'){
+                
+                this.props.updateMsgNtf({
+                    msg : data.msg,
+                    ntf : data.ntf
+                })
+            }
         }
 
 
@@ -137,7 +150,7 @@ class UserCont extends Component {
     }
 }
 
-const mapDispatchToProps = { logedIn };
+const mapDispatchToProps = { logedIn ,updateMsgNtf};
 const mapStateToProps = state => {
     return {
         user: state.user

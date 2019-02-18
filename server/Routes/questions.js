@@ -10,7 +10,7 @@ module.exports = (app, client) => {
         let query = '';
 
         // Different query depending of sort type
-        switch(sort){
+        switch (sort) {
 
             // Newest
             case 'newest':
@@ -19,32 +19,32 @@ module.exports = (app, client) => {
                          ORDER BY Creating_Date DESC`
                 break;
 
-            // Oldest
+                // Oldest
             case 'oldest':
                 query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
                 FROM kuba.questions natural join kuba.users  
                 ORDER BY Creating_Date ASC`
                 break;
 
-            // Most answered
+                // Most answered
             case 'most_answered':
-                 query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+                query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
                  FROM kuba.questions natural join kuba.users  
-                 ORDER BY how_many_answers DESC`              
+                 ORDER BY how_many_answers DESC`
                 break;
 
-            // Without answers
+                // Without answers
             case 'without_answers':
-                 query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+                query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
                  FROM kuba.questions natural join kuba.users  
                  WHERE how_many_answers = 0`
                 break;
 
-            // Most rated
+                // Most rated
             case 'most_rated':
-                 query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category 
+                query = `SELECT question_id, user_id, creating_date, topic, content_, pluses, minuses, how_many_answers  , login , category , (pluses - minuses) as  "vote"
                  FROM kuba.questions natural join kuba.users  
-                 ORDER BY pluses DESC`
+                 ORDER BY vote DESC;`
                 break;
         }
 
@@ -72,7 +72,7 @@ module.exports = (app, client) => {
     app.post('/api/question/vote/check', async (request, response) => {
 
         console.log('Question vote check ...');
-        
+
 
         // Prepare varaibles and constants
         let res;
@@ -90,7 +90,7 @@ module.exports = (app, client) => {
                 response.send({
                     response: 'success',
                     value: true,
-                    vote_value : res.rows[0].value
+                    vote_value: res.rows[0].value
                 })
 
             }
@@ -101,7 +101,7 @@ module.exports = (app, client) => {
                 response.send({
                     response: 'success',
                     value: false,
-                    vote_value : -1
+                    vote_value: -1
                 })
             }
 
@@ -118,8 +118,8 @@ module.exports = (app, client) => {
     // ----------------------------------------------------------------------------
     app.post('/api/answer/vote/check', async (request, response) => {
 
-        console.log('Answer check ... ',request.body);
-        
+        console.log('Answer check ... ', request.body);
+
         // Prepare varaibles and constants
         let res;
         const query = `SELECT * FROM kuba.answer_vote
@@ -136,7 +136,7 @@ module.exports = (app, client) => {
                 response.send({
                     response: 'success',
                     value: true,
-                    vote_value : res.rows[0].value
+                    vote_value: res.rows[0].value
                 })
 
             }
@@ -147,7 +147,7 @@ module.exports = (app, client) => {
                 response.send({
                     response: 'success',
                     value: false,
-                    vote_value : -1
+                    vote_value: -1
                 })
             }
 
@@ -165,7 +165,7 @@ module.exports = (app, client) => {
     // Aktualizuje tabele question_vote
     app.post('/api/question/vote/change', async (request, response) => {
 
-        console.log('Vote...',request.body);
+        console.log('Vote...', request.body);
 
         let data = request.body;
         let res;
@@ -297,7 +297,7 @@ module.exports = (app, client) => {
     // Aktualizuje tabele answer_vote
     app.post('/api/answer/vote/change', async (request, response) => {
 
-        console.log('Answer vote...',request.body);
+        console.log('Answer vote...', request.body);
 
         let data = request.body;
         let res;
@@ -424,7 +424,7 @@ module.exports = (app, client) => {
     });
 
 
-   
+
 
     /* SINGLE QUESTION */
     /* ------------------------------ */
@@ -539,7 +539,7 @@ module.exports = (app, client) => {
 
         var questionId = request.params.question_id;
 
-        var query = "SELECT answer_id, user_id, login , question_id, creating_date, content_, pluses, minuses FROM kuba.answers natural join kuba.users where question_id = $1 order by creating_date ASC;"
+        var query = "SELECT answer_id, user_id, login , question_id, creating_date, content_, pluses, minuses FROM kuba.answers natural join kuba.users where question_id = $1 order by creating_date DESC;"
         var values = [questionId];
 
         client.query(query, values)
@@ -637,5 +637,53 @@ module.exports = (app, client) => {
             })
 
     });
+
+
+
+    // Delete single answer
+    // Needs answer_id and deletes row from table answers
+    // If it's necesery function deletes row from table answer_vote
+    app.post('/api/answer', async (request, response) => {
+
+        console.log('Delete answer ,', request.body);
+
+        const id = request.body.answer_id;
+        let question_id;
+        let res;
+
+        try {
+
+            // Delete from table answer vote
+            res = await client.query(`DELETE from kuba.answer_vote WHERE answer_id = $1 returning *`, [id]);
+
+            // Select question_id
+            res = await client.query(`SELECT question_id from kuba.answers 
+                                       WHERE answer_id = $1 `, [id]);
+
+            // Update table questions, decrement answer count
+            res = await client.query(`UPDATE kuba.questions 
+                     SET how_many_answers = how_many_answers - 1
+                     WHERE question_id = $1`, [res.rows[0].question_id]);
+
+            // Delete from table answers
+            res = await client.query('DELETE FROM kuba.answers WHERE answer_id = $1 returning *', [id]);   
+            
+            // Send response
+            response.send({
+                response: 'success',
+            })
+
+
+        } catch (error) {
+            console.log(error);
+
+            response.send({
+                response: 'failed',
+                error: error
+            })
+        }
+
+
+    })
 
 }

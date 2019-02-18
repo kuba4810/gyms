@@ -22,7 +22,9 @@ class Question extends React.Component{
             qID :this.props.match.params.questionId,
             votes : 0,
             isVoted : null,
-            voteValue : null
+            voteValue : null,
+            voteMessage : '',
+            visibility : 'invisible'
 
         }
 
@@ -79,12 +81,34 @@ class Question extends React.Component{
         this.props.answerAdded(answer);
     }
 
-    // Vote function
+      // Vote function
     // Sends prepared data to API
     // Updates local state
     vote = async (value) =>{
         
-        // Prepare data to send
+        const isLoggedIn = localStorage.getItem('isLoggedIn');       
+        const type = localStorage.getItem('type');
+        const mail = localStorage.getItem('isEmailConfirmed');
+
+        if( isLoggedIn === 'false'){
+            this.setState({
+                voteMessage : 'Zaloguj się by móc oddać swój głos !',
+                visibility : ''
+            })
+        } else if( type === 'trainer' ){
+            this.setState({
+                voteMessage : 'Zaloguj się  jako użytkownik by móc oddać swój głos !',
+                visibility : ''
+               
+            })
+        }else if ( mail === 'false' ){
+            this.setState({
+                voteMessage : 'Potwierdź swój E-mail by móc oddać swój głos !',
+                visibility : ''
+               
+            })
+        }else{
+            // Prepare data to send
         let data = null;
 
         if(this.state.voteValue === -1){
@@ -204,6 +228,8 @@ class Question extends React.Component{
             console.log(error);            
             alert('Wystąpił błąd, spróbuj ponownie później !');
         }
+        }
+        
         
     }
 
@@ -287,6 +313,10 @@ class Question extends React.Component{
         
         loginContent.classList.remove('fadeOutDown');
         loginContent.classList.add('zoomIn');
+
+        this.setState({
+            visibility : 'invisible'
+        })
 
     }
 
@@ -382,8 +412,8 @@ class Question extends React.Component{
                             </div>
                         </div>
 
-                        <div className="confirmationButton invisible" id="confirmationButton" onClick={this.showLoginForm}>
-                             Zaloguj się by móc odpowiadać
+                        <div className={`confirmationButton ${this.state.visibility}`} id="confirmationButton" onClick={this.showLoginForm}>
+                             {this.state.voteMessage}
                         </div>
 
                         <div className="postContentMain">

@@ -45,6 +45,12 @@ export const answerAdded = (answer) => ({
   answer
 })
 
+// Usunięto odpowiedź
+export const answerDeleted = (answer_id) => ({
+  type : 'ANSWER_DELETED',
+  answer_id
+})
+
 // Zmieniono typ sortowania
 export const sortChanged = (sort) => ({
   type : 'SORT_TYPE_CHANGED',

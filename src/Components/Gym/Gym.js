@@ -97,11 +97,12 @@ class GymContainer extends React.Component{
             <ForumHeader 
                  isLogedIn={this.props.user.isLogedIn} 
                  isEmailConfirmed={this.props.user.emailConfirmed}
-                 page={'SIŁOWNIE'}/>
+                 page={'SILOWNIE'}/>
                  
-                    <Route exact path={this.props.match.path} component={GymListContainer} />  
-                    <Route path={`${this.props.match.path}/view/:gym_id/:gym_name`} component={GymDetailsContainer} />
-                    <Route path={`${this.props.match.path}/new-gym`} component={NewGym} />             
+            <Route exact path={this.props.match.path} component={GymListContainer} />  
+            <Route path={`${this.props.match.path}/view/:gym_id/:gym_name`} component={GymDetailsContainer} />
+            <Route path={`${this.props.match.path}/new-gym`} component={NewGym} />      
+
             </div>
         );
     }

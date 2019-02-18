@@ -1331,7 +1331,17 @@ span.psw {
     font-size: 25px;
     color: white;
     padding: 0 15px;
+}
 
+.postContentTopic i{
+    right : 10px;
+    top:10px;
+    transition : .3s ease;
+    cursor : pointer;
+}
+
+.postContentTopic i:hover{
+    color : cornsilk !important;
 }
 
 .postContentTopic a {

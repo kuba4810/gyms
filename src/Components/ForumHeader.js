@@ -55,7 +55,7 @@ class ForumHeader extends React.Component{
                         <div className="menuItem animated">
                             <Link to="/"><i className="fas fa-home"></i></Link> 
                         </div>
-                        {this.props.page !== 'SIŁOWNIE' &&  <div className="menuItem animated"><Link to="/silownie">Siłownie</Link></div>}
+                        {this.props.page !== 'SILOWNIE' &&  <div className="menuItem animated"><Link to="/silownie">Siłownie</Link></div>}
                         {this.props.page !== 'TRENERZY' && <div className="menuItem animated"><Link to="/trenerzy">Trenerzy</Link></div>}
                         {this.props.page !== 'FORUM' && <div className="menuItem animated"><Link to="/forum">Forum</Link></div>}
                         { !this.props.isLogedIn&& <div className="menuItem animated" id="login" onClick={this.showLoginForm}>Logowanie</div>}

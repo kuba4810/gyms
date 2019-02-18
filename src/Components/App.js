@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
 import { Router , Route } from 'react-router-dom';
-import history from './history'
-import MainPage from './Components/MainPage'
-import Gym from './Components/Gym/Gym'
-import Trainers from './Components/PersonalTrainers/PersonalTrainer'
-import Forum from './Components/Forum/Forum'
-import UserContainer from './Components/User/UserContainer'
+import history from '../history'
+import MainPage from './MainPage'
+import Gym from './Gym/Gym'
+import Trainers from './PersonalTrainers/PersonalTrainer'
+import Forum from './Forum/Forum'
+import UserContainer from './User/UserContainer'
 
 
 

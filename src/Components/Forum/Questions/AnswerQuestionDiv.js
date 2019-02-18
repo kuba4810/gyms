@@ -6,6 +6,9 @@ import React from 'react'
 class AnswerQuestionDiv extends React.Component{
     constructor(){
         super(...arguments);
+        this.state = {
+            content : ''
+        }
     }
 
 
@@ -23,11 +26,10 @@ class AnswerQuestionDiv extends React.Component{
     }
 
     sendAnswer = () => {
-        var answerContent = document.getElementById("answerContent").value;
         var data = {
             userID: localStorage.getItem("loggedId"),
             questionId: this.props.questionId,
-            content: answerContent
+            content: this.state.content
 
         };
 
@@ -49,6 +51,9 @@ class AnswerQuestionDiv extends React.Component{
                     console.log('Wysyłam odpowiedź do QuestionView: ',response.newAnswer);
                     
                    this.props.answerAdded(response.newAnswer)
+                   this.setState({
+                       content : ''
+                   })
                 }
                 else{
                     alert(response.message);
@@ -58,7 +63,15 @@ class AnswerQuestionDiv extends React.Component{
         //console.log("Treść wiadomości: " , answerContent);
     }
 
+    handleChange = e => {
+        this.setState({
+            [e.target.name] : e.target.value
+        })
+    }
+
     render(){
+
+
         if(localStorage.getItem("isLoggedIn") != 'false'){
             if(localStorage.getItem("isEmailConfirmed") == "true"){
                 return(
@@ -66,8 +79,13 @@ class AnswerQuestionDiv extends React.Component{
 
                       
                              <span className="title">Twoja odpowiedź</span>
-                             <textarea className="answerContent" id="answerContent" cols="30" rows="9" wrap="hard"></textarea>
-                            <div className="sendAnswer" onClick={this.sendAnswer}>Wyślij</div>
+                             <textarea className="answerContent" name="content"
+                                       id="answerContent" cols="30" rows="9" wrap="hard"
+                                       value = {this.state.content}
+                                       onChange = {this.handleChange}>
+                            </textarea>
+                             <div className="sendAnswer" data-toggle="collapse" data-target="#ansDiv"
+                             onClick={this.sendAnswer}>Wyślij</div>
                        
 
                         

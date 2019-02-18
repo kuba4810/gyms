@@ -1,7 +1,7 @@
 import React from 'react'
 import Answer from './Answer'
 import {connect} from 'react-redux'
-import {answersFetched,answerAdded} from '../../../Actions/index'
+import {answersFetched,answerAdded,answerDeleted} from '../../../Actions/index'
 
 class Answers extends React.Component{
     constructor(){
@@ -42,11 +42,20 @@ class Answers extends React.Component{
             );
 
     }    
+
+    deleteAnswer = (answer_id) =>{
+
+        console.log('Usuwam z magazynu odpowiedź : ',answer_id);
+        
+        this.props.answerDeleted(answer_id);
+
+    }
   
     render(){
         let answers;
         if(this.props.answers.isLoading === false){
-            answers = this.props.answers.answerList.map( answer =>  <Answer key={answer.answer_id} answerData={answer}/> )
+            answers = this.props.answers.answerList.map( answer =>  
+                <Answer key={answer.answer_id} answerData={answer} deleteAnswer = {this.deleteAnswer}/> )
         }
         return(
             <div>{answers}</div>
@@ -76,7 +85,7 @@ const mapStateToProps = state =>{
     }
 }
 
-const mapDispatchToProps = {answerAdded,answersFetched}
+const mapDispatchToProps = {answerAdded,answersFetched,answerDeleted}
 
 const AnswersList = connect(mapStateToProps,mapDispatchToProps)(Answers);
 

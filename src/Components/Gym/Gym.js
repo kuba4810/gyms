@@ -9,7 +9,8 @@ import NewGym from './NewGym/NewGym'
 import {connect} from 'react-redux'
 
 import {checkIfLoggedIn,getLoggedUserData} from '../../services/localStorage'
-import {logedIn} from '../../Actions'
+import {logedIn,updateMsgNtf} from '../../Actions/index'
+import {fetch_msg_ntf_count} from '../../services/API/user';
 import ForumHeader from '../ForumHeader'
 import {LoginForm} from '../Forum/LoginForm'
 import RegisterForm from '../Forum/RegisterForm'
@@ -20,7 +21,7 @@ class GymContainer extends React.Component{
         super();
     }
 
-    componentDidMount(){
+    componentDidMount = async () =>{
         let isLoggedIn = checkIfLoggedIn();
        
         console.log('W magazynie mówią że zalogowany to : ', this.props.user.isLogedIn);
@@ -72,8 +73,20 @@ class GymContainer extends React.Component{
             }
            
         } 
-        else{
-            console.log('Nikt nie jest zalogowany !')
+        else if(isLoggedIn === this.props.user.isLogedIn && isLoggedIn){
+
+            let id = localStorage.getItem('loggedId');
+            let type = localStorage.getItem('type');
+
+            let data = await fetch_msg_ntf_count(id,type);
+
+            if(data.response === 'success'){
+                
+                this.props.updateMsgNtf({
+                    msg : data.msg,
+                    ntf : data.ntf
+                })
+            }
         }
     }
    
@@ -84,17 +97,18 @@ class GymContainer extends React.Component{
             <ForumHeader 
                  isLogedIn={this.props.user.isLogedIn} 
                  isEmailConfirmed={this.props.user.emailConfirmed}
-                 page={'SIŁOWNIE'}/>
+                 page={'SILOWNIE'}/>
                  
-                    <Route exact path={this.props.match.path} component={GymListContainer} />  
-                    <Route path={`${this.props.match.path}/view/:gym_id/:gym_name`} component={GymDetailsContainer} />
-                    <Route path={`${this.props.match.path}/new-gym`} component={NewGym} />             
+            <Route exact path={this.props.match.path} component={GymListContainer} />  
+            <Route path={`${this.props.match.path}/view/:gym_id/:gym_name`} component={GymDetailsContainer} />
+            <Route path={`${this.props.match.path}/new-gym`} component={NewGym} />      
+
             </div>
         );
     }
 }
 
-const mapDispatchToProps = { logedIn };
+const mapDispatchToProps = { logedIn ,updateMsgNtf};
 const mapStateToProps = state => {
     return {
         user: state.user

@@ -12,11 +12,16 @@ class QuestionList extends Component{
 
     componentDidMount(){
 
+        
+        
+
         document.querySelector(".forumNav").classList.remove("invisible");
         document.querySelector(".forumContent").style.width="74.5%";
         document.querySelector(".topicsMenu").classList.remove("invisible");
 
-        fetch("http://localhost:8080/getAllQuestions")
+        
+
+        fetch("http://localhost:8080/getAllQuestions/"+this.props.sort)
            .then(res => res.json())
             .then(
                 (result) => {
@@ -27,6 +32,20 @@ class QuestionList extends Component{
                 // exceptions from actual bugs in components.
             );
             
+    }
+
+ 
+    componentDidUpdate = (next) =>{
+       if(this.props.sort !== next.sort){
+        fetch("http://localhost:8080/getAllQuestions/"+this.props.sort)
+        .then(res => res.json())
+         .then(
+             (result) => {
+                this.props.questionsFetched(result);
+             },
+         );
+       }
+        
     }
     render(){
 
@@ -64,6 +83,7 @@ class QuestionList extends Component{
        
 
             return(
+                
                 <div>
                     <div className="topicsGroupTitle">{this.props.category}</div>
                     <div className="topicsContent" id="topicsContent">
@@ -79,6 +99,7 @@ class QuestionList extends Component{
 const mapStateToProps = state => {
     return{
         questions: getFilteredQuestions(state.questions.questionsList,state.questionsSearch),
+        sort : state.questions.sort,
         category: state.questions.category
     };
 }

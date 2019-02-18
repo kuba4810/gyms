@@ -45,6 +45,18 @@ export const answerAdded = (answer) => ({
   answer
 })
 
+// Usunięto odpowiedź
+export const answerDeleted = (answer_id) => ({
+  type : 'ANSWER_DELETED',
+  answer_id
+})
+
+// Zmieniono typ sortowania
+export const sortChanged = (sort) => ({
+  type : 'SORT_TYPE_CHANGED',
+  sort
+})
+
 // SIŁOWNIE
 // ------------------------------------------------------------------------------------------------
 
@@ -75,6 +87,7 @@ export const evaluation_update = (data) => ({
   type : 'EVALUATION_UPDATE',
   data
 });
+
 // Użytkownik się zalogował 
 // Akcja wykorzystywana również przy aktualizacji stanu po ponownym otwarciu przeglądarki
 export const logedIn = (data) => ({
@@ -87,4 +100,10 @@ export const logedIn = (data) => ({
 export const loggedOut = () =>({
   type: 'LOGGED_OUT'
 });
+
+// Aktualizacja liczby wiadomości i liczby powiadomień
+export const updateMsgNtf = (data) =>({
+  type : 'UPDATE_MSG_NTF',
+  data
+})
 

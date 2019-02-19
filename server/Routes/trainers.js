@@ -1,7 +1,8 @@
+const trainerDAO = require('../DAO/trainerDAO');
+const mail = require('../Services/email');
+module.exports = (app, client) => {
 
-module.exports=(app,client)=>{
-
- // Pobiera wszystkie treningi danego trenera
+    // Pobiera wszystkie treningi danego trenera
     /*  Request body
         {
             id : user_id or trainer_id
@@ -312,8 +313,61 @@ module.exports=(app,client)=>{
             })
 
 
-
-
     })
+
+
+    // TRAINER REGISTER
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/register', async (request, response) => {
+
+        let data = request.body;
+
+        try {
+
+            // Generate verification code
+            // ---------------------------------------------------------------
+            const code = await trainerDAO.generateVerificationCode();
+
+            // Create trainer
+            // ----------------------------------------------------------------
+            let res = await trainerDAO.createTrainer(data.trainer,client,code);
+            const id = res.trainer_id;
+
+            // Create packages
+            // ----------------------------------------------------------------
+            res = await trainerDAO.createPackages(data.packages, id, client);
+
+            // Create skills
+            // ----------------------------------------------------------------
+            res = await trainerDAO.createSkills(data.skills,id,client);
+
+            // Send mail
+            // ----------------------------------------------------------------
+            const mailData = {
+                trainer_id : id,
+                login : data.trainer.login,
+                code : code
+            }
+
+            res = await mail.trainerWelcomeMail(mailData);
+
+            response.send({
+                response : 'success'
+            })
+
+        } catch (error) {
+
+            console.log(error);
+
+            response.send({
+                response: 'failed'
+            })
+
+        }
+
+    });
+
+
+
 
 };

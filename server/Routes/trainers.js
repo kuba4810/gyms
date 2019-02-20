@@ -321,47 +321,104 @@ module.exports = (app, client) => {
     app.post('/api/trainer/register', async (request, response) => {
 
         let data = request.body;
+        console.log('Trainer register... ', data);
+        
 
         try {
 
+            // Check login availability
+            // ---------------------------------------------------------------
+            let res = await trainerDAO.checkLogin(data.trainer.login,client);
+
+            if (res === 'failed') {
+                throw {
+                    message: 'Ten login jest już zajęty !'
+                }
+            }
+
+            // Check mail availability
+            // ---------------------------------------------------------------
+            res = await trainerDAO.checkMail(data.trainer.mail,client);
+
+            if (res === 'failed') {
+                throw {
+                    message: 'Ten mail jest już zajęty !'
+                }
+            }
+
             // Generate verification code
             // ---------------------------------------------------------------
-            const code = await trainerDAO.generateVerificationCode();
+            const code = await trainerDAO.generateVerificationCode(client);
 
             // Create trainer
             // ----------------------------------------------------------------
-            let res = await trainerDAO.createTrainer(data.trainer,client,code);
-            const id = res.trainer_id;
+            res = await trainerDAO.createTrainer(data.trainer, client, code);
+            if(res.response === 'failed'){
+                throw {
+                    response : 'failed'
+                }
+            }
+           
+            const id = res.trainer.trainer_id;
 
             // Create packages
             // ----------------------------------------------------------------
             res = await trainerDAO.createPackages(data.packages, id, client);
+            if(res.response === 'failed'){
+                throw {
+                    response : 'failed'
+                }
+            }
 
             // Create skills
             // ----------------------------------------------------------------
-            res = await trainerDAO.createSkills(data.skills,id,client);
+            res = await trainerDAO.createSkills(data.skills, id, client);
+            if(res.response === 'failed'){
+                throw {
+                    response : 'failed'
+                }
+            }
 
             // Send mail
             // ----------------------------------------------------------------
             const mailData = {
-                trainer_id : id,
-                login : data.trainer.login,
-                code : code
+                trainer_id: id,
+                login: data.trainer.login,
+                code: code,
+                mail : data.trainer.mail
             }
 
+            console.log('Wysyłam maila !');
+            
             res = await mail.trainerWelcomeMail(mailData);
 
+            if(res === 'failed'){
+                throw {
+                    response : 'failed'
+                }
+            }
+
             response.send({
-                response : 'success'
+                response: 'success'
             })
 
         } catch (error) {
 
             console.log(error);
 
-            response.send({
-                response: 'failed'
-            })
+            if (error.message) {
+                response.send({
+                    response: 'failed',
+                    messsage: error.message
+                })
+            } else {
+
+                response.send({
+                    response: 'failed',
+                    messsage: 'server-error'
+                })
+
+            }
 
         }
 

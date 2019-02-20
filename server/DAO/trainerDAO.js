@@ -23,19 +23,14 @@ async function createTrainer(data, connection,verificationCode) {
 
         // Execute query
         // --------------------------------------------------------------------
-        let res = await  connection.query(query,values);
-
-        res = res.rows[0];
-
+        let res = await  connection.query(query,values);        
+        
         // Return data
         // --------------------------------------------------------------------
         return {
             response : 'success',
-            trainer : res
+            trainer : res.rows[0]
         }
-
-
-
     }
     // Handle error 
     // ------------------------------------------------------------------------
@@ -70,6 +65,7 @@ async function createPackages(packages, trainerId, connection) {
                 continue;
             } else {
                 throw 'failed'
+                break;
             }
         }
 
@@ -103,6 +99,8 @@ async function createSkills(skills,id,connection){
                let res = await connection.query(`INSERT INTO trainers.trainer_skill(
                 skill_id, trainer_id, description)
                 VALUES ($1,$2,$3);`,[el.skill_id,id,el.description]);
+
+           // If not
            } else{
               let res = await connection.query(`INSERT INTO trainers.skill(name)
                 VALUES ($1) returning *;`,[el.name]); 
@@ -110,12 +108,11 @@ async function createSkills(skills,id,connection){
               res = await connection.query(`INSERT INTO trainers.trainer_skill(
                 skill_id, trainer_id, description)
                 VALUES ($1,$2,$3);`,[res.rows[0].skill_id,id,el.description]); 
-           }
-
-           return {
-               response : 'success'
-           }
+           }       
             
+        }
+        return {
+            response : 'success'
         }
     
     } catch (error) {
@@ -158,13 +155,56 @@ async function generateVerificationCode(connection){
         }
 
         return code;
+}
 
+// CHECK LOGIN AVAILABILITY
+// ----------------------------------------------------------------------------
+async function checkLogin(login,connection){
+
+    // Prepare query
+    let query = `SELECT login from trainers.trainer
+                 WHERE login = $1`;
+    // Prepare values
+    let values = [login];
+
+    // Execute query
+    let res = await connection.query(query,values);
+
+    if(res.rows.length > 0) {
+        return 'failed'
+    } else {
+        return 'success'
+    }
+}
+
+// CHECK E-MAIL AVAILABILITY
+// ----------------------------------------------------------------------------
+async function checkMail(mail,connection){
+
+    // Prepare query
+    let query = `SELECT mail from trainers.trainer
+                 WHERE mail = $1`;
+    // Prepare values
+    let values = [mail];
+
+    // Execute query
+    let res = await connection.query(query,values);
+
+    if(res.rows.length > 0) {
+        return 'failed'
+    } else {
+        return 'success'
+    }
 
 }
+
 
 module.exports = {
     createTrainer: createTrainer,
     createPackages: createPackages,
     createSkills : createSkills,
-    generateVerificationCode : generateVerificationCode
+    generateVerificationCode : generateVerificationCode,
+    checkLogin : checkLogin,
+    checkMail : checkMail,
+
 }

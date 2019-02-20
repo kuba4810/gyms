@@ -7,6 +7,7 @@ import Gym from './Gym/Gym'
 import Trainers from './PersonalTrainers/PersonalTrainer'
 import Forum from './Forum/Forum'
 import UserContainer from './User/UserContainer'
+import TrainerRegister from './TrainerRegister';
 
 
 
@@ -20,6 +21,7 @@ class App extends Component {
                     <Route  path="/trenerzy" component={Trainers}/>
                     <Route  path="/forum" component={Forum}/>
                     <Route  path="/uzytkownik" component={UserContainer}/>
+                    <Route path="/trener-rejestracja" component={TrainerRegister} />
                 </div>
             </Router>
         );

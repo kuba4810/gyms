@@ -1,5 +1,6 @@
 var nodemailer = require('nodemailer');
 const confirmationTemplate = require('./mailTemplates/confirmationMail');
+const welcomeMail = require('./mailTemplates/trainerWelcomeMail');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -41,18 +42,23 @@ async function trainerWelcomeMail(data){
 
   var mailOptions = {
     from: 'SILOWNIE-INFO',
-    to: data.email,
+    to: data.mail,
     subject: 'Potwierdzenie rejestracji',
-    html: confirmationTemplate(data)
+    html: welcomeMail(data)
   };
 
   try {
 
     let res = await transporter.sendMail(mailOptions);
-    return 'success';
+    console.log('Rezultat z maila : ',res);
+    
+    if(res){
+      return 'success'
+    }
     
   } catch (error) {
 
+    console.log(error);    
     return 'failed';
 
   }

@@ -1,5 +1,6 @@
 var nodemailer = require('nodemailer');
 const confirmationTemplate = require('./mailTemplates/confirmationMail');
+const welcomeMail = require('./mailTemplates/trainerWelcomeMail');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -12,27 +13,58 @@ const transporter = nodemailer.createTransport({
 // Funkcja otrzymuje dane nowo utworzonego użytkownika
 // Id, Kod weryfikacyjny, adres E-mail oraz login
 // Generuje wiadomość oraz wysyła na podany adres
-module.exports = sendEmail =(user_id,verification_code,email,login) =>{
-      
+async function sendEmail(user_id, verification_code, email, login) {
+
   var mailOptions = {
     from: 'SILOWNIE-INFO',
     to: email,
     subject: 'Potwierdzenie rejestracji',
     html: confirmationTemplate({
-      login : login,
-      user_id : user_id,
-      verificaion_code : verification_code
+      login: login,
+      user_id: user_id,
+      verificaion_code: verification_code
     })
   };
-  
-  transporter.sendMail(mailOptions, function(error, info){
+
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-        console.log(error);
+      console.log(error);
       return 'Failed'
     } else {
       console.log('Mail sent ...');
-      
+
       return 'Success'
     }
   });
+}
+
+async function trainerWelcomeMail(data){
+
+  var mailOptions = {
+    from: 'SILOWNIE-INFO',
+    to: data.mail,
+    subject: 'Potwierdzenie rejestracji',
+    html: welcomeMail(data)
+  };
+
+  try {
+
+    let res = await transporter.sendMail(mailOptions);
+    console.log('Rezultat z maila : ',res);
+    
+    if(res){
+      return 'success'
     }
+    
+  } catch (error) {
+
+    console.log(error);    
+    return 'failed';
+
+  }
+
+}
+
+module.exports = {
+  trainerWelcomeMail : trainerWelcomeMail
+}

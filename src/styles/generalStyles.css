@@ -6,3 +6,41 @@
     color: red;
     font-size: 15px !important;
 }
+
+
+/* ------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
+                            /* TRAINER REGISTER  */
+/* ------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------- */
+
+
+.trainerRegister{
+    max-width:100%;
+    min-height:100vh;
+    background-color: cornsilk;
+    overflow-x:hidden;
+    background-color: #151515;
+}
+.trainerRegister form {
+    box-shadow : 0px 0px 5px  black;
+    border-radius : 5px;
+}
+
+.trainerRegister hr {
+    border-color : #151515;
+}
+
+.trainerRegister label {
+    font-weight : bold;
+}
+
+.registerTrainerPackages .form-group {
+    /* width:30%; */
+}
+
+.trainerRegister ul li{
+    
+    border : none;
+
+}

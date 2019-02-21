@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {Link} from 'react-router-dom';
 class RegisterForm extends React.Component{
     constructor(){
         super();
@@ -79,17 +79,24 @@ class RegisterForm extends React.Component{
                             <input type="text" placeholder="Wprowadź login" name="uname" className="registerLogin"
                                    required/>
 
-                                <label htmlFor="psw"><b>Hasło*</b></label>
-                                <input type="password" placeholder="Wprowadź hasło" name="psw"
-                                       className="registerPassword" required/>
+                            <label htmlFor="psw"><b>Hasło*</b></label>
+                            <input type="password" placeholder="Wprowadź hasło" name="psw"
+                                    className="registerPassword" required/>
 
-                                    <label htmlFor="email"><b>Email*</b></label>
-                                    <input type="email" placeholder="Wprowadź email" name="email"
-                                           className="registerEmail" required/>
+                            <label htmlFor="email"><b>Email*</b></label>
+                            <input type="email" placeholder="Wprowadź email" name="email"
+                                    className="registerEmail" required/>
+
+                            
+                            <Link to={'/trener-rejestracja'} className="btn btn-danger mb-2 w-100 p-2">
+                                 Jesteś trenerem ? Zarejestruj się jako trener !
+                             </Link>
 
 
-                                        <span className="registerWarning">{this.state.message}</span>
-                                        <button type="submit"  className="registerButton">Zarejestruj</button>
+                            <span className="registerWarning">{this.state.message}</span>
+                            <button type="submit"  className="registerButton">
+                                 Zarejestruj
+                            </button>
                                        
                         </form>
 

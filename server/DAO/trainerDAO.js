@@ -110,7 +110,7 @@ async function createSkills(skills,id,connection){
                 VALUES ($1,$2,$3);`,[res.rows[0].skill_id,id,el.description]); 
            }       
             
-        }
+        }tam 
         return {
             response : 'success'
         }

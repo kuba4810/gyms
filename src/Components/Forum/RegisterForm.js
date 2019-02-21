@@ -89,7 +89,7 @@ class RegisterForm extends React.Component{
 
                             
                             <Link to={'/trener-rejestracja'} className="btn btn-danger mb-2 w-100 p-2">
-                                 Jesteś trenerem ? Zarejestruj się jako trener 
+                                 Jesteś trenerem ? Zarejestruj się jako trener !
                              </Link>
 
 

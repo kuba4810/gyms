@@ -22,6 +22,7 @@ class App extends Component {
                     <Route  path="/forum" component={Forum}/>
                     <Route  path="/uzytkownik" component={UserContainer}/>
                     <Route path="/trener-rejestracja" component={TrainerRegister} />
+                    <Route path="/rejestracja" component={TrainerRegister} />
                 </div>
             </Router>
         );

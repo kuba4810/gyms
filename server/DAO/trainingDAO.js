@@ -22,6 +22,10 @@ async function editTraining(training, connection) {
         // --------------------------------------------------------------------
         let res = await connection.query(query, values);
 
+        res = await connection.query(`UPDATE trainers.trainer_shedule
+                                      SET  note=$1
+                                      WHERE training_id = $2;`,[training.description,training.training_id]);
+
         return {
             response: 'success',
             training: res.rows[0]
@@ -69,9 +73,9 @@ async function deleteTraining(training_id, connection) {
         res = await connection.query(`DELETE FROM trainers.training
                     WHERE training_id = $1`, [training_id]);
 
-        
+
         return {
-            response : 'success'
+            response: 'success'
         }
 
 
@@ -79,15 +83,15 @@ async function deleteTraining(training_id, connection) {
 
         console.log(error);
         return {
-            response : 'failed'
+            response: 'failed'
         }
-        
+
 
     }
 }
 
 
 module.exports = {
-    editTraining : editTraining,
-    deleteTraining : deleteTraining
+    editTraining: editTraining,
+    deleteTraining: deleteTraining
 }

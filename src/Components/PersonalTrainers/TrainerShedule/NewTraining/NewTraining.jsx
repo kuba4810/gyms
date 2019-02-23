@@ -647,7 +647,7 @@ class NewTrainingContainer extends Component {
                         .then(res => {
                             console.log(res);
                             this.hide();
-                            // window.location.reload();
+                            window.location.reload();
 
                         })
                         .catch(err => {

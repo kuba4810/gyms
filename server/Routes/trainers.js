@@ -1,5 +1,7 @@
 const trainerDAO = require('../DAO/trainerDAO');
+const trainingDAO = require('../DAO/trainingDAO');
 const mail = require('../Services/email');
+
 module.exports = (app, client) => {
 
     // Pobiera wszystkie treningi danego trenera
@@ -318,17 +320,19 @@ module.exports = (app, client) => {
 
     // TRAINER REGISTER
     // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     app.post('/api/trainer/register', async (request, response) => {
 
         let data = request.body;
         console.log('Trainer register... ', data);
-        
+
 
         try {
 
             // Check login availability
             // ---------------------------------------------------------------
-            let res = await trainerDAO.checkLogin(data.trainer.login,client);
+            let res = await trainerDAO.checkLogin(data.trainer.login, client);
 
             if (res === 'failed') {
                 throw {
@@ -338,7 +342,7 @@ module.exports = (app, client) => {
 
             // Check mail availability
             // ---------------------------------------------------------------
-            res = await trainerDAO.checkMail(data.trainer.mail,client);
+            res = await trainerDAO.checkMail(data.trainer.mail, client);
 
             if (res === 'failed') {
                 throw {
@@ -353,29 +357,29 @@ module.exports = (app, client) => {
             // Create trainer
             // ----------------------------------------------------------------
             res = await trainerDAO.createTrainer(data.trainer, client, code);
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw {
-                    response : 'failed'
+                    response: 'failed'
                 }
             }
-           
+
             const id = res.trainer.trainer_id;
 
             // Create packages
             // ----------------------------------------------------------------
             res = await trainerDAO.createPackages(data.packages, id, client);
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw {
-                    response : 'failed'
+                    response: 'failed'
                 }
             }
 
             // Create skills
             // ----------------------------------------------------------------
             res = await trainerDAO.createSkills(data.skills, id, client);
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw {
-                    response : 'failed'
+                    response: 'failed'
                 }
             }
 
@@ -385,16 +389,16 @@ module.exports = (app, client) => {
                 trainer_id: id,
                 login: data.trainer.login,
                 code: code,
-                mail : data.trainer.mail
+                mail: data.trainer.mail
             }
 
             console.log('Wysyłam maila !');
-            
+
             res = await mail.trainerWelcomeMail(mailData);
 
-            if(res === 'failed'){
+            if (res === 'failed') {
                 throw {
-                    response : 'failed'
+                    response: 'failed'
                 }
             }
 
@@ -425,6 +429,79 @@ module.exports = (app, client) => {
     });
 
 
+    // EDIT TRAINING
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------    
+    // ------------------------------------------------------------------------
+    app.post('/api/training/edit', async (request, response) => {
+
+        try {
+
+            console.log('Edit training...', request.body);
+
+            // Execute function from trainingDAO
+            // ----------------------------------------------------------------
+            let res = await trainingDAO.editTraining(request.body, client);
+
+            if (res.response === 'success') {
+
+                response.send({
+                    response: 'success'
+                })
+
+            } else {
+                throw 'failed';
+            }
+            // ----------------------------------------------------------------
+
+        } catch (error) {
+
+            response.send({
+                response: 'failed'
+            })
+
+        }
+
+    });
+
+    // DELETE TRAINING
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------    
+    // ------------------------------------------------------------------------
+    app.post('/api/training/delete', async (request, response) => {
+
+        console.log('Delete training',request.body);
+        
+
+        try {
+
+            // Execute function from trainingDAO
+            // ----------------------------------------------------------------
+            let res = await trainingDAO.deleteTraining(request.body.training_id,client);
+
+            
+            
+            if(res.response === 'success'){
+                
+                response.send({
+                    response : 'success'
+                })
+                
+            } else {
+                throw 'failed';
+            }
+
+        } catch (error) {
+
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+
+
+        }
+
+    });
 
 
 };

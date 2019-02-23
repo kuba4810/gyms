@@ -5,12 +5,11 @@ import TrainingDetails from './TrainingDetails';
 import NewTraining from './NewTraining/NewTraining';
 import { rejects } from 'assert';
 import history from '../../../history';
+import { deleteTraining } from '../../../services/API/training';
 
 class SheduleContainer extends Component {
     constructor() {
         super();
-        // console.log('Pracuje konstruktor ...');
-
         let currentDate = new Date();
         let currentYear = currentDate.getFullYear();
         let currentMonth = currentDate.getMonth();
@@ -33,12 +32,7 @@ class SheduleContainer extends Component {
             monthNames: monthNames,
             dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
             dayItems: [],
-            trainingsList: [
-                { id: 4, price: 150, date: '2019-00-13,15:00', duration: '60min', name: 'Trening personalny', note: ' Nastawienie na redukcje ' },
-                { id: 5, price: 160, date: '2019-01-04,19:00', duration: '70min', name: 'Trening personalny', note: ' Koleś chce zwiększyć masę mięśniową ' },
-                { id: 6, price: 160, date: '2019-01-27,19:00', duration: '70min', name: 'Trening personalny', note: ' Koleś chce zwiększyć masę mięśniową ' },
-
-            ],
+            trainingsList: [],
             currentTrainingList: [
 
             ],
@@ -49,6 +43,115 @@ class SheduleContainer extends Component {
             currentTraining: 0,
             currentDayClicked: currentDay
         }
+    }
+
+    deleteTraining = async (training_id) => {
+
+        console.log('Training_id (SheduleContainer): ',training_id);
+        
+        try {
+
+            let res = await deleteTraining(training_id);
+
+            if (res === 'success') {
+                let trainings = this.state.trainingsList;
+                let currentTrainingList = this.state.currentTrainingList;
+
+                currentTrainingList = currentTrainingList.filter( t => (t.training_id !== training_id) );
+
+
+                trainings = trainings.filter(t => (t.training_id !== training_id));
+
+                this.setState({
+                    trainingsList: [...trainings],
+                    currentTrainingList : [...currentTrainingList]
+                },()=>{
+                    this.renderCalendar();
+                })
+
+                return 'success'
+                
+            } else {
+                throw 'failed'
+            }
+        } catch (error) {
+
+            console.log(error);
+            
+            return 'failed'
+        }
+
+    }
+
+    clearCurrentTrainingId = () =>{
+        this.setState({
+            currentTraining : 0
+        })
+    }
+
+    // EDIT TRAINING
+    // ------------------------------------------------------------------------
+    editTraining = (training) => {
+
+        console.log('Shedule container - edytuje trening : ',training);
+        
+
+        let trainings = this.state.trainingsList;
+        let currentTrainingList = this.state.currentTrainingList;
+
+        // --------------------------------------------------------------------
+        trainings = trainings.map( t => {
+
+            if(t.training_id === training.training_id){
+
+                return  Object.assign({},t,{
+                     name : training.name,
+                     date : training.date
+                })
+
+            } else{
+                return t;
+            }            
+ 
+
+        })
+
+        // --------------------------------------------------------------------
+        currentTrainingList = currentTrainingList.map( t => {
+
+            if(t.training_id === training.training_id){
+
+                return  Object.assign({},t,{
+                     name : training.name,
+                     date : training.date
+                })
+
+            } else{
+                return t;
+            }            
+ 
+
+        })
+
+        this.setState({
+            trainingsList : [...trainings],
+            currentTrainingList : [...currentTrainingList]
+        },()=>{
+            console.log('List treningów: ',this.state.currentTrainingList);
+            
+            this.renderCalendar();
+        })
+
+    }
+
+    addTraining = (training) =>{
+        let trainings = this.state.trainingsList;
+
+        trainings.push(training);
+
+        this.setState({
+            trainingsList : [...trainings]
+        })
     }
 
 
@@ -164,8 +267,6 @@ class SheduleContainer extends Component {
 
             }
 
-            //    console.log('Pierwszy dzień miesiąca to : ',dow);
-
             this.setState({
                 dow: dow
             })
@@ -175,14 +276,10 @@ class SheduleContainer extends Component {
         }
 
         i = 1;
-        /*   for(var index=dow; index < this.state.monthDaysCount[this.state.month]+dow ; index++ ){           
-              
-              days[index].innerHTML = i;
-              i++;
-          } */
+
 
         let dayOfWeek = dow;
-        // console.log('Dzień tygodnia przed pętlą: ',dayOfWeek);
+
 
         items = []
         let dates = this.state.trainingsList.map(t => ({ id: t.training_id, date: t.date.split(',')[0] }));
@@ -193,8 +290,6 @@ class SheduleContainer extends Component {
             } else {
                 let itemDate = `${this.state.year}-${this.state.month + 1 < 10 ? `0${this.state.month + 1}` : this.state.month + 1}-${i < 10 ? `0${i}` : i}`
                 let propsTrainings = dates.filter(tr => (tr.date === itemDate))
-                //  console.log('Pasujące daty: ',propsTrainings) 
-                //  console.log('ItemDate: ',itemDate);
                 let isActive = (i === this.state.currentDayClicked)
                 items.push(
                     <DayItem
@@ -363,6 +458,8 @@ class SheduleContainer extends Component {
         />
         let details = <TrainingDetails
             training_id={this.state.currentTraining}
+            deleteTraining={this.deleteTraining}
+            clear = {this.clearCurrentTrainingId}
         />
         return (
             <div className="topicsContent">
@@ -397,6 +494,8 @@ class SheduleContainer extends Component {
                             user_type == 'trainer' &&
                             <NewTraining
                                 fetchTrainings={this.fetchTrainings.bind(this)}
+                                addTraining = {this.addTraining}
+                                editTraining = {this.editTraining}
                             />
                         }
 

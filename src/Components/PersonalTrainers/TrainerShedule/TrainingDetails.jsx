@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import history from '../../../history'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import {connect} from 'react-redux';
+import {editModeActive,trainingChoosen} from '../../../Actions/trainings';
 
-class TrainingDetails extends Component {
+
+class Details extends Component {
     state = {
         isLoading: true,
         training: {}
     }
+
+    
 
     // Jeśli komponent dostanie nowy id treningu pobierze dane nowego treningu
     componentDidUpdate(prevProps, prevState) {
@@ -60,6 +65,7 @@ class TrainingDetails extends Component {
     hide = () => {
         document.querySelector('.trainingDetails').classList.remove('zoomIn');
         document.querySelector('.trainingDetails').classList.add('zoomOut');
+        this.props.clear();
 
 
         setTimeout(() => {
@@ -67,6 +73,47 @@ class TrainingDetails extends Component {
         }, 400)
 
     }
+
+    showNewTrainingForm = () => {
+        let container = document.querySelector('.newTrainingContainer');
+        container.classList.remove('zoomOut');
+        container.classList.remove('invisible');
+        container.classList.add('zoomIn');
+    }
+
+    deleteTraining = async () => {
+
+        try {
+            
+            let res = await this.props.deleteTraining(this.state.training.training_id);
+            if(res === 'success'){
+                this.hide();
+            } else {
+                throw 'failed'
+            }
+
+        } catch (error) {
+            console.log(error);
+            
+            alert('Wystąpił błąd, spróbuj ponownie później !')
+        }
+
+    }
+
+    editTraining = () => {
+
+        console.log('Wysyłam z details taki trening : ',this.state.training);
+        
+
+        // #1 Store update
+        this.props.trainingChoosen(this.state.training)
+        this.props.editModeActive();
+        this.hide();
+        this.showNewTrainingForm();
+
+
+    }
+
     // Render
     render() {
 
@@ -77,6 +124,7 @@ class TrainingDetails extends Component {
         let userData = ''
         let gymData = ''
         let user_type = localStorage.getItem('type');
+        let buttons = '';
 
         // Po załadowaniu danych
         if (!this.state.isLoading) {
@@ -160,6 +208,19 @@ class TrainingDetails extends Component {
                     <b>Tel:</b> {data.phone_number}
                 </div>
 
+            buttons = <div className="trainingDetailsButtons  d-flex justify-content-end">
+
+                        <div className="btn btn-warning w-25"
+                             onClick={this.editTraining}>
+                             Edytuj
+                        </div>
+
+                        <div className="btn btn-danger w-25"
+                        onClick={this.deleteTraining}>
+                            Usuń
+                        </div>
+                      </div>
+
         }
 
 
@@ -179,10 +240,21 @@ class TrainingDetails extends Component {
                 </div>
                 {userData}
 
+                { localStorage.getItem('type') === 'trainer' && buttons}
+
             </div>);
     }
 }
 
 
+const mapStateToProps = (state) => {
+    return {
+        editMode : state.trainings.editMode
+    }
+}
+
+const mapDispatchToProps = {trainingChoosen,editModeActive}
+
+const TrainingDetails = connect(null,mapDispatchToProps)(Details);
 
 export default TrainingDetails;

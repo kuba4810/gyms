@@ -327,3 +327,9 @@ text-align: center;
     width:45%;
 
 }
+
+.trainingDetailsButtons{
+    position:relative;
+    bottom: -18%;
+    right:1%;
+}

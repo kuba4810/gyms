@@ -5,6 +5,7 @@ import {user} from './user'
 import {gym} from './gym'
 import {gymDetails} from './gymDetails'
 import {answers} from './answers'
+import {trainings} from './trainings'
 
 
 export default combineReducers({
@@ -13,6 +14,7 @@ export default combineReducers({
     gym,
     user,
     gymDetails,
-    answers
+    answers,
+    trainings
 
 });

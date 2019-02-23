@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import GymList from './GymList/GymList'
 import UserList from './UserList/UserList'
 import { parse } from 'path';
+import { connect } from 'react-redux';
+import { editModeDisabled } from '../../../../Actions/trainings';
+import {editTraining} from '../../../../services/API/training';
+
 const default_state = {
     training_name: '',
     duration: '0',
@@ -26,9 +30,9 @@ const default_state = {
     user_id: null
 }
 
-class NewTraining extends Component {
+class NewTrainingContainer extends Component {
 
-    constructor(){
+    constructor() {
         super();
     }
     state = {
@@ -56,12 +60,58 @@ class NewTraining extends Component {
         user_id: null
     }
 
+   componentDidUpdate = (prev) => {
+
+       if((prev.editMode !== this.props.editMode) && this.props.editMode === true){
+        console.log('Propsy w newTraining (UPDATE): ',this.props);
+
+        
+        
+        if(this.props.editMode){
+            let data = this.props.training;
+            let date = data.date.slice(0,10);
+            let hour = data.date.slice(11,16);
+
+            this.setState({
+                training_name : data.name,
+                duration : data.duration,
+                price : data.prize,
+                date : date,
+                hour : hour,
+                description : data.note,
+                gym_name : data.gym_name,
+                user_name : data.user_name,
+                phone_number : data.phone_number
+            })
+        }
+       }
+    }
+
     componentDidMount() {
+
+        console.log('Propsy w newTraining (Mount): ',this.props);
+        
+
+        if(this.props.editMode){
+            let data = this.props.training;
+
+            this.setState({
+                training_name : data.training_name,
+                duration : data.duration,
+                price : data.price,
+                date : data.date,
+                hour : data.hour,
+                description : data.description,
+                gym_name : data.gym_name,
+                user_name : data.user_name,
+                phone_number : data.phone_number
+            })
+        }
 
         let id = localStorage.getItem('loggedId');
         console.log('Trainer id', id);
         console.log(this.props);
-        
+
 
         fetch(`http://localhost:8080/api/trainer/packages/${id}`)
             .then(res => res.json())
@@ -87,7 +137,8 @@ class NewTraining extends Component {
         let container = document.querySelector('.newTrainingContainer');
         container.classList.remove('zoomIn');
         container.classList.add('zoomOut');
-        
+        this.props.editModeDisabled();
+
 
         setTimeout(() => {
             container.classList.add('invisible');
@@ -211,13 +262,13 @@ class NewTraining extends Component {
     chooseUser = (id, name, phone_number) => {
         console.log(id);
 
-        
+
         this.setState({
             user_id: id,
             user_name: name,
             phone_number: phone_number,
-            first_name : name.split(' ')[0],
-            last_name : name.split(' ')[1]
+            first_name: name.split(' ')[0],
+            last_name: name.split(' ')[1]
         });
 
         this.hideUsers();
@@ -551,56 +602,64 @@ class NewTraining extends Component {
         return newDate;
     }
     // Add training
-    addTraining = () => {
-        let trainer_id = localStorage.getItem('loggedId');
-        this.generateDates()
-            .then(res => {
-                let s = this.state;
-                let data = {
-                    training_name: s.training_name,
-                    trainer_id : trainer_id,
-                    duration: s.duration,
-                    price: s.price,
-                    date: s.date,
-                    hour: s.hour,
-                    description: s.description,
-                    user_name: s.user_name,
-                    gym_name: s.gym_name,
-                    first_name: s.first_name,
-                    last_name: s.last_name,
-                    phone_number: s.phone_number,
-                    dates: s.dates,
-                    gym_id: s.gym_id,
-                    user_id: s.user_id
-                }
+    addTraining = async () => {
 
-                console.log('Takie dane wysyłan na serwer: ', data);
+        if (this.props.editMode) {
 
-
-                fetch("http://localhost:8080/api/trainers/new-training", {
-                    method: "POST",
-                    mode: "cors",
-                    cache: "no-cache",
-                    credentials: "same-origin", //
-
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-Type": "application/json"
+        }
+        else {
+            let trainer_id = localStorage.getItem('loggedId');
+            this.generateDates()
+                .then(res => {
+                    let s = this.state;
+                    let data = {
+                        training_name: s.training_name,
+                        trainer_id: trainer_id,
+                        duration: s.duration,
+                        price: s.price,
+                        date: s.date,
+                        hour: s.hour,
+                        description: s.description,
+                        user_name: s.user_name,
+                        gym_name: s.gym_name,
+                        first_name: s.first_name,
+                        last_name: s.last_name,
+                        phone_number: s.phone_number,
+                        dates: s.dates,
+                        gym_id: s.gym_id,
+                        user_id: s.user_id
                     }
-                }).then(response => response.json())
-                    .then(res => {
-                        console.log(res);
-                        this.hide();
 
-                    })
-                    .catch(err => {
-                        alert('Wystąpił błąd, spróbuj ponownie później !')
-                        console.log(err);
-                        
-                    });
-            })
+                    console.log('Takie dane wysyłan na serwer: ', data);
 
-            
+
+                    fetch("http://localhost:8080/api/trainers/new-training", {
+                        method: "POST",
+                        mode: "cors",
+                        cache: "no-cache",
+                        credentials: "same-origin", //
+
+                        body: JSON.stringify(data),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then(response => response.json())
+                        .then(res => {
+                            console.log(res);
+                            this.hide();
+                            window.location.reload();
+
+                        })
+                        .catch(err => {
+                            alert('Wystąpił błąd, spróbuj ponownie później !')
+                            console.log(err);
+
+                        });
+                })
+
+        }
+
+
 
     }
 
@@ -611,6 +670,47 @@ class NewTraining extends Component {
         this.setState({
             weeks: [false, false, false, false, false, false, false]
         })
+    }
+
+    editTraining = async () => {
+
+        try {
+
+            let training = this.state;
+
+            let data = {
+                training_id : this.props.training.training_id,
+                training_name : training.training_name,
+                duration : training.duration,
+                price : parseInt(training.price),
+                date : training.date + ',' + training.hour,
+                description : training.description,
+                gym_name : training.gym_name,
+                user_name : training.user_name
+            }
+            
+            let res = await editTraining(data);
+
+            if(res === 'success') {
+                this.props.editModeDisabled();
+                this.props.editTraining({
+                    training_id : this.props.training.training_id,
+                    date : training.date + ',' + training.hour,
+                    name : training.training_name
+
+                });
+                this.hide();
+            }  else {
+                throw 'failed'
+            }
+
+        } catch (error) {
+            console.log(error);
+            
+            alert('Wystąpił błąd, spróbuj ponownie później !')
+
+        }
+
     }
 
 
@@ -625,7 +725,9 @@ class NewTraining extends Component {
                 <div className="newTrainingHeader">
                     {/* Title */}
                     <div className="newTrainingTittle">
-                        Nowy trening
+                        {
+                            this.props.editMode ? 'Edycja treningu' : 'Nowy trening'
+                        }
                     </div>
                     {/* Hide container */}
                     <div className="hideTrainingDetails" onClick={this.hide} >
@@ -687,9 +789,15 @@ class NewTraining extends Component {
                         {/* Buttons */}
                         <div className="form-group button-group newTrainingButtons">
                             {/* Add training */}
-                            <div className="btn btn-success" onClick={this.addTraining}>
-                                Dodaj
-                            </div>
+                            {
+                                this.props.editMode ? 
+                                <div className="btn btn-success" onClick={this.editTraining}>
+                                    Zapisz
+                                </div> :
+                                <div className="btn btn-success" onClick={this.addTraining}>
+                                     Dodaj
+                                 </div>
+                            }
                             {/* Clear form */}
                             <div className="btn btn-danger" onClick={this.clearForm}>
                                 Wyczyść
@@ -732,15 +840,17 @@ class NewTraining extends Component {
 
                         {/* Choose days */}
                         <label></label>
-                        <div className="form-group">
-                            <div className="btn btn-primary"
-                                data-toggle="collapse"
-                                data-target="#repeatContainer"
-                                onClick={this.countTraining}>
-                                Powtórz trening
+                        {
+                            !this.props.editMode && 
+                            <div className="form-group">
+                                <div className="btn btn-primary"
+                                    data-toggle="collapse"
+                                    data-target="#repeatContainer"
+                                    onClick={this.countTraining}>
+                                    Powtórz trening
+                                </div>
                             </div>
-
-                        </div>
+                        }
 
                         <div className="repeatContainer collapse" id="repeatContainer">
                             {/* ------------------------------------------------------------- */}
@@ -825,5 +935,16 @@ class NewTraining extends Component {
             </div>);
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        editMode: state.trainings.editMode,
+        training : state.trainings.currentTraining
+    }
+}
+
+const mapDispatchToProps = { editModeDisabled }
+
+const NewTraining = connect(mapStateToProps, mapDispatchToProps)(NewTrainingContainer);
 
 export default NewTraining;

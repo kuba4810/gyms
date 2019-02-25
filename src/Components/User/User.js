@@ -76,17 +76,12 @@ class User extends React.Component {
                 var button;
                 switch (this.compareNick()) {
                     case "SAME":
-                        button = < div className = "editProfile transition "
-                        id = "editProfile" > < Link to = "/uzytkownik/edytuj-profil" > Edytuj profil < /Link></div >
+                        button = <div className = "editProfile transition " id="editProfile" >
+                         <Link to = "/uzytkownik/edytuj-profil" > Edytuj profil</Link> </div>
                             break;
                     case "DIFFERENT":
-                        button = < div className = "editProfile transition "
-                        id = "sendMessage" >
-                            <
-                            Link to = {
-                                "/uzytkownik/nowa-wiadomosc/" + this.props.match.params.user_login
-                            } > Wiadomość < /Link> < /
-                            div >
+                        button = <div className = "editProfile transition" id = "sendMessage">
+                            <Link to = {"/uzytkownik/nowa-wiadomosc/" + this.props.match.params.user_login} > Wiadomość </Link> </div >
                             break;
                     case "NONE":
                         button = ""

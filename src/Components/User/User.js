@@ -89,50 +89,57 @@ class User extends React.Component {
                 }
                 return (
 
-                    <
-                    div >
+                    <div>
 
-                    <
-                    div className = "topicsGroupTitle" > Użytkownik {
-                        this.props.match.params.user_login
-                    } < /div> <
-                    div className = "topicsContent"
-                    id = "topicsContent" >
-                    <
-                    div className = "user" >
-
-                    <
-                    div className = "userPersonalData animated fadeIn" >
-                    <
-                    div className = "profileImage" >
-
-                    <
-                    i className = "fas fa-user" > < /i> < /
-                    div >
+                         <div className = "topicsGroupTitle" > Użytkownik {this.props.match.params.user_login}</div>
+                         <div className = "topicsContent" id = "topicsContent"> 
+                    
+                        <div className = "user"> 
+                    
+                             <div className = "userPersonalData animated fadeIn">
+                                <div className = "profileImage">
+                                    <i className = "fas fa-user"> </i> 
+                                </div>
 
 
-                    <
-                    ul className = "userDataList " > {
-                        type === 'user' ? < li > < span className = "title" > Zarejestrowany od : < /span> <span className="value" id="joinDate"> {data.join_date.substring(0,10)} </span > < /li>:null}
+                    <ul className = "userDataList"> 
+                        {type === 'user' ? 
+                            <li>
+                                <span className = "title" > Zarejestrowany od : </span>
+                               <span className="value" id="joinDate"> {data.join_date.substring(0,10)} </span > 
+                             </li> : 
+                            null}
 
-                            <
-                            li > < span className = "title" > Imię: < /span> <span className="value" id="firstName"> {data.first_name} </span > < /li> <
-                        li > < span className = "title" > Nazwisko: < /span> <span className="value" id="lastName"> {data.last_name} </span >
-                            <
-                            /li> {
-                        type === 'user' ? < div >
-                        <
-                        li > < span className = "title" > Wzrost : < /span> <span className="value" id="height">  {data.height} cm </span > < /li> <
-                        li > < span className = "title" > Masa: < /span> <span className="value" id="mass">  {data.mass} kg  </span > < /li> <
-                        li > < span className = "title" > Ulubione Ćwiczenie: < /span> <span className="value"
-                        id = "favExc" > {
-                            data.favourite_exercise
-                        } < /span></li >
-                        <
-                        /div>:null}
+                            <li>
+                                 <span className = "title" > Imię: </span> 
+                                 <span className="value" id="firstName"> {data.first_name} </span > </li> 
+                                 <li> 
+                                     <span className = "title" > Nazwisko: </span>
+                                      <span className="value" id="lastName"> {data.last_name} </span>
+                                </li> 
+                                {type === 'user' ? 
+                                <div>
+                                    <li> <span className = "title" > Wzrost : </span>
+                                     <span className="value" id="height"> 
+                                        {data.height} cm 
+                                    </span > 
+                                    </li>
+                                     <li>
+                                          <span className = "title" > Masa: </span>
+                                          <span className="value" id="mass"> 
+                                            {data.mass} kg 
+                                          </span > 
+                                    </li> 
+                                    <li> 
+                                        <span className = "title" > Ulubione Ćwiczenie: </span>
+                                        <span className="value" id = "favExc" > 
+                                           {data.favourite_exercise} 
+                                        </span>
+                                    </li>
+                            </div>
+                                :null}
 
-                        <
-                        /ul>
+                        </ul>
 
 
                         {
@@ -140,84 +147,84 @@ class User extends React.Component {
                         }
 
 
-                        <
-                        /div>
+                        </div>
 
 
 
                         {
                             type === 'user' ?
-                                <
-                                div className = "userForumData  animated fadeIn" >
-                                <
-                                p className = "userForumDataTitle" > Aktywność użytkownika : < /p>
+                                <div className = "userForumData  animated fadeIn">
+                                <p className = "userForumDataTitle" > Aktywność użytkownika : </p>
 
-                                <
-                                ul className = "userForumDataList" >
-                                <
-                                li > < span className = "title" > Zadane pytania: < /span> <span className="value"
-                            id = "usrQuestions" > {
-                                    data.questions
-                                } < /span></li >
-                                <
-                                li > < span className = "title" > Udzielone odpowiedzi: < /span> <span className="value"
-                            id = "usrAnswers" > {
-                                    data.answers
-                                } < /span></li >
-                                <
-                                li > < span className = "title" > Napisane komentarze: < /span> <span className="value"
-                            id = "usrVotesUp" > 0 < /span></li >
-                                <
-                                li > < span className = "title" > Oddanych głosów: < /span> <span className="value"
-                            id = "usrVotesDown" > {
-                                    data.voted_down + data.votes_up
-                                } < /span></li >
+                                <ul className = "userForumDataList">
+                                    <li> 
+                                        <span className = "title" >
+                                             Zadane pytania:
+                                        </span>
+                                         <span className="value" id = "usrQuestions" > 
+                                            {data.questions} 
+                                        </span>
+                                    </li>
+                                
+                                    <li>
+                                         <span className = "title">
+                                             Udzielone odpowiedzi: 
+                                        </span> 
+                                        <span className="value" id = "usrAnswers" >
+                                            {data.answers}
+                                        </span>
+                                    </li>
 
+                                    <li> 
+                                        <span className = "title" > 
+                                            Napisane komentarze:
+                                        </span>
+                                        <span className="value" id = "usrVotesUp" > 
+                                            0 
+                                        </span>
+                                    </li>
 
-                                <
-                                /ul> < /
-                                div >: null
-                        }
+                                    <li>
+                                         <span className = "title" >
+                                             Oddanych głosów: 
+                                         </span>
+                                         <span className="value" id = "usrVotesDown" >
+                                             {data.voted_down + data.votes_u}
+                                         </span>
+                                    </li >
 
-                        <
-                        /div> < /
-                        div > <
-                        /div>
+                                </ul> 
+                             </div>
+                             : null
+                             }
 
-                    );
+                        </div> 
+                    </div>
+                    </div>
+                 );
                 }
                 else {
-                    return ( <
-                        div >
-                        <
-                        div className = "topicsGroupTitle" >
+                    return ( 
+                        <div>
 
-                        <
-                        /div> <
-                        div className = "topicsContent"
-                        id = "topicsContent" >
+                            <div className = "topicsGroupTitle">
 
-                        <
-                        div class = "loaderContainer" >
-                        <
-                        div class = "loader" >
-                        <
-                        /div> <
-                        div class = "loaderInner" >
+                            </div> 
 
-                        <
-                        /div>
+                            <div className = "topicsContent" id = "topicsContent">
 
-                        <
-                        div class = "loaderInnerSmall" >
+                            <div class = "loaderContainer">
 
-                        <
-                        /div>
+                                <div class = "loader"> </div>
 
-                        <
-                        /div> < /
-                        div > <
-                        /div>
+                                <div class = "loaderInner"></div>
+
+                                <div class = "loaderInnerSmall"></div>
+
+                            </div> 
+
+                        </div > 
+                    </div>
                     );
                 }
 

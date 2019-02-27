@@ -58,7 +58,7 @@ class EditProfile extends React.Component{
           // Jeśli zalogowany jest trenerem 
           } else if(localStorage.getItem('type')==='trainer')
           {
-            form = <TrainerDataForm data = {this.state.data} />
+            form = <TrainerDataForm /* data = {this.state.data} */ />
           }
         }
         return(

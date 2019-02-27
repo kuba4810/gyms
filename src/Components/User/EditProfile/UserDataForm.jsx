@@ -130,6 +130,8 @@ class UserDataForm extends Component {
           {/* User data */}
           <div className="col-lg-8 ">
 
+          
+
             <form class="form-horizontal editProfileForm" role="form">
 
               {/* First name */}

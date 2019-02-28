@@ -1,11 +1,11 @@
 import React from 'react'
-import {
-    booleanLiteral
-} from 'babel-types';
-import {
-    Link
-} from 'react-router-dom'
+import {booleanLiteral} from 'babel-types';
+import {Link} from 'react-router-dom';
+import {getUserData,checkAccountType} from '../../services/API/user';
+import {getTrainerData} from '../../services/API/trainers';
 
+import UserProfile from './Profile/UserProfile';
+import TrainerProfile from './Profile/TrainerProfile';
 
 class User extends React.Component {
         constructor() {
@@ -18,40 +18,57 @@ class User extends React.Component {
 
         }
 
-        fetchData = () => {
-            /* document.querySelector(".forumNav").classList.add("invisible");
-                    document.querySelector(".forumContent").style.width="100%"; */
-            console.log('Zamontowano komponent USER');
+ // FETCH DATA
+ // ---------------------------------------------------------------------------  
+ fetchData = async () => {
 
+     let res = await checkAccountType(this.props.match.params.user_login);
+     let type;
+     let data;
 
-            fetch("http://localhost:8080/getUserData/" + this.props.match.params.user_login, {
-                    method: "GET",
-                    mode: "cors",
-                    cache: "no-cache",
-                    credentials: "same-origin", //
-                    headers: {
-                        "Content-Type": "application/json;",
-                    },
-                    redirect: "follow",
-                    referrer: "no-referrer", // no-referrer, *client
-                }).then(response => response.json())
-                .then((response) => {
-                    this.setState({
-                        userData: response.data,
-                        type: response.type
-                    })
-                });
+     if(res.response === 'failed'){
+         throw 'failed'
+     }
+
+     type = res.type;
+     console.log('Sprawdzony typ : ', res);
+     
+
+     if(res.type === 'user'){
+         res = await getUserData(res.id);
+         
+
+     } else {
+         res = await getTrainerData(res.id);
+     }
+
+     if(res.response === 'failed'){
+         throw 'failed'
+     }
+
+     console.log('Pobrane dane : ', res);
+   
+     
+
+    this.setState({
+        type : type,
+        userData : res.data
+    })
+
+ }
+
+        componentDidMount = async () => {
+
+            await this.fetchData();
+
         }
 
-        componentDidMount = () => {
-
-            this.fetchData();
-
-        }
-
-        componentDidUpdate = (prev) => {
+        componentDidUpdate = async (prev) => {
             if (prev.match.params.user_login !== this.props.match.params.user_login) {
-                this.fetchData();
+                this.setState({
+                    data : null
+                })
+                await this.fetchData();
             }
         }
 
@@ -71,6 +88,20 @@ class User extends React.Component {
             var data = this.state.userData;
             var type = this.state.type;
 
+            let container;
+
+            if(type === 'user'){
+                container = <UserProfile 
+                             data = {this.state.userData} 
+                             loggedNick = {this.props.match.params.user_login}
+                            />
+            } else {
+                container = <TrainerProfile 
+                             data = {this.state.userData} 
+                             loggedNick = {this.props.match.params.user_login}
+                            />
+            }
+
 
             if (data !== null) {
                 var button;
@@ -87,117 +118,23 @@ class User extends React.Component {
                         button = ""
                         break;
                 }
+
+                let title;
+
+                if(type === 'user') {
+                    title = `Użytkownik ${this.props.match.params.user_login}`
+                } else {
+                    title = `Trener ${this.props.match.params.user_login}`
+                }
                 return (
 
                     <div>
 
-                         <div className = "topicsGroupTitle" > Użytkownik {this.props.match.params.user_login}</div>
+                         <div className = "topicsGroupTitle" > {title} </div>
                          <div className = "topicsContent" id = "topicsContent"> 
                     
-                        <div className = "user"> 
-                    
-                             <div className = "userPersonalData animated fadeIn">
-                                <div className = "profileImage">
-                                    <i className = "fas fa-user"> </i> 
-                                </div>
-
-
-                    <ul className = "userDataList"> 
-                        {type === 'user' ? 
-                            <li>
-                                <span className = "title" > Zarejestrowany od : </span>
-                               <span className="value" id="joinDate"> {data.join_date.substring(0,10)} </span > 
-                             </li> : 
-                            null}
-
-                            <li>
-                                 <span className = "title" > Imię: </span> 
-                                 <span className="value" id="firstName"> {data.first_name} </span > </li> 
-                                 <li> 
-                                     <span className = "title" > Nazwisko: </span>
-                                      <span className="value" id="lastName"> {data.last_name} </span>
-                                </li> 
-                                {type === 'user' ? 
-                                <div>
-                                    <li> <span className = "title" > Wzrost : </span>
-                                     <span className="value" id="height"> 
-                                        {data.height} cm 
-                                    </span > 
-                                    </li>
-                                     <li>
-                                          <span className = "title" > Masa: </span>
-                                          <span className="value" id="mass"> 
-                                            {data.mass} kg 
-                                          </span > 
-                                    </li> 
-                                    <li> 
-                                        <span className = "title" > Ulubione Ćwiczenie: </span>
-                                        <span className="value" id = "favExc" > 
-                                           {data.favourite_exercise} 
-                                        </span>
-                                    </li>
-                            </div>
-                                :null}
-
-                        </ul>
-
-
-                        {
-                            localStorage.getItem('isLoggedIn') === 'true' && button
-                        }
-
-
-                        </div>
-
-
-
-                        {
-                            type === 'user' ?
-                                <div className = "userForumData  animated fadeIn">
-                                <p className = "userForumDataTitle" > Aktywność użytkownika : </p>
-
-                                <ul className = "userForumDataList">
-                                    <li> 
-                                        <span className = "title" >
-                                             Zadane pytania:
-                                        </span>
-                                         <span className="value" id = "usrQuestions" > 
-                                            {data.questions} 
-                                        </span>
-                                    </li>
-                                
-                                    <li>
-                                         <span className = "title">
-                                             Udzielone odpowiedzi: 
-                                        </span> 
-                                        <span className="value" id = "usrAnswers" >
-                                            {data.answers}
-                                        </span>
-                                    </li>
-
-                                    <li> 
-                                        <span className = "title" > 
-                                            Napisane komentarze:
-                                        </span>
-                                        <span className="value" id = "usrVotesUp" > 
-                                            0 
-                                        </span>
-                                    </li>
-
-                                    <li>
-                                         <span className = "title" >
-                                             Oddanych głosów: 
-                                         </span>
-                                         <span className="value" id = "usrVotesDown" >
-                                             {data.voted_down + data.votes_u}
-                                         </span>
-                                    </li >
-
-                                </ul> 
-                             </div>
-                             : null
-                             }
-
+                         <div className="user">
+                             {container}
                         </div> 
                     </div>
                     </div>

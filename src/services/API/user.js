@@ -63,10 +63,9 @@ export const fetch_msg_ntf_count = async (userId, type) => {
 
 }
 
-// Wysyła żądanie do serwera i oczekuje informacji czy zalogowany user
-// zagłosował na dane pytanie
+// IS QUESTION VOTED
 // ----------------------------------------------------------------------------
-export const is_question_voted = async  (question_id, user_id) => {
+export const is_question_voted = async (question_id, user_id) => {
 
     try {
         let res = await axios.post(URL + 'question/vote/check', {
@@ -75,13 +74,13 @@ export const is_question_voted = async  (question_id, user_id) => {
         })
 
         console.log(res.data);
-        
+
         return res.data;
 
     } catch (error) {
 
         return {
-            response : 'failed'
+            response: 'failed'
         }
 
     }
@@ -90,7 +89,7 @@ export const is_question_voted = async  (question_id, user_id) => {
 
 // Check if answer is voted by loggedIn user
 // ----------------------------------------------------------------------------
-export const is_answer_voted = async  (answer_id, user_id) => {
+export const is_answer_voted = async (answer_id, user_id) => {
 
     try {
         let res = await axios.post(URL + 'answer/vote/check', {
@@ -103,7 +102,7 @@ export const is_answer_voted = async  (answer_id, user_id) => {
     } catch (error) {
 
         return {
-            response : 'failed'
+            response: 'failed'
         }
 
     }
@@ -111,13 +110,13 @@ export const is_answer_voted = async  (answer_id, user_id) => {
 }
 
 
-// Voting for questions
+// VOTING FOR QUESTIONS
 // ----------------------------------------------------------------------------
-export const question_vote = async (data) =>{
+export const question_vote = async (data) => {
 
     try {
-        
-        let res = await axios.post(URL + 'question/vote/change',data);
+
+        let res = await axios.post(URL + 'question/vote/change', data);
 
         return res.data;
 
@@ -126,20 +125,20 @@ export const question_vote = async (data) =>{
 
         console.log(error);
         return {
-            response : 'failed'
+            response: 'failed'
         }
-        
+
     }
 
 }
 
-// Voting for answers
+// VOTING FOR ANSWERS
 // ----------------------------------------------------------------------------
-export const answer_vote = async (data) =>{
+export const answer_vote = async (data) => {
 
     try {
-        
-        let res = await axios.post(URL + 'answer/vote/change',data);
+
+        let res = await axios.post(URL + 'answer/vote/change', data);
 
         return res.data;
 
@@ -148,9 +147,78 @@ export const answer_vote = async (data) =>{
 
         console.log(error);
         return {
-            response : 'failed'
+            response: 'failed'
         }
+
+    }
+
+}
+
+// GET USER DATA
+// ----------------------------------------------------------------------------
+
+export const getUserData = async (user_id) => {
+
+    console.log('Get User Data ...');
+    
+
+    try {
+
+        let res = await axios.post(URL + 'user/data', {
+            user_id: user_id
+        })
+
+        if (res.data.response === 'failed') {
+            throw 'failed'
+        }
+
+        console.log('API ',res.data);
         
+
+        return {
+            response: 'success',
+            data: res.data.user
+        }
+
+    } catch (error) {
+
+        return {
+            response: 'failed'
+        }
+        console.log('API ', error);
+
+
+    }
+
+}
+
+// CHECK ACCOUNT TYPE
+// ----------------------------------------------------------------------------
+export const checkAccountType = async (login) => {
+
+    try {
+
+        let res = await axios.post(URL+'account/type',{
+            login : login
+        })
+
+        if (res.data.response === 'failed') {
+            throw 'failed'
+        }
+
+        return {
+            response: 'success',
+            type: res.data.type,
+            id : res.data.id
+        }
+
+    } catch (error) {
+
+        return {
+            response: 'failed'
+        }
+        console.log('API ', error);
+
     }
 
 }

@@ -1,3 +1,4 @@
+const userDAO = require('../DAO/userDAO');
 const sendMail = require('../Services/email');
 
 module.exports = (app, client) => {
@@ -402,8 +403,66 @@ module.exports = (app, client) => {
                 response.send({
                     response : 'failed'
                 })
-            })
+            })       
+
+    })
+
+
+    // CHECK ACCOUNT TYPE
+    // ------------------------------------------------------------------------
+    app.post('/api/account/type', async (request,response) => {
+
+        console.log('Account type...');
         
+        try {
+            
+            let res = await userDAO.checkAccountType(request.body.login,client);            
+
+            if(res.response === 'failed'){
+                throw 'failed';
+            }
+
+            else {
+                response.send({
+                    response : 'success',
+                    type : res.type,
+                    id : res.id
+                })
+            }
+
+        } catch (error) {
+            
+            console.log(error);
+
+            response.send({
+                response : 'failed'
+            })
+            
+
+        }
+        
+    })
+
+    // GET USER DATA
+    // ------------------------------------------------------------------------
+    app.post('/api/user/data', async (request,response) => {
+        
+        try {
+            
+            let res = await userDAO.getUserData(request.body.user_id,client);
+
+            if(res.response === 'failed'){
+                throw 'failed';
+            }
+
+            response.send({
+                response : 'success',
+                user : res.user
+            })
+
+        } catch (error) {
+            
+        }
 
     })
 

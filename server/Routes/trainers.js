@@ -470,23 +470,23 @@ module.exports = (app, client) => {
     // ------------------------------------------------------------------------
     app.post('/api/training/delete', async (request, response) => {
 
-        console.log('Delete training',request.body);
-        
+        console.log('Delete training', request.body);
+
 
         try {
 
             // Execute function from trainingDAO
             // ----------------------------------------------------------------
-            let res = await trainingDAO.deleteTraining(request.body.training_id,client);
+            let res = await trainingDAO.deleteTraining(request.body.training_id, client);
 
-            
-            
-            if(res.response === 'success'){
-                
+
+
+            if (res.response === 'success') {
+
                 response.send({
-                    response : 'success'
+                    response: 'success'
                 })
-                
+
             } else {
                 throw 'failed';
             }
@@ -502,6 +502,210 @@ module.exports = (app, client) => {
         }
 
     });
+
+
+    // GET TRAINER DATA
+    // ------------------------------------------------------------------------
+    app.get('/api/trainer/data/:id', async (request, response) => {
+
+        try {
+
+            let res = await trainerDAO.getTrainerData(request.params.id, client)
+
+            if (res.response === 'success') {
+                response.send({
+                    response: 'success',
+                    data: res.data
+                })
+            } else {
+                throw 'failed'
+            }
+
+        } catch (error) {
+
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+
+
+        }
+
+    })
+
+    // UPDATE TRAINER PROFILE
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/update', async (request, response) => {
+
+        try {
+
+            let res = await trainerDAO.updateProfile(request.body, client);
+
+            response.send({
+                response: res.response
+            })
+
+        } catch (error) {
+
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+
+        }
+
+    });
+
+
+    // ADD PACKAGE
+    // ------------------------------------------------------------------------
+    app.post('/api/package', async (request, response) => {
+
+        console.log('Endpoint : ', request.body);
+        
+        console.log('Add package...');
+        
+        try {
+
+            let res = await trainerDAO.addPackage(request.body, client);
+
+            
+            response.send({
+                response: res.response
+            })
+
+
+        } catch (error) {
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+        }
+
+    })
+
+    // EDIT PACKAGE
+    // ------------------------------------------------------------------------
+    app.post('/api/package/edit', async (request, response) => {
+
+        try {
+
+            console.log(request.body);
+            
+
+            let res = await trainerDAO.editPackage(request.body, client);
+
+            response.send({
+                response: res.response
+            })
+
+
+        } catch (error) {
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+        }
+
+    })
+
+
+    // DELETE PACKAGE
+    // ------------------------------------------------------------------------
+    app.post('/api/package/delete', async (request, response) => {
+
+        try {
+
+            let res = await trainerDAO.deletePackage(request.body.package_id, client);
+
+            response.send({
+                response: res.response,
+                package_id : res.package_id
+            })
+
+
+        } catch (error) {
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+        }
+
+    })
+
+
+    // ADD SKILL
+    // ------------------------------------------------------------------------
+    app.post('/api/skill', async (request, response) => {
+
+        try {
+
+            let res = await  trainerDAO.addSKill(request.body, client);
+
+            if (res.response = 'success') {
+                response.send({
+                    response: 'success',
+                    skill_id: res.skill_id
+                })
+            } else {
+                response.send({
+                    response: 'failed'
+                })
+            }
+
+
+        } catch (error) {
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+        }
+
+    })
+
+    // EDIT SKILL
+    // ------------------------------------------------------------------------
+    app.post('/api/skill/edit', async (request, response) => {
+
+        try {
+
+            let res = await trainerDAO.editSkill(request.body, client);
+
+            response.send({
+                response : res.response
+            })
+
+
+        } catch (error) {
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+        }
+
+    })
+
+    // DELETE SKILL
+    // ------------------------------------------------------------------------
+    app.post('/api/skill/delete', async (request, response) => {
+
+        try {
+
+            let res = await trainerDAO.deleteSkill(request.body.skill_id, client);
+
+            response.send({
+                response : res.response
+            })
+
+
+        } catch (error) {
+            console.log(error);
+            response.send({
+                response: 'failed'
+            })
+        }
+
+    })
 
 
 };

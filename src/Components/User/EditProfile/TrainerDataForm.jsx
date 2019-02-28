@@ -26,6 +26,7 @@ class TrainerDataForm extends Component {
     package_price: '',
     editPackage: '',
     skills: [],
+    editSkill: '',
     skill_name: '',
     skill_description: '',
 
@@ -41,13 +42,13 @@ class TrainerDataForm extends Component {
   // --------------------------------------------------------------------------
   showPackageEdit = (id) => {
 
-    console.log(id,this.state.packages);
-    
-  
-    const p = this.state.packages.filter( p=> (p.package_id===id) )[0];
+    console.log(id, this.state.packages);
+
+
+    const p = this.state.packages.filter(p => (p.package_id === id))[0];
 
     console.log(p);
-    
+
 
     this.setState({
       editPackage: id,
@@ -63,7 +64,63 @@ class TrainerDataForm extends Component {
 
     const editPackage = document.querySelector('.trainerProfileEditContainer .editPackage');
     editPackage.classList.remove('fadeOut');
+    editPackage.classList.remove('invisible');
     editPackage.classList.add('fadeIn');
+  }
+
+  // HIDE PACKAGE EDIT
+  // --------------------------------------------------------------------------
+
+  hidePackageEdit = () => {
+
+    this.setState({
+      editPackage: 0,
+      package_name: '',
+      package_duration : '',
+      package_price: '',
+    })
+
+    const container = document.querySelector('.trainerProfileEditContainer');   
+    container.classList.add('fadeOut');
+    container.classList.remove('fadeIn');
+
+
+    const editPackage = document.querySelector('.trainerProfileEditContainer .editPackage');
+    editPackage.classList.add('fadeOut');
+    editPackage.classList.remove('fadeIn');
+
+
+    setTimeout(()=>{
+      container.classList.add('invisible');
+      editPackage.classList.add('invisible');
+    },500)
+
+  }
+
+  // HIDE SKILL EDIT
+  // --------------------------------------------------------------------------
+
+  hideSkillEdit = () => {
+
+    this.setState({
+      editSkill: 0,
+      skill_name: '',
+      package_description : ''
+    })
+
+    const container = document.querySelector('.trainerProfileEditContainer');
+    container.classList.add('fadeOut');
+    container.classList.remove('fadeIn');
+
+    const editSkill = document.querySelector('.trainerProfileEditContainer .editSkill');
+    editSkill.classList.add('fadeOut');
+    editSkill.classList.remove('fadeIn');
+
+    setTimeout(()=>{
+      container.classList.add('invisible');
+      editSkill.classList.add('invisible');
+    },500)
+
   }
 
   // ADD PACKAGE
@@ -104,6 +161,8 @@ class TrainerDataForm extends Component {
       document.querySelector('#packages').classList.add('collapse');
       document.querySelector('#packages').classList.remove('show');
 
+
+
     } else {
       alert('Wystąpił błąd, spróbuj ponownie później !');
     }
@@ -125,7 +184,7 @@ class TrainerDataForm extends Component {
     }
 
     console.log(data);
-    
+
 
     // API call
     let res = await editPackage(data);
@@ -152,17 +211,10 @@ class TrainerDataForm extends Component {
         package_price: ''
       })
 
-      document.querySelector('#packages').classList.add('collapse');
-      document.querySelector('#packages').classList.remove('show');
+      // document.querySelector('#packages').classList.add('collapse');
+      // document.querySelector('#packages').classList.remove('show');
 
-      const container = document.querySelector('.trainerProfileEditContainer');
-      container.classList.add('invisible');
-      container.classList.add('fadeOut');
-      container.classList.remove('fadeIn');
-
-      const editPackage = document.querySelector('.trainerProfileEditContainer .editPackage');
-      editPackage.classList.add('fadeOut');
-      editPackage.classList.remove('fadeIn');
+      this.hidePackageEdit();
 
     } else {
       alert('Wystąpił błąd, spróbuj ponownie później !');
@@ -197,6 +249,84 @@ class TrainerDataForm extends Component {
       } else {
         alert('Wystąpił błąd, spróbuj ponownie później !');
       }
+    }
+
+  }
+
+  // SHOW SKILL EDIT
+  // --------------------------------------------------------------------------
+  showSkillEdit = (id) => {
+
+
+
+    const s = this.state.skills.filter(s => (s.skill_id === id))[0];
+
+    console.log(s);
+
+
+    this.setState({
+      editSkill: id,
+      skill_name: s.name,
+      skill_description: s.description
+    })
+
+    const container = document.querySelector('.trainerProfileEditContainer');
+    container.classList.remove('invisible');
+    container.classList.remove('fadeOut');
+    container.classList.add('fadeIn');
+
+    const editSkill = document.querySelector('.trainerProfileEditContainer .editSkill');
+    editSkill.classList.remove('fadeOut');
+    editSkill.classList.remove('invisible');
+    editSkill.classList.add('fadeIn');
+  }
+
+  // EDIT SKILL
+  // --------------------------------------------------------------------------
+
+  editSkill = async () => {
+
+    // Prepare data object
+    const data = {
+      skill_id: this.state.editSkill,
+      trainer_id: localStorage.getItem('loggedId'),
+      name: this.state.skill_name,
+      description: this.state.skill_description
+    }
+
+    console.log(data);
+
+
+    // API call
+    let res = await editSkill(data);
+
+    if (res.response === 'success') {
+
+      // Push new object to state
+      let skills = this.state.skills;
+
+      skills = skills.filter(p => p.skill_id !== this.state.editSkill)
+
+      skills.push({
+        skill_id: this.state.editSkill,
+        trainer_id: localStorage.getItem('loggedId'),
+        name: this.state.skill_name,
+        description: this.state.skill_description
+      })
+
+      this.setState({
+        skills: [...skills],
+        skill_name: '',
+        skill_description: ''
+      })
+
+      // document.querySelector('#skills').classList.add('collapse');
+      // document.querySelector('#skills').classList.remove('show');
+
+     this.hideSkillEdit();
+
+    } else {
+      alert('Wystąpił błąd, spróbuj ponownie później !');
     }
 
   }
@@ -402,11 +532,12 @@ class TrainerDataForm extends Component {
         <div>
           <i class="fas fa-check mr-2 text-light"></i>
           <b>{skill.name}</b>,
-          {skill.description.slice(0, 50)} {skill.description.length > 50 && '...'}
+          {skill.description.slice(0, 30)} {skill.description.length > 50 && '...'}
         </div>
 
         <div>
-          <i class="fas fa-pen mr-2 text-warning"></i>
+          <i class="fas fa-pen mr-2 text-warning"
+            onClick={this.showSkillEdit.bind(null, skill.skill_id)}></i>
           <i className="fas fa-trash text-danger position-relative"
             onClick={this.deleteSkill.bind(this, skill.skill_id)}></i>
         </div>
@@ -419,9 +550,14 @@ class TrainerDataForm extends Component {
 
 
           {/* Edit Form */}
+          {/* ------------------------------------------------------------------------------------- */}
           <div className="trainerProfileEditContainer animated invisible fadeOut">
 
-            <form action="" className="bg-light ml-auto mr-auto w-50 p-2 editPackage animated fadeOut">
+            <form action="" className="bg-light ml-auto mr-auto w-50 p-2 editPackage invisible animated fadeOut">
+
+              <i className="fas fa-times position-absolute closeEditForm"
+              onClick={this.hidePackageEdit}>
+              </i>
 
               <h3 className="text-dark">Edycja pakietu</h3>
               <hr />
@@ -471,6 +607,54 @@ class TrainerDataForm extends Component {
 
 
             </form>
+            {/* ---------------------------------------------------------------------------------------- */}
+
+
+
+            <form action="" className="bg-light ml-auto mr-auto w-50 p-2 editSkill invisible animated fadeOut">
+
+              <h3 className="text-dark">Edycja umiejętności</h3>
+              <hr />
+
+              <i className="fas fa-times position-absolute closeEditForm"
+              onClick={this.hideSkillEdit}>
+              </i>
+
+              {/* Name */}
+              {/* <div className="form-group">
+
+                <label htmlFor="skill_name">
+                  Nazwa
+              </label>
+
+                <input name="skill_name" type="text" className="form-control"
+                  value={this.state.skill_name} onChange={this.handleChange} />
+
+              </div> */}
+
+              {/* Description */}
+              <div className="form-group">
+
+                <label htmlFor="skill_description">
+                  Opis
+              </label>
+
+                <textarea name="skill_description" id="" cols="30" rows="10" className="form-control"
+                  value={this.state.skill_description} onChange={this.handleChange}>
+                </textarea>
+              </div>
+
+
+              <div className="form-group">
+                <div className="btn btn-success"
+                  onClick={this.editSkill}>
+                  Zapisz
+              </div>
+              </div>
+
+
+            </form>
+            {/* ----------------------------------------------------------------------------------------- */}
 
           </div>
 

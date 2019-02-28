@@ -436,6 +436,9 @@ async function addSkill(skill,connection){
 // ----------------------------------------------------------------------------
 async function editSkill(skill,connection){
 
+    console.log('DAO : ', skill);
+    
+
     try {
 
         let res = await connection.query(`UPDATE trainers.trainer_skill

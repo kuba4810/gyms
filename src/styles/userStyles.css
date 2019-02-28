@@ -409,8 +409,21 @@
 }
 
 .trainerProfileEditContainer form {
-    position: relative;
-    bottom : -50%;
+    position: absolute;
+    bottom : 5%;
+    left:25%;
     border-radius : 10px;
     animation-duration : .5s;
+}
+
+.closeEditForm{
+    right: 10px;
+    top:10px;
+    font-size: 25px;
+    cursor:pointer;
+    transition : .3s;
+}
+
+.closeEditForm:hover{
+    color: rgb(255,51,51);
 }

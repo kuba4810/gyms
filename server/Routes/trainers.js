@@ -561,6 +561,8 @@ module.exports = (app, client) => {
     // ------------------------------------------------------------------------
     app.post('/api/package', async (request, response) => {
 
+        console.log('Endpoint : ', request.body);
+        
         console.log('Add package...');
         
         try {

@@ -26,10 +26,15 @@ class AnswerQuestionDiv extends React.Component{
     }
 
     sendAnswer = () => {
+        let user_type = localStorage.getItem('type');
+        let login = localStorage.getItem('loggedNick')
+
         var data = {
             userID: localStorage.getItem("loggedId"),
             questionId: this.props.questionId,
-            content: this.state.content
+            content: this.state.content,
+            user_type : user_type,
+            login : login
 
         };
 

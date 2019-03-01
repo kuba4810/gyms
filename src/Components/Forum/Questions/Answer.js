@@ -286,7 +286,15 @@ try {
                     {/* Post content topic */}
                     <div className="postContentTopic position-relative">
                         <span className="colorWhite">Odpowiedź od  </span>
-                        <Link to={"/uzytkownik/profil/" + data.login} id="userAnswerLink">{data.login}</Link> <br/>
+                        <Link to={"/uzytkownik/profil/" + data.login} id="userAnswerLink">{data.login}</Link> 
+                        { 
+                            data.user_type === 'trainer' &&
+                            <div className="tip d-inline-block">
+                                 <div className="tooltiptext" > Trener </div>
+                                 <i class="fas fa-star text-warning d-inline-block ml-2"></i>
+                             </div>
+                        }
+                        <br/>
                        
                         <span className="answerDate">{formatDate(data.creating_date)} </span>
 

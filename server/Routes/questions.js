@@ -539,7 +539,7 @@ module.exports = (app, client) => {
 
         var questionId = request.params.question_id;
 
-        var query = "SELECT answer_id, user_id, login , question_id, creating_date, content_, pluses, minuses FROM kuba.answers natural join kuba.users where question_id = $1 order by creating_date DESC;"
+        var query = "SELECT * FROM kuba.answers  where question_id = $1 order by creating_date DESC;"
         var values = [questionId];
 
         client.query(query, values)
@@ -553,16 +553,16 @@ module.exports = (app, client) => {
     });
 
 
-
     /* New answer */
     app.post('/insertAnswer', (request, response) => {
         console.log('NewAnswer... ', request.body);
 
         var data = request.body;
 
-        var query = `INSERT INTO kuba.answers(user_id, question_id, creating_date,  content_, pluses, minuses)	
-                 VALUES ($1,$2,Current_timestamp,$3,0,0) returning *;`
-        var values = [data.userID, data.questionId, data.content];
+        var query = `INSERT INTO kuba.answers 
+                    (user_id, question_id, creating_date,  content_, pluses, minuses, user_type, login)	
+                    VALUES ($1,$2,Current_timestamp,$3,0,0,$4,$5) returning *;`
+        var values = [data.userID, data.questionId, data.content,data.user_type,data.login];
 
         client.query(query, values)
             .then(res => {
@@ -574,12 +574,15 @@ module.exports = (app, client) => {
                 });
             })
             .catch(err => {
+                console.log(err);
+                
                 response.json({
                     result: "failed",
                 })
             })
 
     });
+
 
 
     // Answer vote

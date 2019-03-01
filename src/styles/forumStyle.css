@@ -2130,3 +2130,7 @@ span.psw {
 #loginForm, #registerForm{
     animation-duration:.4s;
 }
+
+.answerContent{
+    color : #262626 !important;
+}

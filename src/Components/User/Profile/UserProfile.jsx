@@ -122,23 +122,34 @@ class UserProfile extends Component {
                                 </span>
                             </li>
 
-                            <li>
-                                <span className="title" >
-                                    Napisane komentarze:
-                                </span>
-                                <span className="value" id="usrVotesUp" >
-                                    0
-                                </span>
-                            </li>
+                           
 
                             <li>
                                 <span className="title" >
                                     Oddanych głosów:
                                     </span>
                                 <span className="value" id="usrVotesDown" >
-                                    {data.voted_down + data.votes_u}
+                                    {data.voted_down + data.votes_up}
                                 </span>
                             </li >
+
+                            <li>
+                                <span className="title" >
+                                    Napisane opinie ( siłownie ):
+                                </span>
+                                <span className="value" id="usrVotesUp" >
+                                    {data.gym_comments}
+                                </span>
+                            </li>
+
+                            <li>
+                                <span className="title" >
+                                    Napisane opinie ( trenerzy ):
+                                </span>
+                                <span className="value" id="usrVotesUp" >
+                                    {data.trainer_comments}
+                                </span>
+                            </li>
 
                         </ul>
                     </div>

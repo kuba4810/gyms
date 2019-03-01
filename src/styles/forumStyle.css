@@ -1003,9 +1003,18 @@ li:last-child {
     color: cornsilk;
     font-size: 100px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     position: relative;
 
+}
+
+.profileImage img{
+    width: 100px;
+    height: 100px;
+    /* border-radius : 50%; */
+    position:relative;
+    top:10px;
+    left : 10px;
 }
 
 

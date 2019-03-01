@@ -390,7 +390,6 @@ async function deletePackage(id,connection){
 
 // ADD SKILL
 // ----------------------------------------------------------------------------
-
 async function addSkill(skill,connection){
 
     try {

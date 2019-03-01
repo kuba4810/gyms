@@ -29,6 +29,7 @@ class User extends React.Component{
        let badge = localStorage.getItem('type') === 'user' ?
                    <span class="loggedType badge badge-primary">U</span>:
                    <span class="loggedType badge badge-success">T</span>
+        let login  = localStorage.getItem('loggedNick');
 
        return(
            <div className="loginUser"

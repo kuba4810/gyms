@@ -1,44 +1,23 @@
 {
-  "name": "demo-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^0.18.0",
-    "babel-polyfill": "^6.26.0",
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "email-templates": "^5.0.1",
-    "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.5.0",
-    "express-fileupload": "^1.0.0",
-    "flux-utils": "^1.0.2-stop",
-    "history": "^4.7.2",
-    "make-dir": "^1.3.0",
-    "nodemailer": "^4.6.8",
-    "nodemon": "^1.18.6",
-    "pg": "^7.5.0",
-    "randomstring": "^1.1.5",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-image-upload": "0.0.1",
-    "react-images-upload": "^1.2.3",
-    "react-redux": "^5.0.7",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5",
-    "react-test-renderer": "^16.5.2",
-    "react-validation": "^3.0.7",
-    "redux": "^4.0.1",
-    "webpack-dev-server": "^3.1.8",
-    "whatwg-fetch": "^3.0.0"
-  },
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
-  "resolutions": {
-    "@babel/runtime": "7.0.0-beta.46"
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.0.0",
+    "make-dir": "^2.0.0",
+    "nodemailer": "^5.1.1",
+    "opn": "^5.4.0",
+    "pg": "^7.8.1",
+    "randomstring": "^1.1.5"
   }
 }

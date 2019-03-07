@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {checkIfLoggedIn,getLoggedUserData} from '../../services/localStorage'
 import {logedIn,updateMsgNtf} from '../../Actions/index'
 import {fetch_msg_ntf_count} from '../../services/API/user';
+import {getUserData} from '../../services/API/user';
+import {getTrainerData} from '../../services/API/trainers';
 
 import {TopicsMenu} from "./TopicsMenu";
 import {ForumNavContainer} from "./ForumNav";
@@ -47,6 +49,21 @@ function AppArrow() {
             if(isLoggedIn){
                 let userData = getLoggedUserData();
                 console.log('Dane użytkownika: ',userData);
+                let image = null;
+
+                if (localStorage.getItem('type') === 'user') {
+
+                    let res = await getUserData(localStorage.getItem('loggedId'));
+                    console.log('Dane użytkownika z bazy: ',res)
+                    image = res.data.image;
+
+                } else {
+
+                    let res = await getTrainerData(localStorage.getItem('loggedId'));
+                    console.log('Dane użytkownika z bazy : ',res)
+                    image = res.data.image;
+
+                }
                 
 
                 let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/msgCount`)
@@ -66,7 +83,8 @@ function AppArrow() {
                             emailConfirmed: userData.isEmailConfirmed,
                             logedNick: userData.nick,
                             messageCount: values[0].data,
-                            notificationsCount: values[1].data
+                            notificationsCount: values[1].data,
+                            image : image
                         }
                     }
                     else{
@@ -75,7 +93,8 @@ function AppArrow() {
                             emailConfirmed: userData.isEmailConfirmed,
                             logedNick: userData.nick,
                             messageCount: '',
-                            notificationsCount: ''
+                            notificationsCount: '',
+                            image : image
                         }
                     }
 
@@ -118,7 +137,8 @@ function AppArrow() {
                 <ForumHeader 
                     isLogedIn={this.props.user.isLogedIn} 
                     isEmailConfirmed={this.props.user.emailConfirmed}
-                    page={'FORUM'}/>
+                    page={'FORUM'}
+                    image = {this.props.user.image}/>
 
                 <main className="animated forumMain">
                     <div className="forumContent">

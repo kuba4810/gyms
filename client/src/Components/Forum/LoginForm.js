@@ -97,7 +97,8 @@ class Login extends React.Component{
                     emailConfirmed: uData.isEmailConfirmed,
                     messageCount: response.data.messageCount,
                     notificationsCount: response.data.notificationsCount,
-                    type: type
+                    type: type,
+                    image : response.data.image
 
                 })
                 

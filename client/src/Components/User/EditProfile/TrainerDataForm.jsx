@@ -7,7 +7,8 @@ import {
   deletePackage,
   addSkill,
   editSkill,
-  deleteSkill
+  deleteSkill,
+  changeAvatar
 } from '../../../services/API/trainers';
 
 class TrainerDataForm extends Component {
@@ -19,6 +20,9 @@ class TrainerDataForm extends Component {
     confirm_password: '',
     con_password_message: '',
     city: '',
+    image : '',
+    imageChanged : false,
+    img : null,
     voivodeship: '',
     packages: [],
     package_name: '',
@@ -36,6 +40,54 @@ class TrainerDataForm extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  // HANDLE PHOTO CHANGE
+  // --------------------------------------------
+  handlePhotoChange = (e) => {
+
+    var reader = new FileReader();
+  
+    reader.onload = (e) => {
+
+      this.setState({
+        img: e.target.result,
+        imageChanged: true
+      })
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+
+    this.setState({
+          image : e.target.files[0]
+        }, () => {
+          console.log('Image w state : ',this.state.image);
+
+        })
+    }
+
+  // SEND IMAGE
+  // --------------------------------------------------------------------------
+  sendImage = async (e) => {
+
+    e.preventDefault();
+
+    const login = localStorage.getItem('loggedNick');
+
+    const formData = new FormData();
+
+    formData.append('avatar', this.state.image, login);
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
+
+    let res = await changeAvatar(formData);
+
+    window.location.reload();
+
   }
 
   // SHOW PACKAGE EDIT
@@ -76,11 +128,11 @@ class TrainerDataForm extends Component {
     this.setState({
       editPackage: 0,
       package_name: '',
-      package_duration : '',
+      package_duration: '',
       package_price: '',
     })
 
-    const container = document.querySelector('.trainerProfileEditContainer');   
+    const container = document.querySelector('.trainerProfileEditContainer');
     container.classList.add('fadeOut');
     container.classList.remove('fadeIn');
 
@@ -90,10 +142,10 @@ class TrainerDataForm extends Component {
     editPackage.classList.remove('fadeIn');
 
 
-    setTimeout(()=>{
+    setTimeout(() => {
       container.classList.add('invisible');
       editPackage.classList.add('invisible');
-    },500)
+    }, 500)
 
   }
 
@@ -105,7 +157,7 @@ class TrainerDataForm extends Component {
     this.setState({
       editSkill: 0,
       skill_name: '',
-      package_description : ''
+      package_description: ''
     })
 
     const container = document.querySelector('.trainerProfileEditContainer');
@@ -116,10 +168,10 @@ class TrainerDataForm extends Component {
     editSkill.classList.add('fadeOut');
     editSkill.classList.remove('fadeIn');
 
-    setTimeout(()=>{
+    setTimeout(() => {
       container.classList.add('invisible');
       editSkill.classList.add('invisible');
-    },500)
+    }, 500)
 
   }
 
@@ -323,7 +375,7 @@ class TrainerDataForm extends Component {
       // document.querySelector('#skills').classList.add('collapse');
       // document.querySelector('#skills').classList.remove('show');
 
-     this.hideSkillEdit();
+      this.hideSkillEdit();
 
     } else {
       alert('Wystąpił błąd, spróbuj ponownie później !');
@@ -492,6 +544,7 @@ class TrainerDataForm extends Component {
         login: d.login,
         passw: d.passw,
         city: d.city,
+        img : d.image,
         voivodeship: d.voivodeship,
         packages: [...res.data.packages],
         skills: [...res.data.skills]
@@ -556,7 +609,7 @@ class TrainerDataForm extends Component {
             <form action="" className="bg-light ml-auto mr-auto w-50 p-2 editPackage invisible animated fadeOut">
 
               <i className="fas fa-times position-absolute closeEditForm"
-              onClick={this.hidePackageEdit}>
+                onClick={this.hidePackageEdit}>
               </i>
 
               <h3 className="text-dark">Edycja pakietu</h3>
@@ -617,7 +670,7 @@ class TrainerDataForm extends Component {
               <hr />
 
               <i className="fas fa-times position-absolute closeEditForm"
-              onClick={this.hideSkillEdit}>
+                onClick={this.hideSkillEdit}>
               </i>
 
               {/* Name */}
@@ -662,16 +715,37 @@ class TrainerDataForm extends Component {
             {/* User avatar */}
             <div className="col-lg-4">
 
+            {
+              this.state.img === null &&
               <div className="userAvatar">
                 <i className="fas fa-user"></i>
               </div>
+            }
+
+            {
+              (this.state.img !== null && this.state.imageChanged === false) &&
+              <div className="userAvatar">
+                <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
+              </div>
+            }
+
+            {
+              (this.state.img !== null && this.state.imageChanged === true) &&
+
+              <div className="userAvatar">
+                <img src={this.state.img} alt="" />
+              </div>
+            }
 
               <label for='userAvatar'>Dodaj zdjęcie</label>
-              <input type='file' name='userAvatar' />
-
-              <button className="btn-success form-control mt-3">
+              <input type='file' name='userAvatar' onChange={this.handlePhotoChange} />
+              {
+              this.state.imageChanged &&
+              <button className="btn-success form-control mt-3"
+                onClick={this.sendImage}>
                 Zapisz
-            </button>
+             </button>
+            }
 
             </div>
 

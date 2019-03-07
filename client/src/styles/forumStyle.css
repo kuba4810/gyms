@@ -1382,9 +1382,14 @@ span.psw {
     /*max-width: 150px;
     min-width: 70px;*/
     width: 10%;
-    padding: 20px 0;
+    /* padding: 20px 0; */
     position: relative;
 
+}
+
+.userAvatar img{
+    width:100%;
+    height:107px;
 }
 
 .userAvatar:hover {

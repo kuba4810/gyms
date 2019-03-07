@@ -54,7 +54,18 @@ class TrainerProfile extends Component {
 
                     <div className="userPersonalData animated fadeIn">
                         <div className="profileImage">
+
+                        {
+                            data.image === null &&
                             <i className="fas fa-user"> </i>
+                        }
+
+                        {
+                            data.image !== null &&
+                            <img src={`http://localhost:8080/public/images/${data.login}.jpg`} />
+                        }
+                            
+                            
                         </div>
 
 

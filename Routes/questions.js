@@ -435,7 +435,8 @@ module.exports = (app, client) => {
         var questionId = request.params.question_id;
 
 
-        var query = "SELECT  User_ID,Login, Creating_Date, Topic, Content_, Pluses, Minuses, How_Many_Answers, category FROM Kuba.Questions NATURAL JOIN Kuba.Users WHERE Question_ID = $1;"
+        var query = `SELECT  User_ID,Login ,image ,creating_date, Topic, Content_, Pluses, Minuses, How_Many_Answers, category 
+        FROM Kuba.Questions NATURAL JOIN Kuba.Users WHERE Question_ID = $1;`
         var values = [questionId];
 
         client.query(query, values)
@@ -532,23 +533,73 @@ module.exports = (app, client) => {
     });
 
 
-    /* ANSWERS */
+    /* GET ALL ANSWERS */
     /* ------------------------------ */
-    app.get('/getAnswers/:question_id', (request, response) => {
-        console.log('Answers...');
+    app.get('/getAnswers/:question_id', async (request, response) => {
+        try {
 
-        var questionId = request.params.question_id;
+            console.log('Answers...');
 
-        var query = "SELECT * FROM kuba.answers  where question_id = $1 order by creating_date DESC;"
-        var values = [questionId];
 
-        client.query(query, values)
-            .then(res => {
-                response.json(res.rows);
+            // Prepare query and values
+            var questionId = request.params.question_id;
+            var query = "SELECT * FROM kuba.answers  where question_id = $1 order by creating_date DESC;"
+            var values = [questionId];
+
+    
+            // Execute query
+            let res = await client.query(query, values);
+            res = res.rows;
+
+            console.log(res)
+
+            // Get user avatar for all answers
+            for (let i = 0; i < res.length; i++) {
+                const element = res[i];
+
+                if (element.user_type === 'user') {
+                    // User
+                    let image = await client.query(`SELECT image from kuba.users 
+                                    WHERE login = $1`, [element.login]);
+                    image = image.rows[0].image;
+
+                    res[i] = Object.assign({},res[i],{
+                        image : image
+                    })
+                    
+
+                } else {
+                    // Trainer
+                    let image = await client.query(`SELECT image from trainers.trainer
+                                    WHERE login = $1`, [element.login]);
+                    image = image.rows[0].image;
+
+                    res[i] = Object.assign({},res[i],{
+                        image : image
+                    })
+
+                }
+
+            }
+
+            response.send(res)
+
+            // client.query(query, values)
+            //     .then(res => {
+            //         response.json(res.rows);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
+
+        } catch (error) {
+
+            console.log(error)
+            response.send({
+                response: 'failed'
             })
-            .catch(err => {
-                console.log(err);
-            })
+
+        }
 
     });
 
@@ -562,7 +613,7 @@ module.exports = (app, client) => {
         var query = `INSERT INTO kuba.answers 
                     (user_id, question_id, creating_date,  content_, pluses, minuses, user_type, login)	
                     VALUES ($1,$2,Current_timestamp,$3,0,0,$4,$5) returning *;`
-        var values = [data.userID, data.questionId, data.content,data.user_type,data.login];
+        var values = [data.userID, data.questionId, data.content, data.user_type, data.login];
 
         client.query(query, values)
             .then(res => {
@@ -575,7 +626,7 @@ module.exports = (app, client) => {
             })
             .catch(err => {
                 console.log(err);
-                
+
                 response.json({
                     result: "failed",
                 })
@@ -669,8 +720,8 @@ module.exports = (app, client) => {
                      WHERE question_id = $1`, [res.rows[0].question_id]);
 
             // Delete from table answers
-            res = await client.query('DELETE FROM kuba.answers WHERE answer_id = $1 returning *', [id]);   
-            
+            res = await client.query('DELETE FROM kuba.answers WHERE answer_id = $1 returning *', [id]);
+
             // Send response
             response.send({
                 response: 'success',

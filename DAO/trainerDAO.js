@@ -490,6 +490,44 @@ async function deleteSkill(id,connection){
     
 }
 
+// CHANGE PHOTO
+// ----------------------------------------------------------------------------
+async function changePhoto(photo,login,connection){
+
+    try {
+
+        // Move image to images folder
+        await photo.mv(`./public/images/${login}.jpg`,
+        (err) => {
+            if (err) {
+                throw err;
+               }               
+        });
+
+        // Update table trainer
+        let res = await connection.query(`UPDATE trainers.trainer
+                         SET image = $1
+                         WHERE login = $2`,
+                         [login,login]);
+        
+        return {
+            response : 'success'
+        }
+
+        
+    } catch (error) {
+        
+        console.log(error);
+        
+
+        return {
+            response : 'failed'
+        }
+
+    }
+
+}
+
 module.exports = {
     createTrainer: createTrainer,
     createPackages: createPackages,
@@ -504,6 +542,7 @@ module.exports = {
     deletePackage : deletePackage,
     addSKill : addSkill,
     editSkill : editSkill,
-    deleteSkill : deleteSkill
+    deleteSkill : deleteSkill,
+    changePhoto : changePhoto
 
 }

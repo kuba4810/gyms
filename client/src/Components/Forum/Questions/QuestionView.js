@@ -408,7 +408,19 @@ class Question extends React.Component{
                             </div>
 
                             <div className="userAvatar transition">
-                                <Link to={"/uzytkownik/profil/" + data.login}><i className="fas fa-user"></i></Link>
+                                <Link to={"/uzytkownik/profil/" + data.login}>
+                                {
+                                    data.image === null &&
+                                    <i className="fas fa-user"></i>
+                                }
+
+                                {
+                                    data.image !== null &&
+                                    <img src={`http://localhost:8080/public/images/${data.login}.jpg`} />
+                                }
+                                    
+                                    
+                                </Link>
                             </div>
                         </div>
 

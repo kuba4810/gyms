@@ -1,5 +1,8 @@
 const userDAO = require('../DAO/userDAO');
 const sendMail = require('../Services/email');
+const multer = require("multer");
+const fileToArrayBuffer = require('file-to-array-buffer');
+var FileReader = require('filereader')
 
 module.exports = (app, client) => {
 
@@ -341,7 +344,7 @@ module.exports = (app, client) => {
             });
 
     })
-    
+
 
     // Edycja profilu
     // Otrzymuje obiekt zawierający dane użytkownika lub klienta
@@ -357,15 +360,15 @@ module.exports = (app, client) => {
         }
     */
 
-    app.post('/api/user/edit-profile',(request,response)=>{
-        console.log('Edit profile...',request.body);
+    app.post('/api/user/edit-profile', (request, response) => {
+        console.log('Edit profile...', request.body);
 
         let data = request.body;
         let query = '';
         let values = '';
-        
+
         // Przesłano dane użytkownika
-        if(data.type === 'user'){
+        if (data.type === 'user') {
             query = `UPDATE kuba.users
             SET first_name=$1, last_name=$2, login=$3, email=$4,
                 height=$5, mass=$6, favourite_exercise=$7,
@@ -373,97 +376,146 @@ module.exports = (app, client) => {
             WHERE user_id = $9;`;
 
             values = [data.data.first_name, data.data.last_name, data.data.login,
-                      data.data.email ,data.data.height, data.data.mass,
-                      data.data.favourite_exercise, data.data.phone_number,
-                      data.id,data.data.passw];
+                data.data.email, data.data.height, data.data.mass,
+                data.data.favourite_exercise, data.data.phone_number,
+                data.id, data.data.passw
+            ];
 
-        // Przesłano dane trenera
-        } else if(data.type === 'trainer') {
+            // Przesłano dane trenera
+        } else if (data.type === 'trainer') {
             query = `UPDATE trainers.trainer
                      SET first_name=$1, last_name=$2, city=$3, voivodeship=$4,
                          login=$5, passw=$6, mail=$7
                      WHERE trainer_id = $8;`;
             values = [data.data.first_name, data.data.last_name, data.data.city,
-                      data.data.voivodeship, data.data.login, data.data.passw,
-                      data.data.mail,data.id];
+                data.data.voivodeship, data.data.login, data.data.passw,
+                data.data.mail, data.id
+            ];
         }
 
         // Wykonanie zapytania
-        client.query(query,values)
-            .then(res=>{
+        client.query(query, values)
+            .then(res => {
                 console.log(res);
-                
+
                 response.send({
-                    response : 'success'
+                    response: 'success'
                 });
             })
-            .catch(err=>{
+            .catch(err => {
                 console.log(err);
-                
+
                 response.send({
-                    response : 'failed'
+                    response: 'failed'
                 })
-            })       
+            })
 
     })
 
 
     // CHECK ACCOUNT TYPE
     // ------------------------------------------------------------------------
-    app.post('/api/account/type', async (request,response) => {
+    app.post('/api/account/type', async (request, response) => {
 
         console.log('Account type...');
-        
+
         try {
-            
-            let res = await userDAO.checkAccountType(request.body.login,client);            
 
-            if(res.response === 'failed'){
+            let res = await userDAO.checkAccountType(request.body.login, client);
+
+            if (res.response === 'failed') {
                 throw 'failed';
-            }
-
-            else {
+            } else {
                 response.send({
-                    response : 'success',
-                    type : res.type,
-                    id : res.id
+                    response: 'success',
+                    type: res.type,
+                    id: res.id
                 })
             }
 
         } catch (error) {
-            
+
             console.log(error);
 
             response.send({
-                response : 'failed'
+                response: 'failed'
             })
-            
+
 
         }
-        
+
     })
 
     // GET USER DATA
     // ------------------------------------------------------------------------
-    app.post('/api/user/data', async (request,response) => {
-        
+    app.post('/api/user/data', async (request, response) => {
+
+        console.log('User data...',request.body)
+
         try {
-            
-            let res = await userDAO.getUserData(request.body.user_id,client);
+
+            let res = await userDAO.getUserData(request.body.user_id, client);
+
+            if (res.response === 'failed') {
+                throw 'failed';
+            }
+
+            response.send({
+                response: 'success',
+                user: res.user
+            })
+
+        } catch (error) {
+
+        }
+
+    })
+
+    // ADD NEW PHOTO
+    // ------------------------------------------------------------------------
+    app.post('/api/user/photo', async (request, response) => {
+
+        let uploadFile = request.files.avatar
+        const fileName = request.files.avatar.name
+
+      
+
+        try {
+
+            let res = await userDAO.addNewPhoto(uploadFile,fileName,client);
+
+            if(res.response === 'failed'){
+                throw 'failed';
+            }
+
+            res = await userDAO.savePhotoInDB(fileName,client);
 
             if(res.response === 'failed'){
                 throw 'failed';
             }
 
             response.send({
-                response : 'success',
-                user : res.user
+                response : 'success'
             })
 
         } catch (error) {
-            
+
+            console.log(error);
+
+
+            response.send({
+                reponse : 'failed'
+            })
+
         }
 
+
+
+
     })
+
+
+
+
 
 };

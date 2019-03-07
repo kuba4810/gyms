@@ -708,4 +708,36 @@ module.exports = (app, client) => {
     })
 
 
+    // CHANGE AVATAR
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/avatar', async (request,response) =>{
+
+        try {
+
+            console.log('Trainer change photo',request.files);
+            let file = request.files.avatar;
+            let fileName = request.files.avatar.name;
+
+            let res = trainerDAO.changePhoto(file,fileName,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success'
+            })
+            
+        } catch (error) {
+            
+            console.log(error);
+            response.send({
+                response : 'failed'
+            })
+
+        }
+
+    })
+
+
 };

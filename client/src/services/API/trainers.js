@@ -242,3 +242,41 @@ export const deleteSkill = async (skill) => {
     }
 
 }
+
+
+// CHANGE AVATAR
+// ----------------------------------------------------------------------------
+export const changeAvatar = async (image) => {
+
+    try {
+
+        console.log('API : ',image);     
+       
+
+        let res = await axios.post(URL + 'trainer/avatar',image,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        });
+
+        if(res.response === 'failed'){
+            throw 'failed'
+        }
+
+        return {
+            response : 'success'
+        }
+
+
+    } catch (error) {
+        
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
+
+        
+    }
+
+}

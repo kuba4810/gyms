@@ -120,7 +120,8 @@ module.exports = (app, client) => {
                     let userData = {
                         user_id: res.rows[0][column_name],
                         login: data.Login,
-                        isEmailConfirmed: res.rows[0].is_email_confirmed
+                        isEmailConfirmed: res.rows[0].is_email_confirmed,
+                        image : res.rows[0].image
                     }
                     console.log("Dane użytkownika: ", userData);
                     // Msg count    

@@ -98,7 +98,7 @@ class Login extends React.Component{
                     messageCount: response.data.messageCount,
                     notificationsCount: response.data.notificationsCount,
                     type: type,
-                    image : response.data.image
+                    image : uData.image
 
                 })
                 

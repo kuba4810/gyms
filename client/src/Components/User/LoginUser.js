@@ -43,13 +43,12 @@ class User extends React.Component{
                 {/* {badge} */}
                <div className="loginUserDiv"  /* onClick={this.showUserMenu} */>
                  {
-                     this.props.user.image !== null &&
-                     <img src={`http://localhost:8080/public/images/${login}.jpg`} />
-                 }
-                 {
-                     this.props.user.image === null &&
+                     (this.props.user.image !== null && typeof(this.props.user.image) !== "undefined") ?
+                     <img src={`http://localhost:8080/public/images/${login}.jpg`} />:
                      <i className="fas fa-user"></i>
+                    
                  }
+                    
                 </div>
            </div>
        );

@@ -73,3 +73,79 @@
     visibility: visible;
     opacity: 1;
   }
+
+  .trainer-photos  {
+    flex-flow: row wrap
+  }
+
+  .trainer-photos .userAvatar{
+    width:29%;
+  }
+  .trainer-photos  .userAvatar, .trainer-photos .userAvatar img {
+    
+    border-radius : 5px;
+
+  }
+
+.userAvatar .overlay{
+    position:absolute;
+    background-color: rgba(63,63,63,0.6);
+    width:100%;
+    height:100%;
+    /* border-radius : 50%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity:0;
+    transition : .4s ease;
+    cursor: pointer;
+}
+
+.userAvatar:hover .overlay{
+    opacity : 1;
+}
+
+.userAvatar .overlay i{
+    font-size: 25px;
+    
+
+}
+
+
+
+
+
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+    z-index: -1;
+    
+}
+
+.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: #262626;
+    display: inline-block;
+    padding : 5px 10px;
+    border-radius : 5px;
+    transition : .3s ease;
+}
+
+.inputfile + label:hover {
+    background-color: red;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}

@@ -3,8 +3,6 @@ const fileUpload = require('express-fileupload');
 const pg = require('pg');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const fileToBuffer = require('file-to-array-buffer');
-
 var app = express();
 
 // Connection with postgres

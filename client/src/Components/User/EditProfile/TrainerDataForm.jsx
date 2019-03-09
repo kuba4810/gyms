@@ -8,7 +8,8 @@ import {
   addSkill,
   editSkill,
   deleteSkill,
-  changeAvatar
+  changeAvatar,
+  addNewPhoto
 } from '../../../services/API/trainers';
 
 class TrainerDataForm extends Component {
@@ -20,9 +21,9 @@ class TrainerDataForm extends Component {
     confirm_password: '',
     con_password_message: '',
     city: '',
-    image : '',
-    imageChanged : false,
-    img : null,
+    image: '',
+    imageChanged: false,
+    img: null,
     voivodeship: '',
     packages: [],
     package_name: '',
@@ -33,6 +34,9 @@ class TrainerDataForm extends Component {
     editSkill: '',
     skill_name: '',
     skill_description: '',
+    photos: [],
+    newPhoto : null,
+    photo : null
 
   }
 
@@ -42,12 +46,30 @@ class TrainerDataForm extends Component {
     });
   }
 
+  photoChanged = (type,e) => { 
+
+    switch(type){
+      
+      case 'avatar':
+          this.handlePhotoChange(e);
+        break;
+      
+      case 'newPhoto':
+        this.handleNewPhoto(e);
+        break;
+
+    }
+
+   }
+
   // HANDLE PHOTO CHANGE
   // --------------------------------------------
   handlePhotoChange = (e) => {
 
+    console.log('Handle photo change');
+
     var reader = new FileReader();
-  
+
     reader.onload = (e) => {
 
       this.setState({
@@ -59,12 +81,67 @@ class TrainerDataForm extends Component {
     reader.readAsDataURL(e.target.files[0]);
 
     this.setState({
-          image : e.target.files[0]
-        }, () => {
-          console.log('Image w state : ',this.state.image);
+      image: e.target.files[0]
+    }, () => {
+      console.log(this.state);
 
-        })
+    })
+  }
+
+  // HANDLE NEW PHOTO
+  // --------------------------------------------------------------------------
+  handleNewPhoto = (e) =>{
+
+    console.log('Handle new photo');
+
+    console.log(e.target.files[0]);
+
+    var reader = new FileReader();
+
+    reader.onload = (e) => {
+
+      this.setState({
+        newPhoto: e.target.result
+      },()=>{
+        console.log(this.state);
+      })
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+
+    this.setState({
+      photo : e.target.files[0]
+    })
+
+  }
+
+  // SEND NEW PHOTO
+  // --------------------------------------------------------------------------
+  sendNewPhoto = async (e)=>{
+    e.preventDefault();
+
+    e.preventDefault();
+
+    const login = localStorage.getItem('loggedNick');
+    let fileName;
+    let index = 1;
+
+    for (let i = 0; i < this.state.photos.length; i++) {
+      index++;      
     }
+
+    fileName =  `${login}_${index}`;
+    
+
+    const formData = new FormData();
+
+    formData.append('avatar', this.state.photo, fileName);
+
+    
+    let res = await addNewPhoto(formData);
+
+    window.location.reload();
+  }
 
   // SEND IMAGE
   // --------------------------------------------------------------------------
@@ -89,6 +166,7 @@ class TrainerDataForm extends Component {
     window.location.reload();
 
   }
+
 
   // SHOW PACKAGE EDIT
   // --------------------------------------------------------------------------
@@ -544,10 +622,11 @@ class TrainerDataForm extends Component {
         login: d.login,
         passw: d.passw,
         city: d.city,
-        img : d.image,
+        img: d.image,
         voivodeship: d.voivodeship,
         packages: [...res.data.packages],
-        skills: [...res.data.skills]
+        skills: [...res.data.skills],
+        photos: [...res.data.photos]
       })
 
     } else {
@@ -595,6 +674,19 @@ class TrainerDataForm extends Component {
             onClick={this.deleteSkill.bind(this, skill.skill_id)}></i>
         </div>
       </li>
+    ))
+
+
+    let photos = this.state.photos.map((photo, index) => (
+      <div className="userAvatar m-2">
+        <div className="overlay">
+
+        <i class="fas fa-eye text-primary"></i>
+          <i className="fas fa-trash text-danger ml-2"></i>
+
+        </div>
+        <img src={`http://localhost:8080/public/images/${photo.photo_name}.jpg`} />
+      </div>
     ))
 
     return (
@@ -715,37 +807,99 @@ class TrainerDataForm extends Component {
             {/* User avatar */}
             <div className="col-lg-4">
 
-            {
-              this.state.img === null &&
-              <div className="userAvatar">
-                <i className="fas fa-user"></i>
-              </div>
-            }
-
-            {
-              (this.state.img !== null && this.state.imageChanged === false) &&
-              <div className="userAvatar">
-                <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
-              </div>
-            }
-
-            {
-              (this.state.img !== null && this.state.imageChanged === true) &&
-
-              <div className="userAvatar">
-                <img src={this.state.img} alt="" />
-              </div>
-            }
-
-              <label for='userAvatar'>Dodaj zdjęcie</label>
-              <input type='file' name='userAvatar' onChange={this.handlePhotoChange} />
               {
-              this.state.imageChanged &&
-              <button className="btn-success form-control mt-3"
-                onClick={this.sendImage}>
-                Zapisz
-             </button>
-            }
+                this.state.img === null &&
+                <div className="userAvatar mb-3">
+                  <i className="fas fa-user"></i>
+                </div>
+              }
+
+              {
+                (this.state.img !== null && this.state.imageChanged === false) &&
+                <div className="userAvatar mb-3">
+                  <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
+                </div>
+              }
+
+              {
+                (this.state.img !== null && this.state.imageChanged === true) &&
+
+                <div className="userAvatar mb-3">
+                  <img src={this.state.img} alt="" />
+                </div>
+              }
+
+
+              {/* Select image from disk */}
+              <label for='userAvatar'>
+                <h4>Zdjęcie profilowe</h4>
+              </label>
+
+              <input type="file" name="" id="file" class="" 
+                onChange={this.photoChanged.bind(this,'avatar')} />
+              {/* <label for="file">
+                <i class="fas fa-upload mr-2"></i>
+                Wybierz nowe
+              </label> */}
+              {/* ------------------------------------------------------ */}
+
+              {
+                this.state.imageChanged &&
+                <button className="btn-success form-control mt-3"
+                  onClick={this.sendImage}>
+                  Zapisz
+                  </button>
+              }
+
+              <hr className="bg-dark text-dark w-100" />
+
+              {/* Select image from disk */}
+              <label htmlFor="addPhoto">
+                <h4 className=" w-100 text-left">Album</h4>
+              </label>
+              {/* ------------------------------------------------------ */}
+
+
+              <div className="w-100 d-flex justify-content-start mt-2 trainer-photos">
+
+                {
+                  photos
+                }
+               {
+                 this.state.newPhoto !== null &&
+                 <div className="userAvatar mb-2 ml-2">
+                 <div className="overlay">
+
+                   <i className="fas fa-user text-primary"></i>
+                   <i className="fas fa-trash text-danger ml-2"></i>
+
+                 </div>
+                 <img src={this.state.newPhoto} />
+               </div>
+               }
+
+              </div>
+
+             {
+               this.state.newPhoto === null &&
+               <div>
+                  <input type="file" /* name="" id="newPhoto" class="" */
+                   onChange={this.photoChanged.bind(this,'newPhoto')}/>
+
+                  {/* <label for="file" className="mt-2">
+                     <i class="fas fa-upload mr-2"></i>
+                     Dodaj...
+                  </label> */}
+               </div>
+             }
+
+            
+             {
+               this.state.newPhoto !== null &&
+               <div className="btn btn-success w-25" onClick={this.sendNewPhoto}>
+                 Wyślij
+               </div>
+             }
 
             </div>
 

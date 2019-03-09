@@ -512,6 +512,9 @@ module.exports = (app, client) => {
 
             let res = await trainerDAO.getTrainerData(request.params.id, client)
 
+            console.log('Dane trenera: ',res);
+            
+
             if (res.response === 'success') {
                 response.send({
                     response: 'success',
@@ -731,6 +734,56 @@ module.exports = (app, client) => {
         } catch (error) {
             
             console.log(error);
+            response.send({
+                response : 'failed'
+            })
+
+        }
+
+    })
+
+
+    // ADD NEW PHOTO
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/photo', async (request,response) =>{
+        
+        try {
+
+            // console.log('Trainer add photo...',request.files);
+
+            // Prepare data
+            let file = request.files.avatar;
+            let fileName = request.files.avatar.name;
+
+            console.log(fileName);
+            let login = fileName.split('_')[0];
+            console.log(login);
+
+            // Get trainer id
+            let res = await trainerDAO.getTrainerId(login,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            res = res.trainer_id;
+
+            // Add photo
+            res = await trainerDAO.addPhoto(file,fileName,res,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success',
+                photo_id : res.photo_id
+            })
+            
+        } catch (error) {
+            
+            console.log(error);
+
             response.send({
                 response : 'failed'
             })

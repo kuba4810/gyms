@@ -210,7 +210,8 @@ async function getTrainerData(trainer_id, connection) {
     let responseData = {
         trainer: null,
         packages: [],
-        skills: []
+        skills: [],
+        photos : []
     }
 
     try {
@@ -237,6 +238,14 @@ async function getTrainerData(trainer_id, connection) {
 
         responseData = Object.assign({}, responseData, {
             packages: [...res.rows]
+        })
+
+        // Photos
+        res = await connection.query(`SELECT * FROM trainers.trainer_photo
+        WHERE trainer_id = $1`, [trainer_id]);
+
+        responseData = Object.assign({}, responseData, {
+            photos: [...res.rows]
         })
 
         return {
@@ -528,6 +537,69 @@ async function changePhoto(photo,login,connection){
 
 }
 
+// ADD PHOTO
+// ----------------------------------------------------------------------------
+async function addPhoto(photo,name,id,connection){
+
+    try {
+
+        // Move photo to folder public/images
+        await photo.mv(`./public/images/${name}.jpg`,
+        (err) => {
+            if (err) {
+                throw err;
+               }               
+        });
+
+        // Update table trainer
+        let res = await connection.query(`INSERT INTO trainers.trainer_photo(
+            trainer_id, photo_name)
+            VALUES ($1, $2) returning *;`,[id,name])
+        
+        return {
+            response : 'success',
+            photo_id : res.rows[0].photo_id
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
+
+    }
+
+}
+
+// GET TRAINER ID
+// ----------------------------------------------------------------------------
+async function getTrainerId(login,connection){
+
+    try {
+
+        let res = await connection.query(`SELECT trainer_id FROM trainers.trainer
+        WHERE login = $1`,[login]);
+
+        return {
+            response : 'success',
+            trainer_id : res.rows[0].trainer_id
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+        return {
+            response : 'failed'
+        }
+
+    }
+
+}
+
+
+
 module.exports = {
     createTrainer: createTrainer,
     createPackages: createPackages,
@@ -543,6 +615,8 @@ module.exports = {
     addSKill : addSkill,
     editSkill : editSkill,
     deleteSkill : deleteSkill,
-    changePhoto : changePhoto
+    changePhoto : changePhoto,
+    addPhoto : addPhoto,
+    getTrainerId : getTrainerId
 
 }

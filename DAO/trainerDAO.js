@@ -1,5 +1,5 @@
 const randomstring = require('randomstring');
-
+const fs = require('fs');
 
 // CREATE NEW TRAINER
 // ----------------------------------------------------------------------------
@@ -640,6 +640,50 @@ async function deleteAvatar(login, connection) {
 
 }
 
+// DELETE PHOTO
+// ----------------------------------------------------------------------------
+async function deletePhoto(photo_name,connection){
+
+    try {
+
+        // Delete from database
+        let query = `DELETE FROM trainers.trainer_photo WHERE photo_name = $1`;
+        let values = [photo_name];
+
+        let res = connection.query(query, values);
+
+         // Delete file from server
+         const filePath = `./public/images/${photo_name}.jpg`;
+
+         fs.access(filePath, async error => {
+             if (!error) {
+                 await fs.unlink(filePath,function(error){
+                     console.log(error);
+                 });
+             } else {
+                 console.log(error);
+                 return {
+                     response: 'failed'
+                 }
+             }
+         });
+        
+        return {
+            response: 'success'
+        }
+
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response: 'failed'
+        }
+    }
+
+}
+
+
+
 
 
 module.exports = {
@@ -660,6 +704,7 @@ module.exports = {
     changePhoto : changePhoto,
     addPhoto : addPhoto,
     deleteAvatar : deleteAvatar,
-    getTrainerId : getTrainerId
+    getTrainerId : getTrainerId,
+    deletePhoto : deletePhoto
 
 }

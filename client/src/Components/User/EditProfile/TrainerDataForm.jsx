@@ -10,7 +10,8 @@ import {
   deleteSkill,
   changeAvatar,
   addNewPhoto,
-  deleteAvatar
+  deleteAvatar,
+  deletePhoto
 } from '../../../services/API/trainers';
 
 import {connect} from 'react-redux';
@@ -159,7 +160,6 @@ class TrainerForm extends Component {
       if (res.response === 'failed') {
         alert('Wystąpił błąd, spróbuj ponownie później !');
       } else {
-        alert('Pomyślnie usunięto zdjęcie')
         this.setState({
           img : null,
           image : null,
@@ -167,6 +167,31 @@ class TrainerForm extends Component {
         })
 
         this.props.deleteImage();
+      }
+    }
+
+  }
+
+    // DELETE PHOTO
+  // --------------------------------------------------------------------------
+  deleteImageFromAlbum = async (photo_name) => {
+
+    const confirm = window.confirm('Czy na pewno usunąć zdjęcie ?');
+
+    if (confirm) {
+      let res = await deletePhoto(photo_name);
+
+      if (res.response === 'failed') {
+        alert('Wystąpił błąd, spróbuj ponownie później !');
+      } else {
+        let photos = this.state.photos;
+
+        photos = photos.filter( photo => (photo.photo_name !== photo_name) )
+        this.setState({
+          photos : [...photos]
+        })
+
+
       }
     }
 
@@ -712,6 +737,7 @@ class TrainerForm extends Component {
 
           <i class="fas fa-eye text-primary"></i>
           <i className="fas fa-trash text-danger ml-2"
+          onClick={this.deleteImageFromAlbum.bind(null,photo.photo_name)}
           ></i>
 
         </div>

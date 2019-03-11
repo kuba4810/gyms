@@ -818,5 +818,29 @@ module.exports = (app, client) => {
 
     });
 
+    // DELETE PHOTO
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/album/photo/delete', async (request, response) => {
 
+        try {
+
+            let res = trainerDAO.deletePhoto(request.body.photo_name,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success'
+            })
+
+        } catch (error) {
+            console.log(error);
+
+            response.send({
+                reponse: 'failed'
+            })
+        }
+
+    });
 };

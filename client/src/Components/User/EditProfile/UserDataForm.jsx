@@ -89,7 +89,6 @@ class UserForm extends Component {
       if (res.response === 'failed') {
         alert('Wystąpił błąd, spróbuj ponownie później !');
       } else {
-        alert('Pomyślnie usunięto zdjęcie')
         this.setState({
           img : null,
           image : null,
@@ -101,6 +100,8 @@ class UserForm extends Component {
     }
 
   }
+
+
 
   // Funkcja walidująca formularz
   // Sprawdza każde pole pod względem długości i poprawności danych

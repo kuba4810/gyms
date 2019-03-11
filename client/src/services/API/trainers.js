@@ -345,3 +345,33 @@ export const deleteAvatar = async (login) => {
     }
 
 }
+
+// DELETE PHOTO
+// ----------------------------------------------------------------------------
+export const deletePhoto = async (photo_name) => {
+
+    try {
+
+        let res = await axios.post(URL + 'trainer/album/photo/delete',{
+            photo_name : photo_name
+        })
+
+        if (res.data.response === 'failed') {
+            throw 'failed'
+        }
+
+        return {
+            response: 'success'
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
+
+    }
+
+}

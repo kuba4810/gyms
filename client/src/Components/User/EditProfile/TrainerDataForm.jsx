@@ -14,8 +14,9 @@ import {
   deletePhoto
 } from '../../../services/API/trainers';
 
-import {connect} from 'react-redux';
-import {deleteImage} from '../../../Actions/index';
+import { connect } from 'react-redux';
+import { deleteImage } from '../../../Actions/index';
+import Gallery from '../Gallery';
 
 class TrainerForm extends Component {
   state = {
@@ -41,7 +42,8 @@ class TrainerForm extends Component {
     skill_description: '',
     photos: [],
     newPhoto: null,
-    photo: null
+    photo: null,
+    currentIndex : 0
 
   }
 
@@ -161,9 +163,9 @@ class TrainerForm extends Component {
         alert('Wystąpił błąd, spróbuj ponownie później !');
       } else {
         this.setState({
-          img : null,
-          image : null,
-          imageChanged : false
+          img: null,
+          image: null,
+          imageChanged: false
         })
 
         this.props.deleteImage();
@@ -172,7 +174,7 @@ class TrainerForm extends Component {
 
   }
 
-    // DELETE PHOTO
+  // DELETE PHOTO
   // --------------------------------------------------------------------------
   deleteImageFromAlbum = async (photo_name) => {
 
@@ -186,9 +188,9 @@ class TrainerForm extends Component {
       } else {
         let photos = this.state.photos;
 
-        photos = photos.filter( photo => (photo.photo_name !== photo_name) )
+        photos = photos.filter(photo => (photo.photo_name !== photo_name))
         this.setState({
-          photos : [...photos]
+          photos: [...photos]
         })
 
 
@@ -690,6 +692,21 @@ class TrainerForm extends Component {
 
   }
 
+  // SHOW GALLERY
+  // --------------------------------------------------------------------------
+  showGallery = (index) => {
+
+    this.setState({
+      currentIndex : index
+    })
+    let gallery = document.querySelector('.gallery');
+
+    gallery.classList.add('fadeIn');
+    gallery.classList.remove('fadeOut');
+    gallery.classList.remove('invisible');
+
+  }
+
   render() {
 
     let packages = this.state.packages.map((p, index) => (
@@ -735,9 +752,10 @@ class TrainerForm extends Component {
       <div className="userAvatar m-2">
         <div className="overlay">
 
-          <i class="fas fa-eye text-primary"></i>
+          <i class="fas fa-eye text-primary"
+            onClick={this.showGallery.bind(null,index)}></i>
           <i className="fas fa-trash text-danger ml-2"
-          onClick={this.deleteImageFromAlbum.bind(null,photo.photo_name)}
+            onClick={this.deleteImageFromAlbum.bind(null, photo.photo_name)}
           ></i>
 
         </div>
@@ -747,7 +765,11 @@ class TrainerForm extends Component {
 
     return (
       <div>
-        <div class="container-fluid trainer-profile-edit">
+        <Gallery photos={this.state.photos} currentIndex = {this.state.currentIndex}/>
+        <div class="container-fluid trainer-profile-edit position-relative">
+
+
+
 
 
           {/* Edit Form */}
@@ -877,7 +899,7 @@ class TrainerForm extends Component {
 
                     <i class="fas fa-eye text-primary"></i>
                     <i className="fas fa-trash text-danger ml-2"
-                    onClick={this.deleteImage}></i>
+                      onClick={this.deleteImage}></i>
 
                   </div>
                   <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
@@ -1183,13 +1205,13 @@ class TrainerForm extends Component {
   }
 }
 
-const mapStateToProps = state =>{
-  return{
-    image : state.user.image
+const mapStateToProps = state => {
+  return {
+    image: state.user.image
   }
 }
 
-const mapDispatchToProps = {deleteImage}
+const mapDispatchToProps = { deleteImage }
 
 const TrainerDataForm = connect(mapStateToProps, mapDispatchToProps)(TrainerForm);
 

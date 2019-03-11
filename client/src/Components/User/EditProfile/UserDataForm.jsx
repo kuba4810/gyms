@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { copyFile } from 'fs';
-import { newImage } from '../../../services/API/user';
-class UserDataForm extends Component {
+import { newImage, deleteAvatar } from '../../../services/API/user';
+import {connect} from 'react-redux';
+import {deleteImage} from '../../../Actions/index';
+class UserForm extends Component {
   state = {
     first_name: '',
     last_name: '',
@@ -19,16 +20,21 @@ class UserDataForm extends Component {
     img: null
   }
 
+  // HANDLE CHABGE
+  // --------------------------------------------------------------------------
+
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
+  // HANDLE PHOTO CHANGE
+  // --------------------------------------------------------------------------
   handlePhotoChange = (e) => {
 
     var reader = new FileReader();
-  
+
     reader.onload = (e) => {
 
       this.setState({
@@ -40,13 +46,15 @@ class UserDataForm extends Component {
     reader.readAsDataURL(e.target.files[0]);
 
     this.setState({
-          image : e.target.files[0]
-        }, () => {
-          console.log('Image w state : ',this.state.image);
+      image: e.target.files[0]
+    }, () => {
+      console.log('Image w state : ', this.state.image);
 
-        })
-    }
+    })
+  }
 
+  // SEND IMAGE
+  // --------------------------------------------------------------------------
   sendImage = async (e) => {
 
     e.preventDefault();
@@ -69,99 +77,124 @@ class UserDataForm extends Component {
 
   }
 
+  // DELETE IMAGE
+  // --------------------------------------------------------------------------
+  deleteImage = async () => {
+
+    const confirm = window.confirm('Czy na pewno usunąć zdjęcie ?');
+
+    if (confirm) {
+      let res = await deleteAvatar(this.state.login);
+
+      if (res.response === 'failed') {
+        alert('Wystąpił błąd, spróbuj ponownie później !');
+      } else {
+        alert('Pomyślnie usunięto zdjęcie')
+        this.setState({
+          img : null,
+          image : null,
+          imageChanged : false
+        })
+
+        this.props.deleteImage();
+      }
+    }
+
+  }
+
   // Funkcja walidująca formularz
   // Sprawdza każde pole pod względem długości i poprawności danych
   // Sprawdza czy hasła są identyczne
   validateForm = () => {
-        console.log(this.state);
+    console.log(this.state);
 
-        let valid = true;
-        if (this.state.passw != this.state.confirm_password) {
-          valid = false;
-          this.setState({
-            con_password_message: 'Hasło nie jest identyczne !'
-          })
-        }
+    let valid = true;
+    if (this.state.passw != this.state.confirm_password) {
+      valid = false;
+      this.setState({
+        con_password_message: 'Hasło nie jest identyczne !'
+      })
+    }
 
-        return valid;
-      }
+    return valid;
+  }
 
   // Wysłanie formularza
   // Wywołuje funkcje walidującą
   // Przygotowuje formularz do wysłania
   // Przed wysłaniem wyświetla okno potwiedzenia 
   handleSubmit = () => {
-        // 1.) Wywołanie funkcji walidującej
-        let valid = this.validateForm();
-        console.log(valid);
+    // 1.) Wywołanie funkcji walidującej
+    let valid = this.validateForm();
+    console.log(valid);
 
-        if (valid) {
-          // 2.) Wyświetlenie okna potwierdzenia
-          let confirm = window.confirm('Czy na pewno zapisać zmiany ?');
-          if (confirm) {
-            // 3.) Przygotowanie formularza
-            let s = this.state;
-            let data = {
-              type: localStorage.getItem('type'),
-              id: localStorage.getItem('loggedId'),
-              data: {
-                first_name: s.first_name,
-                last_name: s.last_name,
-                login: s.login,
-                passw: s.passw,
-                email: s.email,
-                height: s.height,
-                mass: s.mass,
-                favourite_exercise: s.favourite_exercise,
-                phone_number: s.phone_number
-              }
-            }
-            // 4.) Wysłanie formularza
-            fetch('http://localhost:8080/api/user/edit-profile', {
-              method: "POST",
-              mode: "cors",
-              cache: "no-cache",
-              credentials: "same-origin",
-              body: JSON.stringify(data),
-              headers: {
-                "Content-Type": "application/json"
-              }
-            })
-              // 5.) Odpowiedź z serwera
-              .then(res => res.json())
-              .then(res => {
-                if (res.response === 'success') {
-                  alert('Zmiany zostały zapisane !')
-                }
-                else {
-                  alert('Wystąpił błąd, spróbuj ponownie później !');
-                }
-              })
+    if (valid) {
+      // 2.) Wyświetlenie okna potwierdzenia
+      let confirm = window.confirm('Czy na pewno zapisać zmiany ?');
+      if (confirm) {
+        // 3.) Przygotowanie formularza
+        let s = this.state;
+        let data = {
+          type: localStorage.getItem('type'),
+          id: localStorage.getItem('loggedId'),
+          data: {
+            first_name: s.first_name,
+            last_name: s.last_name,
+            login: s.login,
+            passw: s.passw,
+            email: s.email,
+            height: s.height,
+            mass: s.mass,
+            favourite_exercise: s.favourite_exercise,
+            phone_number: s.phone_number
           }
-
         }
+        // 4.) Wysłanie formularza
+        fetch('http://localhost:8080/api/user/edit-profile', {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+          // 5.) Odpowiedź z serwera
+          .then(res => res.json())
+          .then(res => {
+            if (res.response === 'success') {
+              alert('Zmiany zostały zapisane !')
+            }
+            else {
+              alert('Wystąpił błąd, spróbuj ponownie później !');
+            }
+          })
       }
+
+    }
+  }
 
   // Odbiera dane z propsów i przypisuje odpowiednim właściom wartości
   componentDidMount() {
-        let d = this.props.data;
-        this.setState({
-          first_name: d.first_name,
-          last_name: d.last_name,
-          login: d.login,
-          passw: d.passw,
-          confirm_password: d.passw,
-          email: d.email,
-          height: d.height,
-          mass: d.mass,
-          favourite_exercise: d.favourite_exercise,
-          phone_number: d.phone_number,
-          img: d.image
-        })
-      }
+    let d = this.props.data;
+    this.setState({
+      first_name: d.first_name,
+      last_name: d.last_name,
+      login: d.login,
+      passw: d.passw,
+      confirm_password: d.passw,
+      email: d.email,
+      height: d.height,
+      mass: d.mass,
+      favourite_exercise: d.favourite_exercise,
+      phone_number: d.phone_number,
+      img: d.image
+    })
+  }
 
   render() {
-        return(<div>
+    return (<div>
       <div class="container-fluid">
         <div class="row editProfileRow animated fadeIn">
           {/* User avatar */}
@@ -177,6 +210,13 @@ class UserDataForm extends Component {
             {
               (this.state.img !== null && this.state.imageChanged === false) &&
               <div className="userAvatar">
+                <div className="overlay">
+
+                  <i className="fas fa-user text-primary"></i>
+                  <i className="fas fa-trash text-danger ml-2"
+                  onClick={this.deleteImage}></i>
+
+                </div>
                 <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
               </div>
             }
@@ -311,5 +351,15 @@ class UserDataForm extends Component {
     </div >);
   }
 }
+
+const mapStateToProps = state =>{
+  return{
+    image : state.user.image
+  }
+}
+
+const mapDispatchToProps = {deleteImage}
+
+const UserDataForm = connect(mapStateToProps, mapDispatchToProps)(UserForm);
 
 export default UserDataForm;

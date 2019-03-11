@@ -1,6 +1,6 @@
 const mkdir = require('make-dir');
 const path = require('path');
-
+const fs = require('fs');
 
 // GET USER DATA
 // ----------------------------------------------------------------------------
@@ -93,59 +93,102 @@ async function addNewPhoto(uploadFile, fileName, connection) {
             (err) => {
                 if (err) {
                     throw err;
-                   }               
+                }
             });
 
-            return {
-                response : 'success',
-            }
+        return {
+            response: 'success',
+        }
 
     } catch (error) {
 
         console.log(error);
-        
+
         return {
             response: 'failed'
         }
 
     }
- 
+
 }
 
 // UPDATE PHOTO IN DATABASE
 // ----------------------------------------------------------------------------
-async function savePhotoInDB(login,connection){
+async function savePhotoInDB(login, connection) {
 
     try {
-        console.log('Saving photo in db...',login);
-        
+        console.log('Saving photo in db...', login);
+
 
         let res = await connection.query(`UPDATE kuba.users
                          SET image = $1
                          WHERE login = $2`,
-                         [login,login]);
-        
+            [login, login]);
+
         return {
-            response : 'success'
+            response: 'success'
         }
 
-        
+
     } catch (error) {
-        
+
         console.log(error);
 
         return {
-            response : 'failed'
+            response: 'failed'
         }
-        
+
 
     }
 
-} 
+}
+
+// DELETE AVATAR
+// ----------------------------------------------------------------------------
+async function deleteAvatar(login, connection) {
+
+    try {
+
+        // Delete from database
+        let query = `UPDATE kuba.users SET image = $1 WHERE login = $2`;
+        let values = [null, login];
+
+        let res = connection.query(query, values);
+
+        // Delete file from server
+        const filePath = `./public/images/${login}.jpg`;
+
+        fs.access(filePath, async error => {
+            if (!error) {
+                await fs.unlink(filePath,function(error){
+                    console.log(error);
+                });
+            } else {
+                console.log(error);
+                return {
+                    response: 'failed'
+                }
+            }
+        });
+        
+        return {
+            response: 'success'
+        }
+
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response: 'failed'
+        }
+    }
+
+}
 
 module.exports = {
     checkAccountType: checkAccountType,
     getUserData: getUserData,
     addNewPhoto: addNewPhoto,
-    savePhotoInDB : savePhotoInDB
+    savePhotoInDB: savePhotoInDB,
+    deleteAvatar : deleteAvatar
 }

@@ -240,8 +240,37 @@ export const newImage = async (image) => {
 
 
     } catch (error) {
-        console.log(error);
+        console.log(error);        
+    }
+
+}
+
+// DELETE IMAGE
+// ----------------------------------------------------------------------------
+export const deleteAvatar = async (login) => {
+
+    try {
+
+        let res = await axios.post(URL + 'user/photo/delete',{
+            login : login
+        })
+
+        if (res.data.response === 'failed') {
+            throw 'failed'
+        }
+
+        return {
+            response: 'success'
+        }
         
+    } catch (error) {
+        
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
+
     }
 
 }

@@ -43,7 +43,13 @@ export const user = (state = {
                 messageCount: action.data.msg,
                 notificationsCount: action.data.ntf,
             })
-
+        
+        // Delete image
+        case 'DELETE_IMAGE' :
+            return Object.assign({},state,{
+                image : null
+            })
+            
         default:
             return state;
     }

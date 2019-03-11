@@ -121,7 +121,7 @@ module.exports = (app, client) => {
                         user_id: res.rows[0][column_name],
                         login: data.Login,
                         isEmailConfirmed: res.rows[0].is_email_confirmed,
-                        image : res.rows[0].image
+                        image: res.rows[0].image
                     }
                     console.log("Dane użytkownika: ", userData);
                     // Msg count    
@@ -451,7 +451,7 @@ module.exports = (app, client) => {
     // ------------------------------------------------------------------------
     app.post('/api/user/data', async (request, response) => {
 
-        console.log('User data...',request.body)
+        console.log('User data...', request.body)
 
         try {
 
@@ -479,20 +479,48 @@ module.exports = (app, client) => {
         let uploadFile = request.files.avatar
         const fileName = request.files.avatar.name
 
-      
+
 
         try {
 
-            let res = await userDAO.addNewPhoto(uploadFile,fileName,client);
+            let res = await userDAO.addNewPhoto(uploadFile, fileName, client);
 
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw 'failed';
             }
 
-            res = await userDAO.savePhotoInDB(fileName,client);
+            res = await userDAO.savePhotoInDB(fileName, client);
+
+            if (res.response === 'failed') {
+                throw 'failed';
+            }
+
+            response.send({
+                response: 'success'
+            })
+
+        } catch (error) {
+
+            console.log(error);
+
+            response.send({
+                reponse: 'failed'
+            })
+
+        }
+
+    })
+
+    // DELETE AVATAR
+    // ------------------------------------------------------------------------
+    app.post('/api/user/photo/delete', async (request, response) => {
+
+        try {
+
+            let res = userDAO.deleteAvatar(request.body.login,client);
 
             if(res.response === 'failed'){
-                throw 'failed';
+                throw 'failed'
             }
 
             response.send({
@@ -500,23 +528,14 @@ module.exports = (app, client) => {
             })
 
         } catch (error) {
-
             console.log(error);
 
-
             response.send({
-                reponse : 'failed'
+                reponse: 'failed'
             })
-
         }
 
-
-
-
-    })
-
-
-
+    });
 
 
 };

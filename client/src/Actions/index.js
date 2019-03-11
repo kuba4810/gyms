@@ -107,3 +107,9 @@ export const updateMsgNtf = (data) =>({
   data
 })
 
+
+// DELETE IMAGE
+// ----------------------------------------------------------------------------
+export const deleteImage = () => ({
+  type : 'DELETE_IMAGE'
+})

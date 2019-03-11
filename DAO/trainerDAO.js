@@ -598,6 +598,48 @@ async function getTrainerId(login,connection){
 
 }
 
+// DELETE AVATAR
+// ----------------------------------------------------------------------------
+async function deleteAvatar(login, connection) {
+
+    try {
+
+        // Delete from database
+        let query = `UPDATE trainers.trainer SET image = $1 WHERE login = $2`;
+        let values = [null, login];
+
+        let res = connection.query(query, values);
+
+        // Delete file from server
+        const filePath = `./public/images/${login}.jpg`;
+
+        fs.access(filePath, async error => {
+            if (!error) {
+                await fs.unlink(filePath,function(error){
+                    console.log(error);
+                });
+            } else {
+                console.log(error);
+                return {
+                    response: 'failed'
+                }
+            }
+        });
+        
+        return {
+            response: 'success'
+        }
+
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response: 'failed'
+        }
+    }
+
+}
+
 
 
 module.exports = {
@@ -617,6 +659,7 @@ module.exports = {
     deleteSkill : deleteSkill,
     changePhoto : changePhoto,
     addPhoto : addPhoto,
+    deleteAvatar : deleteAvatar,
     getTrainerId : getTrainerId
 
 }

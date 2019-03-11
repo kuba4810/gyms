@@ -792,5 +792,31 @@ module.exports = (app, client) => {
 
     })
 
+    // DELETE AVATAR
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/photo/delete', async (request, response) => {
+
+        try {
+
+            let res = trainerDAO.deleteAvatar(request.body.login,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success'
+            })
+
+        } catch (error) {
+            console.log(error);
+
+            response.send({
+                reponse: 'failed'
+            })
+        }
+
+    });
+
 
 };

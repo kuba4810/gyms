@@ -9,10 +9,14 @@ import {
   editSkill,
   deleteSkill,
   changeAvatar,
-  addNewPhoto
+  addNewPhoto,
+  deleteAvatar
 } from '../../../services/API/trainers';
 
-class TrainerDataForm extends Component {
+import {connect} from 'react-redux';
+import {deleteImage} from '../../../Actions/index';
+
+class TrainerForm extends Component {
   state = {
     first_name: '',
     last_name: '',
@@ -35,8 +39,8 @@ class TrainerDataForm extends Component {
     skill_name: '',
     skill_description: '',
     photos: [],
-    newPhoto : null,
-    photo : null
+    newPhoto: null,
+    photo: null
 
   }
 
@@ -46,21 +50,21 @@ class TrainerDataForm extends Component {
     });
   }
 
-  photoChanged = (type,e) => { 
+  photoChanged = (type, e) => {
 
-    switch(type){
-      
+    switch (type) {
+
       case 'avatar':
-          this.handlePhotoChange(e);
+        this.handlePhotoChange(e);
         break;
-      
+
       case 'newPhoto':
         this.handleNewPhoto(e);
         break;
 
     }
 
-   }
+  }
 
   // HANDLE PHOTO CHANGE
   // --------------------------------------------
@@ -90,7 +94,7 @@ class TrainerDataForm extends Component {
 
   // HANDLE NEW PHOTO
   // --------------------------------------------------------------------------
-  handleNewPhoto = (e) =>{
+  handleNewPhoto = (e) => {
 
     console.log('Handle new photo');
 
@@ -102,7 +106,7 @@ class TrainerDataForm extends Component {
 
       this.setState({
         newPhoto: e.target.result
-      },()=>{
+      }, () => {
         console.log(this.state);
       })
     };
@@ -110,14 +114,14 @@ class TrainerDataForm extends Component {
     reader.readAsDataURL(e.target.files[0]);
 
     this.setState({
-      photo : e.target.files[0]
+      photo: e.target.files[0]
     })
 
   }
 
   // SEND NEW PHOTO
   // --------------------------------------------------------------------------
-  sendNewPhoto = async (e)=>{
+  sendNewPhoto = async (e) => {
     e.preventDefault();
 
     e.preventDefault();
@@ -127,20 +131,45 @@ class TrainerDataForm extends Component {
     let index = 1;
 
     for (let i = 0; i < this.state.photos.length; i++) {
-      index++;      
+      index++;
     }
 
-    fileName =  `${login}_${index}`;
-    
+    fileName = `${login}_${index}`;
+
 
     const formData = new FormData();
 
     formData.append('avatar', this.state.photo, fileName);
 
-    
+
     let res = await addNewPhoto(formData);
 
     window.location.reload();
+  }
+
+  // DELETE AVATAR
+  // --------------------------------------------------------------------------
+  deleteImage = async () => {
+
+    const confirm = window.confirm('Czy na pewno usunąć zdjęcie ?');
+
+    if (confirm) {
+      let res = await deleteAvatar(this.state.login);
+
+      if (res.response === 'failed') {
+        alert('Wystąpił błąd, spróbuj ponownie później !');
+      } else {
+        alert('Pomyślnie usunięto zdjęcie')
+        this.setState({
+          img : null,
+          image : null,
+          imageChanged : false
+        })
+
+        this.props.deleteImage();
+      }
+    }
+
   }
 
   // SEND IMAGE
@@ -681,8 +710,9 @@ class TrainerDataForm extends Component {
       <div className="userAvatar m-2">
         <div className="overlay">
 
-        <i class="fas fa-eye text-primary"></i>
-          <i className="fas fa-trash text-danger ml-2"></i>
+          <i class="fas fa-eye text-primary"></i>
+          <i className="fas fa-trash text-danger ml-2"
+          ></i>
 
         </div>
         <img src={`http://localhost:8080/public/images/${photo.photo_name}.jpg`} />
@@ -817,6 +847,13 @@ class TrainerDataForm extends Component {
               {
                 (this.state.img !== null && this.state.imageChanged === false) &&
                 <div className="userAvatar mb-3">
+                  <div className="overlay">
+
+                    <i class="fas fa-eye text-primary"></i>
+                    <i className="fas fa-trash text-danger ml-2"
+                    onClick={this.deleteImage}></i>
+
+                  </div>
                   <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
                 </div>
               }
@@ -835,8 +872,8 @@ class TrainerDataForm extends Component {
                 <h4>Zdjęcie profilowe</h4>
               </label>
 
-              <input type="file" name="" id="file" class="" 
-                onChange={this.photoChanged.bind(this,'avatar')} />
+              <input type="file" name="" id="file" class=""
+                onChange={this.photoChanged.bind(this, 'avatar')} />
               {/* <label for="file">
                 <i class="fas fa-upload mr-2"></i>
                 Wybierz nowe
@@ -865,41 +902,41 @@ class TrainerDataForm extends Component {
                 {
                   photos
                 }
-               {
-                 this.state.newPhoto !== null &&
-                 <div className="userAvatar mb-2 ml-2">
-                 <div className="overlay">
+                {
+                  this.state.newPhoto !== null &&
+                  <div className="userAvatar mb-2 ml-2">
+                    <div className="overlay">
 
-                   <i className="fas fa-user text-primary"></i>
-                   <i className="fas fa-trash text-danger ml-2"></i>
+                      <i className="fas fa-user text-primary"></i>
+                      <i className="fas fa-trash text-danger ml-2"></i>
 
-                 </div>
-                 <img src={this.state.newPhoto} />
-               </div>
-               }
+                    </div>
+                    <img src={this.state.newPhoto} />
+                  </div>
+                }
 
               </div>
 
-             {
-               this.state.newPhoto === null &&
-               <div>
+              {
+                this.state.newPhoto === null &&
+                <div>
                   <input type="file" /* name="" id="newPhoto" class="" */
-                   onChange={this.photoChanged.bind(this,'newPhoto')}/>
+                    onChange={this.photoChanged.bind(this, 'newPhoto')} />
 
                   {/* <label for="file" className="mt-2">
                      <i class="fas fa-upload mr-2"></i>
                      Dodaj...
                   </label> */}
-               </div>
-             }
+                </div>
+              }
 
-            
-             {
-               this.state.newPhoto !== null &&
-               <div className="btn btn-success w-25" onClick={this.sendNewPhoto}>
-                 Wyślij
+
+              {
+                this.state.newPhoto !== null &&
+                <div className="btn btn-success w-25" onClick={this.sendNewPhoto}>
+                  Wyślij
                </div>
-             }
+              }
 
             </div>
 
@@ -1119,5 +1156,15 @@ class TrainerDataForm extends Component {
       </div>);
   }
 }
+
+const mapStateToProps = state =>{
+  return{
+    image : state.user.image
+  }
+}
+
+const mapDispatchToProps = {deleteImage}
+
+const TrainerDataForm = connect(mapStateToProps, mapDispatchToProps)(TrainerForm);
 
 export default TrainerDataForm;

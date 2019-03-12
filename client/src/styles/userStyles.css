@@ -449,6 +449,10 @@
     z-index : 9999;
 }
 
+.gallery .bigImage img{
+    box-shadow : 0px 0px 3px cornsilk;
+}
+
 .gallery .bigImage i{
     font-size: 50px;
 }
@@ -485,6 +489,7 @@
     cursor: pointer;
     opacity : 0.7;
     transition : .3s ease;
+    
 }
 
 .miniatureContainer .miniatureImage:hover{

@@ -17,6 +17,15 @@ class Gallery extends Component {
                 console.log(this.state);
             })
         }
+
+        if(prev.currentIndex !== this.props.currentIndex){
+            this.setState({
+                currentPhoto: this.props.photos[this.props.currentIndex].photo_name,
+                currentIndex : this.props.currentIndex
+            },()=>{
+                console.log(this.state);
+            })
+        }
     }
 
     // CHOOSE PHOTO

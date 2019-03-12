@@ -30,7 +30,6 @@ class User extends React.Component{
                    <span class="loggedType badge badge-primary">U</span>:
                    <span class="loggedType badge badge-success">T</span>
         let login  = localStorage.getItem('loggedNick');
-        let icon = <i className="fas fa-user"></i>;
 
         console.log('Image w state : ', this.props);
 

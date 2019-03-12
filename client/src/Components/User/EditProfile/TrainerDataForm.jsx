@@ -771,7 +771,7 @@ class TrainerForm extends Component {
     return (
       <div>
         <Gallery photos={galleryPhotos} currentIndex = {this.state.currentIndex}/>
-        <div class="container-fluid trainer-profile-edit position-relative">
+        <div class="container-fluid trainer-profile-edit ">
 
           {/* Edit Form */}
           {/* ------------------------------------------------------------------------------------- */}
@@ -835,7 +835,7 @@ class TrainerForm extends Component {
 
 
 
-            <form action="" className="bg-light ml-auto mr-auto w-50 p-2 editSkill invisible animated fadeOut">
+            <form action="" className="bg-light ml-auto mr-auto w-50 p-2  editSkill invisible animated fadeOut">
 
               <h3 className="text-dark">Edycja umiejętności</h3>
               <hr />

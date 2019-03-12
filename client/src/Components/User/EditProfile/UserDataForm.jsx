@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { newImage, deleteAvatar } from '../../../services/API/user';
-import {connect} from 'react-redux';
-import {deleteImage} from '../../../Actions/index';
+import { connect } from 'react-redux';
+import { deleteImage } from '../../../Actions/index';
+import Gallery from '../Gallery';
 class UserForm extends Component {
   state = {
     first_name: '',
@@ -90,9 +91,9 @@ class UserForm extends Component {
         alert('Wystąpił błąd, spróbuj ponownie później !');
       } else {
         this.setState({
-          img : null,
-          image : null,
-          imageChanged : false
+          img: null,
+          image: null,
+          imageChanged: false
         })
 
         this.props.deleteImage();
@@ -176,6 +177,21 @@ class UserForm extends Component {
     }
   }
 
+  // SHOW GALLERY
+  // --------------------------------------------------------------------------
+  showGallery = (index) => {
+
+    this.setState({
+      currentIndex: index
+    })
+    let gallery = document.querySelector('.gallery');
+
+    gallery.classList.add('fadeIn');
+    gallery.classList.remove('fadeOut');
+    gallery.classList.remove('invisible');
+
+  }
+
   // Odbiera dane z propsów i przypisuje odpowiednim właściom wartości
   componentDidMount() {
     let d = this.props.data;
@@ -195,171 +211,178 @@ class UserForm extends Component {
   }
 
   render() {
-    return (<div>
-      <div class="container-fluid">
-        <div class="row editProfileRow animated fadeIn">
-          {/* User avatar */}
-          <div className="col-lg-4">
 
-            {
-              this.state.img === null &&
-              <div className="userAvatar">
-                <i className="fas fa-user"></i>
-              </div>
-            }
+    let login = localStorage.getItem('loggedNick');
+    return (
+      <div>
 
-            {
-              (this.state.img !== null && this.state.imageChanged === false) &&
-              <div className="userAvatar">
-                <div className="overlay">
+        <Gallery photos={[{ photo_name: login }]} currentIndex={0} />
 
-                  <i className="fas fa-user text-primary"></i>
-                  <i className="fas fa-trash text-danger ml-2"
-                  onClick={this.deleteImage}></i>
+        <div class="container-fluid">
+          <div class="row editProfileRow animated fadeIn">
+            {/* User avatar */}
+            <div className="col-lg-4">
 
+              {
+                this.state.img === null &&
+                <div className="userAvatar">
+                  <i className="fas fa-user"></i>
                 </div>
-                <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
-              </div>
-            }
+              }
 
-            {
-              (this.state.img !== null && this.state.imageChanged === true) &&
+              {
+                (this.state.img !== null && this.state.imageChanged === false) &&
+                <div className="userAvatar">
+                  <div className="overlay">
 
-              <div className="userAvatar">
-                <img src={this.state.img} alt="" />
-              </div>
-            }
+                    <i className="fas fa-user text-primary"
+                      onClick={this.showGallery.bind(null, 0)}></i>
+                    <i className="fas fa-trash text-danger ml-2"
+                      onClick={this.deleteImage}></i>
+
+                  </div>
+                  <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
+                </div>
+              }
+
+              {
+                (this.state.img !== null && this.state.imageChanged === true) &&
+
+                <div className="userAvatar">
+                  <img src={this.state.img} alt="" />
+                </div>
+              }
 
 
-            <label for='userAvatar'>Dodaj zdjęcie</label>
-            <input type='file' name='userAvatar' onChange={this.handlePhotoChange} />
+              <label for='userAvatar'>Dodaj zdjęcie</label>
+              <input type='file' name='userAvatar' onChange={this.handlePhotoChange} />
 
-            {
-              this.state.imageChanged &&
-              <button className="btn-success form-control mt-3"
-                onClick={this.sendImage}>
-                Zapisz
+              {
+                this.state.imageChanged &&
+                <button className="btn-success form-control mt-3"
+                  onClick={this.sendImage}>
+                  Zapisz
              </button>
-            }
+              }
 
-          </div>
+            </div>
 
-          {/* User data */}
-          <div className="col-lg-8 ">
+            {/* User data */}
+            <div className="col-lg-8 ">
 
 
 
-            <form class="form-horizontal editProfileForm" role="form">
+              <form class="form-horizontal editProfileForm" role="form">
 
-              {/* First name */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label">Imię</label>
-                <div class="col-lg-12">
-                  <input class="form-control" name='first_name' autoComplete='off'
-                    value={this.state.first_name} onChange={this.handleChange}
-                    type="text" />
+                {/* First name */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label">Imię</label>
+                  <div class="col-lg-12">
+                    <input class="form-control" name='first_name' autoComplete='off'
+                      value={this.state.first_name} onChange={this.handleChange}
+                      type="text" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Last name */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label">Nazwisko</label>
-                <div class="col-lg-12">
-                  <input class="form-control" name='last_name' autoComplete='off'
-                    value={this.state.last_name} onChange={this.handleChange}
-                    type="text" />
+                {/* Last name */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label">Nazwisko</label>
+                  <div class="col-lg-12">
+                    <input class="form-control" name='last_name' autoComplete='off'
+                      value={this.state.last_name} onChange={this.handleChange}
+                      type="text" />
+                  </div>
                 </div>
-              </div>
-              {/* Height */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label">Wzrost:</label>
-                <div class="col-lg-12">
-                  <input class="form-control" name='height' autoComplete='off'
-                    value={this.state.height} onChange={this.handleChange}
-                    type="text" />
+                {/* Height */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label">Wzrost:</label>
+                  <div class="col-lg-12">
+                    <input class="form-control" name='height' autoComplete='off'
+                      value={this.state.height} onChange={this.handleChange}
+                      type="text" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Mass */}
-              <div class="form-group">
-                <label class="col-md-3 control-label">Masa:</label>
-                <div class="col-lg-12">
-                  <input className='form-control' name='mass' autoComplete='off'
-                    value={this.state.mass} onChange={this.handleChange}
-                    type='text' />
+                {/* Mass */}
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Masa:</label>
+                  <div class="col-lg-12">
+                    <input className='form-control' name='mass' autoComplete='off'
+                      value={this.state.mass} onChange={this.handleChange}
+                      type='text' />
+                  </div>
                 </div>
-              </div>
 
-              {/* Favourite exercise */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label">Ulubione ćwiczenie:</label>
-                <div class="col-lg-12">
-                  <input class="form-control" name='favourite_exercise'
-                    autoComplete='off'
-                    value={this.state.favourite_exercise}
-                    onChange={this.handleChange}
-                    type="text" />
+                {/* Favourite exercise */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label">Ulubione ćwiczenie:</label>
+                  <div class="col-lg-12">
+                    <input class="form-control" name='favourite_exercise'
+                      autoComplete='off'
+                      value={this.state.favourite_exercise}
+                      onChange={this.handleChange}
+                      type="text" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Mail */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label">Mail:</label>
-                <div class="col-lg-12">
-                  <input class="form-control" name='email' autoComplete='off'
-                    value={this.state.email} onChange={this.handleChange}
-                    type="text" />
+                {/* Mail */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label">Mail:</label>
+                  <div class="col-lg-12">
+                    <input class="form-control" name='email' autoComplete='off'
+                      value={this.state.email} onChange={this.handleChange}
+                      type="text" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Password */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label">Hasło:</label>
-                <div class="col-lg-12">
-                  <input class="form-control" name='passw' autoComplete='off'
-                    value={this.state.passw} onChange={this.handleChange}
-                    type="password" />
+                {/* Password */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label">Hasło:</label>
+                  <div class="col-lg-12">
+                    <input class="form-control" name='passw' autoComplete='off'
+                      value={this.state.passw} onChange={this.handleChange}
+                      type="password" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Confirm password */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label">Potwierdź hasło:</label>
-                <div class="col-lg-12">
-                  <input class="form-control" type="password"
-                    name='confirm_password' autoComplete='off'
-                    value={this.state.confirm_password} onChange={this.handleChange}
-                  />
-                  <label class="color-red" htmlFor="">{this.state.con_password_message}</label>
+                {/* Confirm password */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label">Potwierdź hasło:</label>
+                  <div class="col-lg-12">
+                    <input class="form-control" type="password"
+                      name='confirm_password' autoComplete='off'
+                      value={this.state.confirm_password} onChange={this.handleChange}
+                    />
+                    <label class="color-red" htmlFor="">{this.state.con_password_message}</label>
+                  </div>
                 </div>
-              </div>
 
-              {/* Buttons */}
-              <div class="form-group">
-                <label class="col-lg-12 control-label"></label>
-                <div class="col-lg-12">
-                  <input type="button" class="btn btn-success" value="Zapisz zmiany"
-                    onClick={this.handleSubmit} />
-                  <span></span>
-                  <input type="reset" class="btn btn-danger" value="Wyczyść" />
+                {/* Buttons */}
+                <div class="form-group">
+                  <label class="col-lg-12 control-label"></label>
+                  <div class="col-lg-12">
+                    <input type="button" class="btn btn-success" value="Zapisz zmiany"
+                      onClick={this.handleSubmit} />
+                    <span></span>
+                    <input type="reset" class="btn btn-danger" value="Wyczyść" />
+                  </div>
                 </div>
-              </div>
 
-            </form>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </div >);
+      </div >);
   }
 }
 
-const mapStateToProps = state =>{
-  return{
-    image : state.user.image
+const mapStateToProps = state => {
+  return {
+    image: state.user.image
   }
 }
 
-const mapDispatchToProps = {deleteImage}
+const mapDispatchToProps = { deleteImage }
 
 const UserDataForm = connect(mapStateToProps, mapDispatchToProps)(UserForm);
 

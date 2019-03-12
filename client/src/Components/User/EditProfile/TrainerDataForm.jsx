@@ -765,7 +765,7 @@ class TrainerForm extends Component {
 
     let galleryPhotos = [...this.state.photos];
     galleryPhotos.unshift({
-      photo_name : this.state.login
+      photo_name : localStorage.getItem('loggedNick')
     })
 
     return (

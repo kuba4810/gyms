@@ -5,6 +5,14 @@ class Gallery extends Component {
         currentIndex : 0
     }
 
+    componentDidMount(){
+        this.setState({
+            currentPhoto: this.props.photos[this.props.currentIndex].photo_name,
+            currentIndex : this.props.currentIndex
+        })
+
+        console.log('Gallery mount',this.props);
+    }
     // COMPONENT DID UPDATE
     // ------------------------------------------------------------------------
     componentDidUpdate(prev) {

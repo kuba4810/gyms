@@ -84,7 +84,7 @@ class Gallery extends Component {
 
     render() {
 
-        console.log('Galeria render : ', this.props.photos[0])
+        console.log('Galeria render : ', this.props.photos)
 
         let photos = this.props.photos.map((photo, index) => (
             <div className="userAvatar m-2 miniatureImage"

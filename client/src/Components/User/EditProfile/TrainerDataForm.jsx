@@ -753,7 +753,7 @@ class TrainerForm extends Component {
         <div className="overlay">
 
           <i class="fas fa-eye text-primary"
-            onClick={this.showGallery.bind(null,index)}></i>
+            onClick={this.showGallery.bind(null,index+1)}></i>
           <i className="fas fa-trash text-danger ml-2"
             onClick={this.deleteImageFromAlbum.bind(null, photo.photo_name)}
           ></i>
@@ -763,14 +763,15 @@ class TrainerForm extends Component {
       </div>
     ))
 
+    let galleryPhotos = [...this.state.photos];
+    galleryPhotos.unshift({
+      photo_name : this.state.login
+    })
+
     return (
       <div>
-        <Gallery photos={this.state.photos} currentIndex = {this.state.currentIndex}/>
+        <Gallery photos={galleryPhotos} currentIndex = {this.state.currentIndex}/>
         <div class="container-fluid trainer-profile-edit position-relative">
-
-
-
-
 
           {/* Edit Form */}
           {/* ------------------------------------------------------------------------------------- */}
@@ -897,7 +898,8 @@ class TrainerForm extends Component {
                 <div className="userAvatar mb-3">
                   <div className="overlay">
 
-                    <i class="fas fa-eye text-primary"></i>
+                    <i class="fas fa-eye text-primary"
+                      onClick={this.showGallery.bind(null,0)}></i>
                     <i className="fas fa-trash text-danger ml-2"
                       onClick={this.deleteImage}></i>
 

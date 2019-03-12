@@ -31,6 +31,8 @@ class User extends React.Component{
                    <span class="loggedType badge badge-success">T</span>
         let login  = localStorage.getItem('loggedNick');
 
+        console.log('Image w state : ', this.props);
+
        return(
            <div className="loginUser"
                 data-toggle="collapse" 
@@ -39,7 +41,13 @@ class User extends React.Component{
                 { condition && <span class="userInfo badge badge-success">!</span>}
                 {/* {badge} */}
                <div className="loginUserDiv"  /* onClick={this.showUserMenu} */>
-                  <i className="fas fa-user"></i>
+                 {
+                     (this.props.user.image !== null && typeof(this.props.user.image) !== "undefined") ?
+                     <img src={`http://localhost:8080/public/images/${login}.jpg`} />:
+                     <i className="fas fa-user"></i>
+                    
+                 }
+                    
                 </div>
            </div>
        );

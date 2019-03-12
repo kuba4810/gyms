@@ -160,7 +160,7 @@ export const answer_vote = async (data) => {
 export const getUserData = async (user_id) => {
 
     console.log('Get User Data ...');
-    
+
 
     try {
 
@@ -172,8 +172,8 @@ export const getUserData = async (user_id) => {
             throw 'failed'
         }
 
-        console.log('API ',res.data);
-        
+        console.log('API ', res.data);
+
 
         return {
             response: 'success',
@@ -198,8 +198,8 @@ export const checkAccountType = async (login) => {
 
     try {
 
-        let res = await axios.post(URL+'account/type',{
-            login : login
+        let res = await axios.post(URL + 'account/type', {
+            login: login
         })
 
         if (res.data.response === 'failed') {
@@ -209,7 +209,7 @@ export const checkAccountType = async (login) => {
         return {
             response: 'success',
             type: res.data.type,
-            id : res.data.id
+            id: res.data.id
         }
 
     } catch (error) {
@@ -218,6 +218,58 @@ export const checkAccountType = async (login) => {
             response: 'failed'
         }
         console.log('API ', error);
+
+    }
+
+}
+
+// NEW IMAGE
+// ----------------------------------------------------------------------------
+export const newImage = async (image) => {
+
+    try {
+
+        console.log('API : ',image);     
+       
+
+        let res = await axios.post(URL + 'user/photo',image,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        });
+
+
+    } catch (error) {
+        console.log(error);        
+    }
+
+}
+
+// DELETE IMAGE
+// ----------------------------------------------------------------------------
+export const deleteAvatar = async (login) => {
+
+    try {
+
+        let res = await axios.post(URL + 'user/photo/delete',{
+            login : login
+        })
+
+        if (res.data.response === 'failed') {
+            throw 'failed'
+        }
+
+        return {
+            response: 'success'
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
 
     }
 

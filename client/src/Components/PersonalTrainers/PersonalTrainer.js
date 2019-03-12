@@ -6,6 +6,9 @@ import {logedIn,updateMsgNtf} from '../../Actions/index'
 import {fetch_msg_ntf_count} from '../../services/API/user';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import {getUserData} from '../../services/API/user';
+import {getTrainerData} from '../../services/API/trainers';
+
 import ForumHeader from '../ForumHeader'
 import {LoginForm} from '../Forum/LoginForm'
 import RegisterForm from '../Forum/RegisterForm'
@@ -30,7 +33,21 @@ class Trainer extends Component {
             if(isLoggedIn){
                 let userData = getLoggedUserData();
                 console.log('Dane użytkownika: ',userData);
-                
+                let image = null;
+
+                if (localStorage.getItem('type') === 'user') {
+
+                    let res = await getUserData(localStorage.getItem('loggedId'));
+                    console.log('Dane użytkownika z bazy: ',res)
+                    image = res.data.image;
+
+                } else {
+
+                    let res = await getTrainerData(localStorage.getItem('loggedId'));
+                    console.log('Dane użytkownika z bazy : ',res)
+                    image = res.data.image;
+
+                }
 
                 let msgCount = fetch(`http://localhost:8080/api/user/${userData.id}/${userData.type}/msgCount`)
                               .then(res=> res.json());
@@ -44,23 +61,25 @@ class Trainer extends Component {
                     let data
 
                     if( values[0].response !== 'failed' && values[1].response !== 'failed' ){
-                         data = {
-                            loggedId: userData.id,
-                            emailConfirmed: userData.isEmailConfirmed,
-                            logedNick: userData.nick,
-                            messageCount: values[0].data,
-                            notificationsCount: values[1].data
-                        }
-                    }
-                    else{
                         data = {
-                            loggedId: userData.id,
-                            emailConfirmed: userData.isEmailConfirmed,
-                            logedNick: userData.nick,
-                            messageCount: '',
-                            notificationsCount: ''
-                        }
-                    }
+                           loggedId: userData.id,
+                           emailConfirmed: userData.isEmailConfirmed,
+                           logedNick: userData.nick,
+                           messageCount: values[0].data,
+                           notificationsCount: values[1].data,
+                           image : image
+                       }
+                   }
+                   else{
+                       data = {
+                           loggedId: userData.id,
+                           emailConfirmed: userData.isEmailConfirmed,
+                           logedNick: userData.nick,
+                           messageCount: '',
+                           notificationsCount: '',
+                           image : image
+                       }
+                   }
 
                     this.props.logedIn(data);
 

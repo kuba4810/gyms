@@ -1,5 +1,5 @@
 const randomstring = require('randomstring');
-
+const fs = require('fs');
 
 // CREATE NEW TRAINER
 // ----------------------------------------------------------------------------
@@ -210,7 +210,8 @@ async function getTrainerData(trainer_id, connection) {
     let responseData = {
         trainer: null,
         packages: [],
-        skills: []
+        skills: [],
+        photos : []
     }
 
     try {
@@ -237,6 +238,14 @@ async function getTrainerData(trainer_id, connection) {
 
         responseData = Object.assign({}, responseData, {
             packages: [...res.rows]
+        })
+
+        // Photos
+        res = await connection.query(`SELECT * FROM trainers.trainer_photo
+        WHERE trainer_id = $1`, [trainer_id]);
+
+        responseData = Object.assign({}, responseData, {
+            photos: [...res.rows]
         })
 
         return {
@@ -490,6 +499,193 @@ async function deleteSkill(id,connection){
     
 }
 
+// CHANGE PHOTO
+// ----------------------------------------------------------------------------
+async function changePhoto(photo,login,connection){
+
+    try {
+
+        // Move image to images folder
+        await photo.mv(`./public/images/${login}.jpg`,
+        (err) => {
+            if (err) {
+                throw err;
+               }               
+        });
+
+        // Update table trainer
+        let res = await connection.query(`UPDATE trainers.trainer
+                         SET image = $1
+                         WHERE login = $2`,
+                         [login,login]);
+        
+        return {
+            response : 'success'
+        }
+
+        
+    } catch (error) {
+        
+        console.log(error);
+        
+
+        return {
+            response : 'failed'
+        }
+
+    }
+
+}
+
+// ADD PHOTO
+// ----------------------------------------------------------------------------
+async function addPhoto(photo,name,id,connection){
+
+    try {
+
+        // Move photo to folder public/images
+        await photo.mv(`./public/images/${name}.jpg`,
+        (err) => {
+            if (err) {
+                throw err;
+               }               
+        });
+
+        // Update table trainer
+        let res = await connection.query(`INSERT INTO trainers.trainer_photo(
+            trainer_id, photo_name)
+            VALUES ($1, $2) returning *;`,[id,name])
+        
+        return {
+            response : 'success',
+            photo_id : res.rows[0].photo_id
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
+
+    }
+
+}
+
+// GET TRAINER ID
+// ----------------------------------------------------------------------------
+async function getTrainerId(login,connection){
+
+    try {
+
+        let res = await connection.query(`SELECT trainer_id FROM trainers.trainer
+        WHERE login = $1`,[login]);
+
+        return {
+            response : 'success',
+            trainer_id : res.rows[0].trainer_id
+        }
+        
+    } catch (error) {
+        
+        console.log(error);
+        return {
+            response : 'failed'
+        }
+
+    }
+
+}
+
+// DELETE AVATAR
+// ----------------------------------------------------------------------------
+async function deleteAvatar(login, connection) {
+
+    try {
+
+        // Delete from database
+        let query = `UPDATE trainers.trainer SET image = $1 WHERE login = $2`;
+        let values = [null, login];
+
+        let res = connection.query(query, values);
+
+        // Delete file from server
+        const filePath = `./public/images/${login}.jpg`;
+
+        fs.access(filePath, async error => {
+            if (!error) {
+                await fs.unlink(filePath,function(error){
+                    console.log(error);
+                });
+            } else {
+                console.log(error);
+                return {
+                    response: 'failed'
+                }
+            }
+        });
+        
+        return {
+            response: 'success'
+        }
+
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response: 'failed'
+        }
+    }
+
+}
+
+// DELETE PHOTO
+// ----------------------------------------------------------------------------
+async function deletePhoto(photo_name,connection){
+
+    try {
+
+        // Delete from database
+        let query = `DELETE FROM trainers.trainer_photo WHERE photo_name = $1`;
+        let values = [photo_name];
+
+        let res = connection.query(query, values);
+
+         // Delete file from server
+         const filePath = `./public/images/${photo_name}.jpg`;
+
+         fs.access(filePath, async error => {
+             if (!error) {
+                 await fs.unlink(filePath,function(error){
+                     console.log(error);
+                 });
+             } else {
+                 console.log(error);
+                 return {
+                     response: 'failed'
+                 }
+             }
+         });
+        
+        return {
+            response: 'success'
+        }
+
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response: 'failed'
+        }
+    }
+
+}
+
+
+
+
+
 module.exports = {
     createTrainer: createTrainer,
     createPackages: createPackages,
@@ -504,6 +700,11 @@ module.exports = {
     deletePackage : deletePackage,
     addSKill : addSkill,
     editSkill : editSkill,
-    deleteSkill : deleteSkill
+    deleteSkill : deleteSkill,
+    changePhoto : changePhoto,
+    addPhoto : addPhoto,
+    deleteAvatar : deleteAvatar,
+    getTrainerId : getTrainerId,
+    deletePhoto : deletePhoto
 
 }

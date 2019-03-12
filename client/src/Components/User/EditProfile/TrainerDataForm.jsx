@@ -7,10 +7,18 @@ import {
   deletePackage,
   addSkill,
   editSkill,
-  deleteSkill
+  deleteSkill,
+  changeAvatar,
+  addNewPhoto,
+  deleteAvatar,
+  deletePhoto
 } from '../../../services/API/trainers';
 
-class TrainerDataForm extends Component {
+import { connect } from 'react-redux';
+import { deleteImage } from '../../../Actions/index';
+import Gallery from '../Gallery';
+
+class TrainerForm extends Component {
   state = {
     first_name: '',
     last_name: '',
@@ -19,6 +27,9 @@ class TrainerDataForm extends Component {
     confirm_password: '',
     con_password_message: '',
     city: '',
+    image: '',
+    imageChanged: false,
+    img: null,
     voivodeship: '',
     packages: [],
     package_name: '',
@@ -29,6 +40,10 @@ class TrainerDataForm extends Component {
     editSkill: '',
     skill_name: '',
     skill_description: '',
+    photos: [],
+    newPhoto: null,
+    photo: null,
+    currentIndex : 0
 
   }
 
@@ -37,6 +52,177 @@ class TrainerDataForm extends Component {
       [e.target.name]: e.target.value
     });
   }
+
+  photoChanged = (type, e) => {
+
+    switch (type) {
+
+      case 'avatar':
+        this.handlePhotoChange(e);
+        break;
+
+      case 'newPhoto':
+        this.handleNewPhoto(e);
+        break;
+
+    }
+
+  }
+
+  // HANDLE PHOTO CHANGE
+  // --------------------------------------------
+  handlePhotoChange = (e) => {
+
+    console.log('Handle photo change');
+
+    var reader = new FileReader();
+
+    reader.onload = (e) => {
+
+      this.setState({
+        img: e.target.result,
+        imageChanged: true
+      })
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+
+    this.setState({
+      image: e.target.files[0]
+    }, () => {
+      console.log(this.state);
+
+    })
+  }
+
+  // HANDLE NEW PHOTO
+  // --------------------------------------------------------------------------
+  handleNewPhoto = (e) => {
+
+    console.log('Handle new photo');
+
+    console.log(e.target.files[0]);
+
+    var reader = new FileReader();
+
+    reader.onload = (e) => {
+
+      this.setState({
+        newPhoto: e.target.result
+      }, () => {
+        console.log(this.state);
+      })
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+
+    this.setState({
+      photo: e.target.files[0]
+    })
+
+  }
+
+  // SEND NEW PHOTO
+  // --------------------------------------------------------------------------
+  sendNewPhoto = async (e) => {
+    e.preventDefault();
+
+    e.preventDefault();
+
+    const login = localStorage.getItem('loggedNick');
+    let fileName;
+    let index = 1;
+
+    for (let i = 0; i < this.state.photos.length; i++) {
+      index++;
+    }
+
+    fileName = `${login}_${index}`;
+
+
+    const formData = new FormData();
+
+    formData.append('avatar', this.state.photo, fileName);
+
+
+    let res = await addNewPhoto(formData);
+
+    window.location.reload();
+  }
+
+  // DELETE AVATAR
+  // --------------------------------------------------------------------------
+  deleteImage = async () => {
+
+    const confirm = window.confirm('Czy na pewno usunąć zdjęcie ?');
+
+    if (confirm) {
+      let res = await deleteAvatar(this.state.login);
+
+      if (res.response === 'failed') {
+        alert('Wystąpił błąd, spróbuj ponownie później !');
+      } else {
+        this.setState({
+          img: null,
+          image: null,
+          imageChanged: false
+        })
+
+        this.props.deleteImage();
+      }
+    }
+
+  }
+
+  // DELETE PHOTO
+  // --------------------------------------------------------------------------
+  deleteImageFromAlbum = async (photo_name) => {
+
+    const confirm = window.confirm('Czy na pewno usunąć zdjęcie ?');
+
+    if (confirm) {
+      let res = await deletePhoto(photo_name);
+
+      if (res.response === 'failed') {
+        alert('Wystąpił błąd, spróbuj ponownie później !');
+      } else {
+        let photos = this.state.photos;
+
+        photos = photos.filter(photo => (photo.photo_name !== photo_name))
+        this.setState({
+          photos: [...photos]
+        })
+
+
+      }
+    }
+
+  }
+
+  // SEND IMAGE
+  // --------------------------------------------------------------------------
+  sendImage = async (e) => {
+
+    e.preventDefault();
+
+    const login = localStorage.getItem('loggedNick');
+
+    const formData = new FormData();
+
+    formData.append('avatar', this.state.image, login);
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    };
+
+    let res = await changeAvatar(formData);
+
+    window.location.reload();
+
+  }
+
 
   // SHOW PACKAGE EDIT
   // --------------------------------------------------------------------------
@@ -76,11 +262,11 @@ class TrainerDataForm extends Component {
     this.setState({
       editPackage: 0,
       package_name: '',
-      package_duration : '',
+      package_duration: '',
       package_price: '',
     })
 
-    const container = document.querySelector('.trainerProfileEditContainer');   
+    const container = document.querySelector('.trainerProfileEditContainer');
     container.classList.add('fadeOut');
     container.classList.remove('fadeIn');
 
@@ -90,10 +276,10 @@ class TrainerDataForm extends Component {
     editPackage.classList.remove('fadeIn');
 
 
-    setTimeout(()=>{
+    setTimeout(() => {
       container.classList.add('invisible');
       editPackage.classList.add('invisible');
-    },500)
+    }, 500)
 
   }
 
@@ -105,7 +291,7 @@ class TrainerDataForm extends Component {
     this.setState({
       editSkill: 0,
       skill_name: '',
-      package_description : ''
+      package_description: ''
     })
 
     const container = document.querySelector('.trainerProfileEditContainer');
@@ -116,10 +302,10 @@ class TrainerDataForm extends Component {
     editSkill.classList.add('fadeOut');
     editSkill.classList.remove('fadeIn');
 
-    setTimeout(()=>{
+    setTimeout(() => {
       container.classList.add('invisible');
       editSkill.classList.add('invisible');
-    },500)
+    }, 500)
 
   }
 
@@ -323,7 +509,7 @@ class TrainerDataForm extends Component {
       // document.querySelector('#skills').classList.add('collapse');
       // document.querySelector('#skills').classList.remove('show');
 
-     this.hideSkillEdit();
+      this.hideSkillEdit();
 
     } else {
       alert('Wystąpił błąd, spróbuj ponownie później !');
@@ -492,15 +678,32 @@ class TrainerDataForm extends Component {
         login: d.login,
         passw: d.passw,
         city: d.city,
+        img: d.image,
         voivodeship: d.voivodeship,
         packages: [...res.data.packages],
-        skills: [...res.data.skills]
+        skills: [...res.data.skills],
+        photos: [...res.data.photos]
       })
 
     } else {
       alert('Wystąpił błąd, spróbuj ponownie później !');
     }
 
+
+  }
+
+  // SHOW GALLERY
+  // --------------------------------------------------------------------------
+  showGallery = (index) => {
+
+    this.setState({
+      currentIndex : index
+    })
+    let gallery = document.querySelector('.gallery');
+
+    gallery.classList.add('fadeIn');
+    gallery.classList.remove('fadeOut');
+    gallery.classList.remove('invisible');
 
   }
 
@@ -544,10 +747,31 @@ class TrainerDataForm extends Component {
       </li>
     ))
 
+
+    let photos = this.state.photos.map((photo, index) => (
+      <div className="userAvatar m-2">
+        <div className="overlay">
+
+          <i class="fas fa-eye text-primary"
+            onClick={this.showGallery.bind(null,index+1)}></i>
+          <i className="fas fa-trash text-danger ml-2"
+            onClick={this.deleteImageFromAlbum.bind(null, photo.photo_name)}
+          ></i>
+
+        </div>
+        <img src={`http://localhost:8080/public/images/${photo.photo_name}.jpg`} />
+      </div>
+    ))
+
+    let galleryPhotos = [...this.state.photos];
+    galleryPhotos.unshift({
+      photo_name : localStorage.getItem('loggedNick')
+    })
+
     return (
       <div>
-        <div class="container-fluid trainer-profile-edit">
-
+        <Gallery photos={galleryPhotos} currentIndex = {this.state.currentIndex}/>
+        <div class="container-fluid trainer-profile-edit position-relative">
 
           {/* Edit Form */}
           {/* ------------------------------------------------------------------------------------- */}
@@ -556,7 +780,7 @@ class TrainerDataForm extends Component {
             <form action="" className="bg-light ml-auto mr-auto w-50 p-2 editPackage invisible animated fadeOut">
 
               <i className="fas fa-times position-absolute closeEditForm"
-              onClick={this.hidePackageEdit}>
+                onClick={this.hidePackageEdit}>
               </i>
 
               <h3 className="text-dark">Edycja pakietu</h3>
@@ -617,7 +841,7 @@ class TrainerDataForm extends Component {
               <hr />
 
               <i className="fas fa-times position-absolute closeEditForm"
-              onClick={this.hideSkillEdit}>
+                onClick={this.hideSkillEdit}>
               </i>
 
               {/* Name */}
@@ -662,16 +886,107 @@ class TrainerDataForm extends Component {
             {/* User avatar */}
             <div className="col-lg-4">
 
-              <div className="userAvatar">
-                <i className="fas fa-user"></i>
+              {
+                this.state.img === null &&
+                <div className="userAvatar mb-3">
+                  <i className="fas fa-user"></i>
+                </div>
+              }
+
+              {
+                (this.state.img !== null && this.state.imageChanged === false) &&
+                <div className="userAvatar mb-3">
+                  <div className="overlay">
+
+                    <i class="fas fa-eye text-primary"
+                      onClick={this.showGallery.bind(null,0)}></i>
+                    <i className="fas fa-trash text-danger ml-2"
+                      onClick={this.deleteImage}></i>
+
+                  </div>
+                  <img src={`http://localhost:8080/public/images/${this.state.login}.jpg`} alt="" />
+                </div>
+              }
+
+              {
+                (this.state.img !== null && this.state.imageChanged === true) &&
+
+                <div className="userAvatar mb-3">
+                  <img src={this.state.img} alt="" />
+                </div>
+              }
+
+
+              {/* Select image from disk */}
+              <label for='userAvatar'>
+                <h4>Zdjęcie profilowe</h4>
+              </label>
+
+              <input type="file" name="" id="file" class=""
+                onChange={this.photoChanged.bind(this, 'avatar')} />
+              {/* <label for="file">
+                <i class="fas fa-upload mr-2"></i>
+                Wybierz nowe
+              </label> */}
+              {/* ------------------------------------------------------ */}
+
+              {
+                this.state.imageChanged &&
+                <button className="btn-success form-control mt-3"
+                  onClick={this.sendImage}>
+                  Zapisz
+                  </button>
+              }
+
+              <hr className="bg-dark text-dark w-100" />
+
+              {/* Select image from disk */}
+              <label htmlFor="addPhoto">
+                <h4 className=" w-100 text-left">Album</h4>
+              </label>
+              {/* ------------------------------------------------------ */}
+
+
+              <div className="w-100 d-flex justify-content-start mt-2 trainer-photos">
+
+                {
+                  photos
+                }
+                {
+                  this.state.newPhoto !== null &&
+                  <div className="userAvatar mb-2 ml-2">
+                    <div className="overlay">
+
+                      <i className="fas fa-user text-primary"></i>
+                      <i className="fas fa-trash text-danger ml-2"></i>
+
+                    </div>
+                    <img src={this.state.newPhoto} />
+                  </div>
+                }
+
               </div>
 
-              <label for='userAvatar'>Dodaj zdjęcie</label>
-              <input type='file' name='userAvatar' />
+              {
+                this.state.newPhoto === null &&
+                <div>
+                  <input type="file" /* name="" id="newPhoto" class="" */
+                    onChange={this.photoChanged.bind(this, 'newPhoto')} />
 
-              <button className="btn-success form-control mt-3">
-                Zapisz
-            </button>
+                  {/* <label for="file" className="mt-2">
+                     <i class="fas fa-upload mr-2"></i>
+                     Dodaj...
+                  </label> */}
+                </div>
+              }
+
+
+              {
+                this.state.newPhoto !== null &&
+                <div className="btn btn-success w-25" onClick={this.sendNewPhoto}>
+                  Wyślij
+               </div>
+              }
 
             </div>
 
@@ -891,5 +1206,15 @@ class TrainerDataForm extends Component {
       </div>);
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    image: state.user.image
+  }
+}
+
+const mapDispatchToProps = { deleteImage }
+
+const TrainerDataForm = connect(mapStateToProps, mapDispatchToProps)(TrainerForm);
 
 export default TrainerDataForm;

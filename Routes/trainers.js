@@ -512,6 +512,9 @@ module.exports = (app, client) => {
 
             let res = await trainerDAO.getTrainerData(request.params.id, client)
 
+            console.log('Dane trenera: ',res);
+            
+
             if (res.response === 'success') {
                 response.send({
                     response: 'success',
@@ -708,4 +711,136 @@ module.exports = (app, client) => {
     })
 
 
+    // CHANGE AVATAR
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/avatar', async (request,response) =>{
+
+        try {
+
+            console.log('Trainer change photo',request.files);
+            let file = request.files.avatar;
+            let fileName = request.files.avatar.name;
+
+            let res = trainerDAO.changePhoto(file,fileName,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success'
+            })
+            
+        } catch (error) {
+            
+            console.log(error);
+            response.send({
+                response : 'failed'
+            })
+
+        }
+
+    })
+
+
+    // ADD NEW PHOTO
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/photo', async (request,response) =>{
+        
+        try {
+
+            // console.log('Trainer add photo...',request.files);
+
+            // Prepare data
+            let file = request.files.avatar;
+            let fileName = request.files.avatar.name;
+
+            console.log(fileName);
+            let login = fileName.split('_')[0];
+            console.log(login);
+
+            // Get trainer id
+            let res = await trainerDAO.getTrainerId(login,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            res = res.trainer_id;
+
+            // Add photo
+            res = await trainerDAO.addPhoto(file,fileName,res,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success',
+                photo_id : res.photo_id
+            })
+            
+        } catch (error) {
+            
+            console.log(error);
+
+            response.send({
+                response : 'failed'
+            })
+
+        }
+
+    })
+
+    // DELETE AVATAR
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/photo/delete', async (request, response) => {
+
+        try {
+
+            let res = trainerDAO.deleteAvatar(request.body.login,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success'
+            })
+
+        } catch (error) {
+            console.log(error);
+
+            response.send({
+                reponse: 'failed'
+            })
+        }
+
+    });
+
+    // DELETE PHOTO
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/album/photo/delete', async (request, response) => {
+
+        try {
+
+            let res = trainerDAO.deletePhoto(request.body.photo_name,client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success'
+            })
+
+        } catch (error) {
+            console.log(error);
+
+            response.send({
+                reponse: 'failed'
+            })
+        }
+
+    });
 };

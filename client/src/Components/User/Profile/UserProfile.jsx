@@ -45,8 +45,16 @@ class UserProfile extends Component {
                     <div className="userPersonalData animated fadeIn">
                         <div className="profileImage">
 
+                        {
+                            data.image !== null &&
+                           <img className="" src={`http://localhost:8080/public/images/${data.login}.jpg`} alt=""/> 
+                        }
+
+                        {
+                            data.image === null &&
                             <i className="fas fa-user"> </i>
-                            {/* <img className="" src={require(`../../../images/UserProfiles/${data.login}.jpg`)} alt=""/> */}
+                        }
+                         
                         </div>
 
 

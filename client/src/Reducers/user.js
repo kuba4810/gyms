@@ -6,7 +6,7 @@ export const user = (state = {
     messageCount: '',
     notificationsCount: '',
     type: '',
-    interval: null /* Update msg and ntf count in every second */
+    image : null
 }, action) => {
 
     switch (action.type) {
@@ -18,7 +18,8 @@ export const user = (state = {
                 emailConfirmed: action.data.emailConfirmed,
                 logedNick: action.data.logedNick,
                 messageCount: action.data.messageCount,
-                notificationsCount: action.data.notificationsCount
+                notificationsCount: action.data.notificationsCount,
+                image : action.data.image
             })
 
             return newState;
@@ -30,7 +31,8 @@ export const user = (state = {
                 logedNick: '',
                 emailConfirmed: false,
                 messageCount: '',
-                notificationsCount: ''
+                notificationsCount: '',
+                image : null
             })
             return newState;
 
@@ -41,7 +43,13 @@ export const user = (state = {
                 messageCount: action.data.msg,
                 notificationsCount: action.data.ntf,
             })
-
+        
+        // Delete image
+        case 'DELETE_IMAGE' :
+            return Object.assign({},state,{
+                image : null
+            })
+            
         default:
             return state;
     }

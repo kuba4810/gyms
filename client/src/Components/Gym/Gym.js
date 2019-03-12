@@ -46,7 +46,7 @@ class GymContainer extends React.Component{
 
                     let res = await getTrainerData(localStorage.getItem('loggedId'));
                     console.log('Dane użytkownika z bazy : ',res)
-                    image = res.data.image;
+                    image = res.data.trainer.image;
 
                 }
                 

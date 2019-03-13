@@ -476,6 +476,9 @@
     position: absolute;
     z-index : 100000;
     border-radius: 15px;
+    width:100px;
+    text-align: center;
+    justify-content: center;
 
 }
 

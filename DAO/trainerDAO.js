@@ -211,7 +211,7 @@ async function getTrainerData(trainer_id, connection) {
         trainer: null,
         packages: [],
         skills: [],
-        photos : []
+        photos: []
     }
 
     try {
@@ -249,18 +249,18 @@ async function getTrainerData(trainer_id, connection) {
         })
 
         return {
-            response : 'success',
-            data : responseData
+            response: 'success',
+            data: responseData
         }
 
 
     } catch (error) {
 
         console.log(error);
-        
+
 
         return {
-            response : 'failed'
+            response: 'failed'
         }
     }
 
@@ -270,10 +270,10 @@ async function getTrainerData(trainer_id, connection) {
 // UPDATE TRAINER PROFILE
 // ----------------------------------------------------------------------------
 
-async function updateProfile(trainer,connection){
+async function updateProfile(trainer, connection) {
 
     try {
-        
+
         // Prepare query
         let query = `UPDATE trainers.trainer SET
                      first_name = $1,
@@ -286,22 +286,23 @@ async function updateProfile(trainer,connection){
                      WHERE trainer_id = $8 returning *`
 
         let values = [trainer.first_name, trainer.last_name, trainer.city, trainer.voivodeship,
-                     trainer.mail, trainer.passw, trainer.login, trainer.trainer_id] 
+            trainer.mail, trainer.passw, trainer.login, trainer.trainer_id
+        ]
 
         // Execute query
-        let res = await connection.query(query,values);
+        let res = await connection.query(query, values);
 
         return {
-            response : 'success'
+            response: 'success'
         }
     } catch (error) {
-        
+
         console.log(error);
 
         return {
-            response : 'failed'
+            response: 'failed'
         }
-        
+
 
     }
 
@@ -311,63 +312,63 @@ async function updateProfile(trainer,connection){
 // ADD PACKAGE
 // ----------------------------------------------------------------------------
 
-async function addPackage(package,connection){
+async function addPackage(package, connection) {
 
     try {
-        
+
         // Prepare query
         let query = `INSERT INTO trainers.trainer_package(
             trainer_id, name, duration, price)
            VALUES ( $1,$2,$3,$4) returning *;`
-        
+
         //  Prepare values
-        let values = [package.trainer_id,package.name,package.duration,package.price]
+        let values = [package.trainer_id, package.name, package.duration, package.price]
 
         // Execute query
-        let res = await connection.query(query,values);
+        let res = await connection.query(query, values);
 
         return {
-            response : 'success',
-            package_id : res.rows[0].package_id
+            response: 'success',
+            package_id: res.rows[0].package_id
         }
 
     } catch (error) {
-        
+
         console.log(error);
         return {
-            response : 'failed'
+            response: 'failed'
         }
-        
+
     }
 
 }
 
 // EDIT PACKAGE
 // ----------------------------------------------------------------------------
-async function editPackage(package,connection){
+async function editPackage(package, connection) {
 
     try {
 
-       // Prepare query
-       let query = `UPDATE trainers.trainer_package
+        // Prepare query
+        let query = `UPDATE trainers.trainer_package
        SET  name=$1, duration=$2, price=$3
        WHERE package_id = $4;`
-       
-       //  Prepare values
-       let values = [package.name,package.duration,package.price, package.package_id,]
 
-       // Execute query
-       let res = await connection.query(query,values);
+        //  Prepare values
+        let values = [package.name, package.duration, package.price, package.package_id, ]
 
-       return {
-           response : 'success'
-       }
-        
+        // Execute query
+        let res = await connection.query(query, values);
+
+        return {
+            response: 'success'
+        }
+
     } catch (error) {
-        
+
         console.log(error);
         return {
-            response : 'failed'
+            response: 'failed'
         }
 
     }
@@ -376,22 +377,22 @@ async function editPackage(package,connection){
 
 // DELETE PACKAGE
 // ----------------------------------------------------------------------------
-async function deletePackage(id,connection){
+async function deletePackage(id, connection) {
 
     try {
-        
+
         let res = await connection.query(`DELETE FROM trainers.trainer_package
-                                    WHERE package_id = $1`,[id]);   
+                                    WHERE package_id = $1`, [id]);
 
         return {
-            response : 'success'
+            response: 'success'
         }
 
     } catch (error) {
-        
+
         console.log(error);
         return {
-            response : 'failed'
+            response: 'failed'
         }
 
     }
@@ -399,42 +400,42 @@ async function deletePackage(id,connection){
 
 // ADD SKILL
 // ----------------------------------------------------------------------------
-async function addSkill(skill,connection){
+async function addSkill(skill, connection) {
 
     try {
 
         let res;
         let skill_id;
 
-        if(skill.id){
-        
+        if (skill.id) {
+
             res = await connection.query(`INSERT INTO trainers.trainer_skill(
                 skill_id, trainer_id, description)
-                VALUES ($1,$2,$3);`,[skill.skill_id,skill.triner_id,skill.description]);
-        }else {
-            res  = await connection.query(`INSERT INTO trainers.skill (name) 
-            VALUES($1) returning *`,[skill.name])
+                VALUES ($1,$2,$3);`, [skill.skill_id, skill.triner_id, skill.description]);
+        } else {
+            res = await connection.query(`INSERT INTO trainers.skill (name) 
+            VALUES($1) returning *`, [skill.name])
 
             skill_id = res.rows[0].skill_id;
 
             res = await connection.query(`INSERT INTO trainers.trainer_skill(
                 skill_id, trainer_id, description)
-                VALUES ($1,$2,$3);`,[res.rows[0].skill_id,skill.trainer_id,skill.description]);
-            
+                VALUES ($1,$2,$3);`, [res.rows[0].skill_id, skill.trainer_id, skill.description]);
+
         }
 
         return {
-            response : 'success',
-            skill_id : skill_id
+            response: 'success',
+            skill_id: skill_id
         }
-        
+
     } catch (error) {
-        
+
         console.log(error)
         return {
-            response : 'failed'
+            response: 'failed'
         };
-        
+
 
     }
 
@@ -442,95 +443,95 @@ async function addSkill(skill,connection){
 
 // EDIT SKILL
 // ----------------------------------------------------------------------------
-async function editSkill(skill,connection){
+async function editSkill(skill, connection) {
 
     console.log('DAO : ', skill);
-    
+
 
     try {
 
         let res = await connection.query(`UPDATE trainers.trainer_skill
         SET  description=$1
-        WHERE skill_id = $2 ;`,[skill.description,skill.skill_id]);
+        WHERE skill_id = $2 ;`, [skill.description, skill.skill_id]);
 
         return {
-            response : 'success'
+            response: 'success'
         }
-        
+
     } catch (error) {
-        
-        
+
+
 
         console.log(error)
         return {
-            response : 'failed'
+            response: 'failed'
         };
-        
+
 
     }
-    
+
 }
 
 // DELETE SKILL
 // ----------------------------------------------------------------------------
-async function deleteSkill(id,connection){
+async function deleteSkill(id, connection) {
 
     console.log(id);
-    
+
 
     try {
-        
+
 
         let res = await connection.query(`DELETE FROM trainers.trainer_skill
-        WHERE skill_id = $1`,[id]);
+        WHERE skill_id = $1`, [id]);
 
         return {
-            response : 'success'
+            response: 'success'
         }
     } catch (error) {
-        
+
         console.log(error)
         return {
-            response : 'failed'
+            response: 'failed'
         };
-        
+
 
     }
-    
+
 }
 
 // CHANGE PHOTO
 // ----------------------------------------------------------------------------
-async function changePhoto(photo,login,connection){
+async function changePhoto(photo, login, connection) {
 
     try {
 
         // Move image to images folder
         await photo.mv(`./public/images/${login}.jpg`,
-        (err) => {
-            if (err) {
-                throw err;
-               }               
-        });
+            (err) => {
+                if (err) {
+                    throw err;
+                }
+            });
 
         // Update table trainer
         let res = await connection.query(`UPDATE trainers.trainer
                          SET image = $1
                          WHERE login = $2`,
-                         [login,login]);
-        
+            [login, login]);
+
         return {
-            response : 'success'
+            response: 'success'
         }
 
-        
+
     } catch (error) {
-        
+
         console.log(error);
-        
+
 
         return {
-            response : 'failed'
+            response: 'failed'
         }
 
     }
@@ -539,34 +540,51 @@ async function changePhoto(photo,login,connection){
 
 // ADD PHOTO
 // ----------------------------------------------------------------------------
-async function addPhoto(photo,name,id,connection){
+async function addPhoto(photo, name, id, connection) {
 
     try {
 
-        // Move photo to folder public/images
-        await photo.mv(`./public/images/${name}.jpg`,
-        (err) => {
-            if (err) {
-                throw err;
-               }               
-        });
-
         // Update table trainer
-        let res = await connection.query(`INSERT INTO trainers.trainer_photo(
-            trainer_id, photo_name)
-            VALUES ($1, $2) returning *;`,[id,name])
-        
-        return {
-            response : 'success',
-            photo_id : res.rows[0].photo_id
+        let res = await connection.query(`SELECT  photo_name
+         FROM trainers.trainer_photo  where trainer_id = $1  
+         order by photo_id DESC LIMIT 1 `,[id]);
+
+
+        let photo_count = 0;
+        if(res.rows.length === 0){
+            photo_count = 0;
+        } else {
+            photo_count = parseInt(res.rows[0].photo_name.split('_')[1]);
+
         }
-        
+
+        const photo_name = `${name.split('_')[0]}_${photo_count+1}`
+
+        res = await connection.query(`INSERT INTO trainers.trainer_photo(
+            trainer_id, photo_name)
+            VALUES ($1, $2) returning *;`, [id, photo_name])
+
+        // Move photo to folder public/images
+        await photo.mv(`./public/images/${photo_name}.jpg`,
+            (err) => {
+                if (err) {
+                    throw err;
+                }
+            });
+
+
+
+        return {
+            response: 'success',
+            photo_id: res.rows[0].photo_id
+        }
+
     } catch (error) {
-        
+
         console.log(error);
 
         return {
-            response : 'failed'
+            response: 'failed'
         }
 
     }
@@ -575,23 +593,23 @@ async function addPhoto(photo,name,id,connection){
 
 // GET TRAINER ID
 // ----------------------------------------------------------------------------
-async function getTrainerId(login,connection){
+async function getTrainerId(login, connection) {
 
     try {
 
         let res = await connection.query(`SELECT trainer_id FROM trainers.trainer
-        WHERE login = $1`,[login]);
+        WHERE login = $1`, [login]);
 
         return {
-            response : 'success',
-            trainer_id : res.rows[0].trainer_id
+            response: 'success',
+            trainer_id: res.rows[0].trainer_id
         }
-        
+
     } catch (error) {
-        
+
         console.log(error);
         return {
-            response : 'failed'
+            response: 'failed'
         }
 
     }
@@ -615,7 +633,7 @@ async function deleteAvatar(login, connection) {
 
         fs.access(filePath, async error => {
             if (!error) {
-                await fs.unlink(filePath,function(error){
+                await fs.unlink(filePath, function (error) {
                     console.log(error);
                 });
             } else {
@@ -625,7 +643,7 @@ async function deleteAvatar(login, connection) {
                 }
             }
         });
-        
+
         return {
             response: 'success'
         }
@@ -642,7 +660,7 @@ async function deleteAvatar(login, connection) {
 
 // DELETE PHOTO
 // ----------------------------------------------------------------------------
-async function deletePhoto(photo_name,connection){
+async function deletePhoto(photo_name, connection) {
 
     try {
 
@@ -652,22 +670,22 @@ async function deletePhoto(photo_name,connection){
 
         let res = connection.query(query, values);
 
-         // Delete file from server
-         const filePath = `./public/images/${photo_name}.jpg`;
+        // Delete file from server
+        const filePath = `./public/images/${photo_name}.jpg`;
 
-         fs.access(filePath, async error => {
-             if (!error) {
-                 await fs.unlink(filePath,function(error){
-                     console.log(error);
-                 });
-             } else {
-                 console.log(error);
-                 return {
-                     response: 'failed'
-                 }
-             }
-         });
-        
+        fs.access(filePath, async error => {
+            if (!error) {
+                await fs.unlink(filePath, function (error) {
+                    console.log(error);
+                });
+            } else {
+                console.log(error);
+                return {
+                    response: 'failed'
+                }
+            }
+        });
+
         return {
             response: 'success'
         }
@@ -693,18 +711,18 @@ module.exports = {
     generateVerificationCode: generateVerificationCode,
     checkLogin: checkLogin,
     checkMail: checkMail,
-    getTrainerData : getTrainerData,
-    updateProfile : updateProfile,
-    addPackage : addPackage,
-    editPackage : editPackage,
-    deletePackage : deletePackage,
-    addSKill : addSkill,
-    editSkill : editSkill,
-    deleteSkill : deleteSkill,
-    changePhoto : changePhoto,
-    addPhoto : addPhoto,
-    deleteAvatar : deleteAvatar,
-    getTrainerId : getTrainerId,
-    deletePhoto : deletePhoto
+    getTrainerData: getTrainerData,
+    updateProfile: updateProfile,
+    addPackage: addPackage,
+    editPackage: editPackage,
+    deletePackage: deletePackage,
+    addSKill: addSkill,
+    editSkill: editSkill,
+    deleteSkill: deleteSkill,
+    changePhoto: changePhoto,
+    addPhoto: addPhoto,
+    deleteAvatar: deleteAvatar,
+    getTrainerId: getTrainerId,
+    deletePhoto: deletePhoto
 
 }

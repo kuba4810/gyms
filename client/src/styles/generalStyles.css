@@ -106,10 +106,10 @@
 }
 
 .userAvatar .overlay i{
-    font-size: 25px;
-    
+    font-size: 25px;  
 
 }
+
 
 
 .inputfile {
@@ -144,4 +144,19 @@
 .inputfile:focus + label {
 	outline: 1px dotted #000;
 	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.gymPhoto{
+    width:150px;
+    height: 150px;
+
+}
+
+.gymPhoto img{
+    width:100%;
+    height:100%;
+}
+
+.gymPhoto, .gymPhoto img{
+    border-radius: 10px;
 }

@@ -156,18 +156,17 @@ router.post('/api/gym', async (request, response) => {
     // Początek łańcucha zapytań
     client.query(`SELECT email from kuba.gyms WHERE email='${data.email}'`)
         .then(res => {
-            // console.log("Sprawdzam czy mail zajęty")
             if (res.rows.length > 0) {
-                response.send({
-                    response: 'failed',
-                    message: 'Podany email jest już zajęty !'
+                return Promise.reject({
+                    myMessage: 'Email zajęty !'
                 })
             } else {
                 // Sprawdzenie czy siłownia już istnieje
+                console.log('#Wysyłam Sprawdzanie siłowni')
                 return client.query(ckeckGymQuery)
             }
         }).then(res => {
-            // console.log("Sprawdzam czy siłownia juz istnieje")
+            console.log("Sprawdzam czy siłownia juz istnieje", res)
             if (res.rows.length > 0) {
                 response.json({
                     response: 'failed',
@@ -196,17 +195,6 @@ router.post('/api/gym', async (request, response) => {
             return Promise.all(data.packages.map(package => (client.query(`INSERT INTO kuba.gym_packages
             (gym_id,package_name,description,prize) VALUES(${gym_id},'${package.name}','${package.period}','${package.price}')`))))
         })
-        // .then(() => {
-        //     console.log('Dodaje zdjęcia na serwer...');
-        //     let query = 'INSERT INTO kuba.gym_photos (gym_id,url) VALUES ($1,$2)'
-
-        //     return Promise.all(
-        //         data.pictures.map(
-        //             pic => (
-        //                 client.query(query, [gym_id, pic])
-
-        //             )))
-        // })
         .then(() => {
             console.log("Udało się, siłownia dodana !");
             response.json({
@@ -216,11 +204,20 @@ router.post('/api/gym', async (request, response) => {
             })
         })
         .catch(err => {
-            console.log(err);
-            response.json({
-                response: 'failed',
-                message: 'Wystapił błąd, spróbuj ponownie później !'
-            })
+            console.log('Wystąpił błąd ',err);
+
+            if (err.myMessage) {
+                response.send({
+                    response: 'failed',
+                    message: err.myMessage
+                })
+            } else {
+                response.json({
+                    response: 'failed',
+                    message: 'Wystapił błąd, spróbuj ponownie później !'
+                })
+            }
+
 
         });
 });
@@ -365,18 +362,28 @@ router.post('/api/gym/comment', (request, response) => {
 router.post('/api/gym/images', async (request, response) => {
 
     try {
+        
+        let images = [];        
+
+        if(typeof(request.files.image.length)=== 'undefined'){
+            images.push(request.files.image);
+        } else {
+            images = [...request.files.image]
+        }
 
         let files = [];
 
-        for (let index = 0; index < request.files.image.length; index++) {
-            const el = request.files.image[index];
+        for (let index = 0; index < images.length; index++) {
+            const el = images[index];
 
-            files.push({
+            await files.push({
                 photo: el,
                 gym_data: el.name
             })
 
         }
+
+        console.log('Utworzone zdjęcia :',files);
 
         let res = await gymDAO.savePhotos(files, client);
 
@@ -385,7 +392,7 @@ router.post('/api/gym/images', async (request, response) => {
         }
 
         response.send({
-            response : 'success'
+            response: 'success'
         })
 
 

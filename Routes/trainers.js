@@ -755,12 +755,12 @@ module.exports = (app, client) => {
             let file = request.files.avatar;
             let fileName = request.files.avatar.name;
 
-            console.log(fileName);
-            let login = fileName.split('_')[0];
-            console.log(login);
+            // console.log(fileName);
+            // let login = fileName.split('_')[0];
+            // console.log(login);
 
             // Get trainer id
-            let res = await trainerDAO.getTrainerId(login,client);
+            let res = await trainerDAO.getTrainerId(fileName,client);
 
             if(res.response === 'failed'){
                 throw 'failed'

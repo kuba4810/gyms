@@ -26,14 +26,14 @@ class NewGym extends React.Component {
                 description: ''
             },
             formValid: false,
-            name: '',
-            city: '',
-            street: '',
+            name: 'bbb',
+            city: 'bbb',
+            street: 'bbb',
             post_code: '',
             phone_number: '',
             landline_number: '',
-            mail: '',
-            description: '',
+            mail: 'bbb@op.pl',
+            description: 'bbb',
             monO: '',
             tueO: '',
             wedO: '',
@@ -302,7 +302,9 @@ class NewGym extends React.Component {
 
     }
 
-    handleSubmit = async () => {
+    handleSubmit = async (e) => {
+
+        e.preventDefault();
         // Pobierz state   
         let s = this.state;
         let confirmResponse;
@@ -376,8 +378,18 @@ class NewGym extends React.Component {
 
                 let res = await createGym(data);
 
+                console.log('Odpowiedź z serwera : ',res)
+
                 if (res.response === 'failed') {
-                    throw 'failed';
+                    if(res.message){
+                        throw {
+                            myMessage : res.message
+                        }
+                    } else {
+                        throw {
+                            type : 'failed'
+                        }
+                    }
                 }
 
 
@@ -386,44 +398,54 @@ class NewGym extends React.Component {
                 res = await this.sendPhotos(gym_id,s.name);
 
                 if(res.response === 'failed'){
-                    throw 'failed'
+                    throw {
+                        type : 'failed'
+                    }
                 }
 
 
-                let formatedName = s.name.split(' ').join('-');
-                history.push(`/silownie/view/${gym_id}/${formatedName}`)
+                // let formatedName = s.name.split(' ').join('-');
+                // history.push(`/silownie/view/${gym_id}/${formatedName}`)
 
                 
 
             } catch (error) {
                 console.log(error);
-                alert('Wystąpił błąd !');
+
+                if(error.myMessage){
+                    alert(error.myMessage);
+                } else {
+                    alert('Wystąpił błąd, spróbuj ponownie później !')
+                }
+                
             }
 
-            fetch('http://localhost:8080/api/gym', {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "same-origin",
+            // fetch('http://localhost:8080/api/gym', {
+            //     method: "POST",
+            //     mode: "cors",
+            //     cache: "no-cache",
+            //     credentials: "same-origin",
 
-                body: JSON.stringify(data),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(res => res.json())
-                .then(res => {
-                    if (res.response !== 'success') {
-                        alert('Wystąpił błąd !')
-                    }
-                    else {
-                        gym_id = res.gym_id;
-                    }
-                })
+            //     body: JSON.stringify(data),
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     }
+            // }).then(res => res.json())
+            //     .then(res => {
 
-            .then(() => {
-                let formatedName = s.name.split(' ').join('-');
-                history.push(`/silownie/view/${gym_id}/${formatedName}`)
-            })
+            //         console.log('Odpowiedź z serwera : ',res)
+                    // if (res.response !== 'success') {
+                    //     alert('Wystąpił błąd !')
+                    // }
+                    // else {
+                    //     gym_id = res.gym_id;
+                    // }
+            //     })
+
+            // .then(() => {
+                // let formatedName = s.name.split(' ').join('-');
+                // history.push(`/silownie/view/${gym_id}/${formatedName}`)
+            // })
 
         }
     }

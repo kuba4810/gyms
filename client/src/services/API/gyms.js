@@ -7,8 +7,16 @@ export const createGym = async (data) => {
 
         let res = await axios.post(URL + 'gym',data);
 
+        console.log('API odpowiedź : ',res.data);
+
         if(res.data.response === 'failed'){
-            throw 'failed'
+            if(res.data.message){
+                throw {
+                    myMessage : res.data.message
+                }
+            } else {
+                throw 'failed'
+            }
         }
 
         return{
@@ -19,10 +27,16 @@ export const createGym = async (data) => {
         
     } catch (error) {
         
-        console.log(error);
-
-        return {
-            response : 'failed'
+        console.log('API błąd: ',error);
+        if(error.myMessage){
+            return {
+                response : 'failed',
+                message : error.myMessage
+            }
+        } else {
+            return {
+                response : 'failed'
+            }
         }
 
     }

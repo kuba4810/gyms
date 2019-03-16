@@ -188,6 +188,12 @@ class GymDetailsCont extends React.Component {
           <i class="fas fa-check" /> {eq}{" "}
         </div>
       ));
+
+      photos = this.props.gymDetails.gym.photos.map( photo => (
+        <div className="gymPhoto d-inline-block mr-3">
+          <img src={`http://localhost:8080/public/images/${photo.url}.jpg`} alt=""/>
+        </div>
+      ))
       
       // Opinie
       // comments = (
@@ -299,7 +305,9 @@ class GymDetailsCont extends React.Component {
   <div className="card mb-3 col-6 text-white bg-dark">
   <div className="card-body">
     <h5 className="card-title">Zdjęcia</h5>
-    <p className="card-text">{this.props.gymDetails.gym.gymData.gym_name}</p>
+    {/* <p className="card-text">{this.props.gymDetails.gym.gymData.gym_name}</p> */}
+
+    {photos}
 
   </div>
   </div>

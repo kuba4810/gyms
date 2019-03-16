@@ -127,7 +127,7 @@ class TrainerForm extends Component {
   sendNewPhoto = async (e) => {
     e.preventDefault();
 
-    e.preventDefault();
+  
 
     const login = localStorage.getItem('loggedNick');
     let fileName;
@@ -142,7 +142,7 @@ class TrainerForm extends Component {
 
     const formData = new FormData();
 
-    formData.append('avatar', this.state.photo, fileName);
+    formData.append('avatar', this.state.photo, login);
 
 
     let res = await addNewPhoto(formData);

@@ -544,28 +544,37 @@ async function addPhoto(photo, name, id, connection) {
 
     try {
 
-        // Update table trainer
-        let res = await connection.query(`SELECT  photo_name
-         FROM trainers.trainer_photo  where trainer_id = $1  
-         order by photo_id DESC LIMIT 1 `,[id]);
+        let fileName;
+        let res;
+        let isNameCorrect = false;
 
 
-        let photo_count = 0;
-        if(res.rows.length === 0){
-            photo_count = 0;
-        } else {
-            photo_count = parseInt(res.rows[0].photo_name.split('_')[1]);
+        while(isNameCorrect === false){
+
+            fileName = await name + '_' + randomstring.generate(15);
+
+            console.log('Filename to ',fileName);
+
+
+            res = await connection.query(`select photo_name from trainers.trainer_photo
+            where photo_name = $1`,[fileName]);
+
+            if(res.rows.length > 0){
+                isNameCorrect = false;
+            } else {
+                isNameCorrect = true;
+            }
 
         }
 
-        const photo_name = `${name.split('_')[0]}_${photo_count+1}`
+        console.log('Wygenerowana nazwa zdjęcia : ',fileName);
 
         res = await connection.query(`INSERT INTO trainers.trainer_photo(
             trainer_id, photo_name)
-            VALUES ($1, $2) returning *;`, [id, photo_name])
+            VALUES ($1, $2) returning *;`, [id, fileName])
 
         // Move photo to folder public/images
-        await photo.mv(`./public/images/${photo_name}.jpg`,
+        await photo.mv(`./public/images/${fileName}.jpg`,
             (err) => {
                 if (err) {
                     throw err;

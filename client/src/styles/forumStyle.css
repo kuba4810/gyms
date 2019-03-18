@@ -3,18 +3,19 @@
     outline:solid 1px red !important;
 }
 */
-hr{
+hr {
     border-color: cornsilk;
 }
+
 :root {
-    --question-main-color:  #006600; 
+    --question-main-color: #006600;
 }
 
 body {
     padding: 0;
     /* background-image: url("../images/forumWallpaper.jpg"); */
-     background: #1B1B1B;
-     /*
+    background: #1B1B1B;
+    /*
 background: -moz-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(28,28,28,1) 91%, rgba(19,19,19,1) 100%);
 background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(76,76,76,1)), color-stop(51%, rgba(0,0,0,1)), color-stop(60%, rgba(17,17,17,1)), color-stop(91%, rgba(28,28,28,1)), color-stop(100%, rgba(19,19,19,1)));
 background: -webkit-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(0,0,0,1) 51%, rgba(17,17,17,1) 60%, rgba(28,28,28,1) 91%, rgba(19,19,19,1) 100%);
@@ -30,13 +31,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', end
     /* font-family: 'Modern Antiqua', cursive; */
 }
 
-.forumContainer{
-   
+.forumContainer {
+
     min-height: 120vh;
-    height:auto;
+    height: auto;
     padding-bottom: 100px;
-    
+
 }
+
 .cover {
     position: absolute;
     width: 100%;
@@ -49,7 +51,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', end
 
 body * {
     box-sizing: border-box;
-    
+
 }
 
 a {
@@ -58,7 +60,7 @@ a {
 }
 
 
-textarea{
+textarea {
     /* background-color:#262626 !important; */
 }
 
@@ -78,17 +80,17 @@ textarea{
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    color:black;
+    color: black;
 
 
 }
 
-.forumHeader a{
-    color:white;
+.forumHeader a {
+    color: white;
 }
 
-.forumHeader .menu a:hover{
-    color:white;
+.forumHeader .menu a:hover {
+    color: white;
 }
 
 .logo {
@@ -142,9 +144,9 @@ textarea{
 }
 
 .loginUser .userInfo {
-    position:absolute;
-    top:0;
-    left:0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 
@@ -224,8 +226,8 @@ textarea{
 
 
 .forumMain {
-    width:90%;
-    display:flex;
+    width: 90%;
+    display: flex;
     justify-content: space-around;
     font-family: 'Modern Antiqua', cursive;
     margin: 0 auto;
@@ -235,8 +237,8 @@ textarea{
     /*padding:10px;*/
 }
 
-.forumMain a:hover{
-    color:white;
+.forumMain a:hover {
+    color: white;
 }
 
 
@@ -248,7 +250,7 @@ textarea{
     top: 100px;
     margin: 0;
     padding: 0;
-   /*  animation-name: fadeIn;
+    /*  animation-name: fadeIn;
     animation-duration: .1s;
     animation-delay: .5s; */
 }
@@ -272,9 +274,10 @@ textarea{
 
 }
 
-.topicsMenu a{
-    color:white;
+.topicsMenu a {
+    color: white;
 }
+
 .topic {
     display: flex;
     justify-content: center;
@@ -289,18 +292,19 @@ textarea{
     /*border-left: 2px solid white;*/
 }
 
-.topic a{
-    display:flex;
-    width:100%;
-    height:100%;
-     justify-content: center;
+.topic a {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
     align-items: center;
 }
-.topic a:hover{
-    color:white;
+
+.topic a:hover {
+    color: white;
 }
 
-.topicActive a:hover{
+.topicActive a:hover {
     color: rgb(255, 51, 51);
 }
 
@@ -308,9 +312,10 @@ textarea{
     color: rgb(255, 51, 51) !important;
     background-color: white;
 }
+
 .topicActive a {
-    
-    color: rgb(255, 51, 51)!important;
+
+    color: rgb(255, 51, 51) !important;
 
 }
 
@@ -343,7 +348,7 @@ textarea{
     background-color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0.8);
     padding: 30px;
-    
+
 
 }
 
@@ -429,34 +434,37 @@ textarea{
     cursor: pointer;
     border: 2px solid #262626;
 }
-.askQuestion a{
+
+.askQuestion a {
     /* display: flex;
     justify-content: center;
     align-items: center;
      */
 }
-.askQuestion a span{
+
+.askQuestion a span {
     cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
-    padding-right:15px;
+    padding-right: 15px;
 
 }
-.askQuestion a span:after{
+
+.askQuestion a span:after {
     content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+
 }
 
-.askQuestion a:hover span{
-    padding-right: 30px;    
+.askQuestion a:hover span {
+    padding-right: 30px;
 }
 
-.askQuestion a:hover span:after{
+.askQuestion a:hover span:after {
     opacity: 1;
     right: 0;
 }
@@ -497,7 +505,7 @@ textarea{
 
 .post {
     display: grid;
-    grid-template-areas: 'stat topic topic topic topic topic topic ' 'stat  data data data data data data ';
+    grid-template-areas: 'stat topic topic topic topic topic topic ''stat  data data data data data data ';
     grid-gap: 10px;
     width: 100%;
     background-color: #333333;
@@ -517,12 +525,14 @@ textarea{
     /* text-align: center;*/
 }
 
-.post a{
+.post a {
     color: var(--question-main-color) !important;
 }
 
 .stats {
-    background-color:/*forestgreen*/var(--question-main-color) ;
+    background-color:
+        /*forestgreen*/
+        var(--question-main-color);
     grid-area: stat;
     text-align: center;
     padding: 0 !important;
@@ -535,10 +545,12 @@ textarea{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50% !important;
+    width: 50% ;
     height: 100%;
     background-color: cornsilk;
-    color: /*green*/ var(--question-main-color)  !important;
+    color:
+        /*green*/
+        var(--question-main-color) !important;
     font-size: 20px;
 }
 
@@ -563,7 +575,9 @@ textarea{
 .postTopic {
     /* background-color:orangered;*/
     grid-area: topic;
-    color: /*forestgreen*/ var(--question-main-color)  !important;
+    color:
+        /*forestgreen*/
+        var(--question-main-color) !important;
     cursor: pointer;
     transition: .4s ease;
     font-size: 30px;
@@ -734,8 +748,8 @@ footer {
     height: 50px;
     font-size: 40px;
     padding: 5px;
-    display:flex;
-    
+    display: flex;
+
     background-color: rgb(255, 41, 41);
     color: white;
     border-radius: 5px;
@@ -757,7 +771,7 @@ footer {
 
 .post a:hover {
     text-decoration: underline;
-    color:green;
+    color: green;
 }
 
 /*----------------------------------------------------------------*/
@@ -809,9 +823,9 @@ footer {
     margin: 0;
     font-size: 20px;
     cursor: pointer;
-    border: 1px solid cornsilk; 
+    border: 1px solid cornsilk;
     /* border-top:none; */
-    animation-duration:.3s !important;
+    animation-duration: .3s !important;
 }
 
 .userOptionsList li a {
@@ -823,8 +837,8 @@ footer {
     height: 100%;
 }
 
-.userOptionsList li span {  
-    margin-left:10px;
+.userOptionsList li span {
+    margin-left: 10px;
 }
 
 .logOut:hover {
@@ -834,7 +848,7 @@ footer {
 .userOptionsList li {
     padding: 10px;
     /* border-bottom: 1px solid cornsilk; */
-    
+
     text-align: center;
 }
 
@@ -880,17 +894,17 @@ footer {
 .answerQuestionDiv {
     width: 90%;
     overflow: hidden;
-    max-height:auto;
+    max-height: auto;
     margin: 10px auto;
     transition: .5s;
-    -webkit-transition:- .5s;
-       -moz-transition:  .5s;
-        -ms-transition:  .5s;
+    -webkit-transition: - .5s;
+    -moz-transition: .5s;
+    -ms-transition: .5s;
 }
 
-.ansInvisible{
-    max-height:0;
-   
+.ansInvisible {
+    max-height: 0;
+
 }
 
 
@@ -898,7 +912,7 @@ footer {
 .answerQuestionDiv textarea {
     background-color: white;
     width: 100%;
-    color:white;
+    color: white;
     font-size: 20px;
     z-index: 1000000000000000;
 
@@ -970,12 +984,13 @@ ul {
     margin-top: 20px;
 }
 
-.userPersonalData li, .userForumDataList li{
+.userPersonalData li,
+.userForumDataList li {
     border-bottom: 1px solid grey;
 }
 
 li {
-   
+
     padding: 15px;
 
 
@@ -1008,13 +1023,13 @@ li:last-child {
 
 }
 
-.profileImage img{
+.profileImage img {
     width: 100px;
     height: 100px;
     /* border-radius : 50%; */
-    position:relative;
-    top:10px;
-    left : 10px;
+    position: relative;
+    top: 10px;
+    left: 10px;
 }
 
 
@@ -1029,11 +1044,11 @@ li:last-child {
     background-color: forestgreen;
     font-size: 20px;
     display: block;
-   
+
 }
 
-.editProfile a{
-    color:cornsilk;
+.editProfile a {
+    color: cornsilk;
 }
 
 .editProfile:hover {
@@ -1127,7 +1142,7 @@ li:last-child {
     border: 2px solid rgb(255, 51, 51);
 }
 
-.messageData .close  .close:hover {
+.messageData .close .close:hover {
     color: white;
     background-color: rgb(255, 51, 51);
 
@@ -1144,12 +1159,12 @@ li:last-child {
 
 }
 
-.visible{
+.visible {
     display: block;
 }
 
-.invisible{
-    display:none;
+.invisible {
+    display: none;
 }
 
 
@@ -1163,7 +1178,7 @@ li:last-child {
     padding: 20px;
     border-radius: 5px;
     position: relative;
-    top:10%;
+    top: 10%;
     animation-duration: .5s !important;
 
 }
@@ -1179,6 +1194,7 @@ li:last-child {
     from {
         -webkit-transform: scale(0)
     }
+
     to {
         -webkit-transform: scale(1)
     }
@@ -1188,6 +1204,7 @@ li:last-child {
     from {
         transform: scale(0)
     }
+
     to {
         transform: scale(1)
     }
@@ -1274,6 +1291,7 @@ span.psw {
         display: block;
         float: none;
     }
+
     .cancelbtn {
         width: 100%;
     }
@@ -1307,7 +1325,7 @@ span.psw {
     grid-template-columns: auto;
     grid-gap: 20px;
     align-items: center;
-   
+
 }
 
 
@@ -1345,15 +1363,15 @@ span.psw {
     padding: 0 15px;
 }
 
-.postContentTopic i{
-    right : 10px;
-    top:10px;
-    transition : .3s ease;
-    cursor : pointer;
+.postContentTopic i {
+    right: 10px;
+    top: 10px;
+    transition: .3s ease;
+    cursor: pointer;
 }
 
-.postContentTopic i:hover{
-    color : cornsilk !important;
+.postContentTopic i:hover {
+    color: cornsilk !important;
 }
 
 .postContentTopic a {
@@ -1387,15 +1405,16 @@ span.psw {
 
 }
 
-.userAvatar img{
-    width:100%;
-    height:107px;
+.userAvatar img {
+    width: 100%;
+    height: 107px;
 }
 
 .userAvatar:hover {
     background-color: darkgray;
 }
-.userAvatar i{
+
+.userAvatar i {
     color: cornsilk;
 }
 
@@ -1644,25 +1663,27 @@ span.psw {
     color: red;
 }
 
-.message a{
-    margin-left:10px;
-    color:green;
+.message a {
+    margin-left: 10px;
+    color: green;
 }
 
-.message a:hover{
+.message a:hover {
     text-decoration: underline;
 }
+
 .writeMessageDiv {
     padding: 8px 16px;
 
 
 }
 
-.writeMessage{
-    width:200px;
+.writeMessage {
+    width: 200px;
 }
+
 .sendMessage {
-    width:200px;
+    width: 200px;
 
 }
 
@@ -1676,7 +1697,7 @@ span.psw {
     color: cornsilk !important;
 }
 
-.userNick:focus{
+.userNick:focus {
     background-color: #262626;
 }
 
@@ -1690,9 +1711,11 @@ span.psw {
     white-space: pre-wrap;
 
 }
-.messageContent:focus{
+
+.messageContent:focus {
     background-color: #262626;
 }
+
 .greyLine {
     width: 100%;
     margin: 10px 0px;
@@ -1703,13 +1726,13 @@ span.psw {
 .message {
 
     /*border: 2px solid #262626;*/
-    width:100%;
-    
+    width: 100%;
+
     margin: 20px 0px;
     cursor: pointer;
     transition: .2s ease;
     box-shadow: 0px 10px 10px 2px #262626;
-    
+
 }
 
 
@@ -1736,41 +1759,41 @@ span.psw {
     font-size: 20px;
     color: cornsilk;
     position: relative;
-   /* padding: 10px;*/
-   line-height: 2em;
+    /* padding: 10px;*/
+    line-height: 2em;
 }
 
-.messageData p{
-    margin:0;
+.messageData p {
+    margin: 0;
     padding-left: 10px;
 }
 
 
-.messageListOption{
-    display:flex;
+.messageListOption {
+    display: flex;
     align-items: center;
     list-style-type: none;
     margin: 0;
     padding: 0;
 
     /*background-color: rgb(255, 51, 51);*/
-    
+
 }
 
-.messageListOption input[ type= "checkbox"]{
+.messageListOption input[ type="checkbox"] {
     background-color: #262626;
 }
 
 .messageListOption li {
 
-    color:#262626;
+    color: #262626;
     text-align: center;
     cursor: pointer;
-    float:left;
+    float: left;
     transition: .4s ease;
 }
 
-.messageListOption li:hover{
+.messageListOption li:hover {
     text-shadow: 0px 0px 10px;
 }
 
@@ -1786,7 +1809,7 @@ span.psw {
     margin: 0;
     position: absolute;
     display: block;
-  text-align: center;
+    text-align: center;
     transition: .2s ease;
     cursor: pointer;
 
@@ -1831,8 +1854,8 @@ span.psw {
     text-decoration: underline !important;
 }
 
-.category i:hover{
-    color:white !important;
+.category i:hover {
+    color: white !important;
 }
 
 .logo a:hover {
@@ -1840,138 +1863,134 @@ span.psw {
 
 }
 
-.chat
-{
+.chat {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.chat li
-{
+.chat li {
     margin-bottom: 10px;
     padding-bottom: 5px;
     border-bottom: 1px dotted #B3A9A9;
-   
+
 }
 
-.img-circle{
-     border-radius:50%;
+.img-circle {
+    border-radius: 50%;
 }
-.chat li.left .chat-body
-{
+
+.chat li.left .chat-body {
     margin-left: 60px;
 }
 
-.chat li.right .chat-body
-{
+.chat li.right .chat-body {
     margin-right: 60px;
 }
 
 
-.chat li .chat-body p
-{
+.chat li .chat-body p {
     margin: 0;
     color: #777777;
 }
 
-.panel .slidedown .glyphicon, .chat .glyphicon
-{
+.panel .slidedown .glyphicon,
+.chat .glyphicon {
     margin-right: 5px;
 }
 
-.panel-body
-{
+.panel-body {
     overflow-y: scroll;
     height: 250px;
 }
 
-::-webkit-scrollbar-track
-{
-    
+::-webkit-scrollbar-track {
+
     background-color: #F5F5F5;
 }
 
-::-webkit-scrollbar
-{
+::-webkit-scrollbar {
     width: 12px;
-    background-color: rgb(255,51,51) !important;
+    background-color: rgb(255, 51, 51) !important;
 }
 
-::-webkit-scrollbar-thumb
-{
-    
+::-webkit-scrollbar-thumb {
+
     background-color: #555;
 }
 
-@media only screen and (max-width: 1000px) {
+/* @media only screen and (max-width: 1000px) {
 
-    main{
-        display:block;
+    main {
+        display: block;
     }
-    
+
     .forumContent,
-    .forumNav{
-        width:95%;
+    .forumNav {
+        width: 95%;
         margin: 0 auto;
     }
-    .forumNav{
-        margin-top:20px;
+
+    .forumNav {
+        margin-top: 20px;
     }
-    
-    .arrow{
-        display:none;
+
+    .arrow {
+        display: none;
     }
-    
-    
+
+
+} */
+
+.messages ul li {
+    border: none;
 }
 
-.messages ul li{
-    border:none;
-}
-.messages .container .row .col-md-6{
+.messages .container .row .col-md-6 {
     background-color: #262626;
-    padding:15px;
-    color:cornsilk;
-    text-align:center;
+    padding: 15px;
+    color: cornsilk;
+    text-align: center;
     transition: .2s ease;
     cursor: pointer;
 }
 
-.messages .container .row .col-md-6:hover{
+.messages .container .row .col-md-6:hover {
     background: #373737;
 }
-.messages .container .row .col-md-6:first-child{
+
+.messages .container .row .col-md-6:first-child {
     border-right: 2px solid cornsilk;
 }
 
-.messages .container .row .col{
+.messages .container .row .col {
     background-color: green;
-    padding:15px;
-    color:cornsilk;
-    text-align:center;
+    padding: 15px;
+    color: cornsilk;
+    text-align: center;
     transition: .2s ease;
     cursor: pointer;
 }
 
-.messages .container .row .col:hover{
+.messages .container .row .col:hover {
     background: darkgreen;
 }
-.topicsMenu .col-md{
-    display:flex;
+
+.topicsMenu .col-md {
+    display: flex;
     justify-content: center;
     align-items: center;
     font-size: 15px;
     transition: .4s ease;
     cursor: pointer;
     font-weight: bold;
-    color:white;
+    color: white;
     /*border-right: 2px solid white;*/
-    display:none;
+    display: none;
 }
 
 
-.chat-body .header .userLink{
+.chat-body .header .userLink {
     color: black;
 }
 
@@ -1995,31 +2014,34 @@ span.psw {
         transform: rotate(-360deg);
     }
 }
-.loaderContainer{
-    position:relative;
-    width:120px;
-    height:120px;
+
+.loaderContainer {
+    position: relative;
+    width: 120px;
+    height: 120px;
     /*background-color: black;*/
     display: flex;
     justify-content: center;
     align-items: center;
-    margin:0 auto;
+    margin: 0 auto;
 }
 
-.loader, .loaderInner , .loaderInnerSmall {
-    position: absolute;    
-    border-radius:50%;    
-    border-top: 4px solid rgb(255,51,51);
+.loader,
+.loaderInner,
+.loaderInnerSmall {
+    position: absolute;
+    border-radius: 50%;
+    border-top: 4px solid rgb(255, 51, 51);
     /* border-bottom: 4px solid rgb(255,51,51); */
     width: 100px;
     height: 100px;
-   
+
 }
 
-.loader{
+.loader {
     -webkit-animation: spinRight 2s linear infinite;
     animation: spinRight 1s linear infinite;
-    animation-delay:.2s;
+    animation-delay: .2s;
 }
 
 
@@ -2029,51 +2051,52 @@ span.psw {
     height: 70px;
     -webkit-animation: spinRight 2s linear infinite;
     animation: spinRight 1s linear infinite;
-    animation-delay:.1s;
-    
+    animation-delay: .1s;
+
 }
 
-.loaderInnerSmall{
-    width:40px;
-    height:40px;
+.loaderInnerSmall {
+    width: 40px;
+    height: 40px;
     -webkit-animation: spinRight 2s linear infinite;
     animation: spinRight 1s linear infinite;
     /* animation-delay:.2s; */
 }
 
-.registerButton{
-    width:100%;
+.registerButton {
+    width: 100%;
 }
 
-@keyframes showMessageAlert{
-    from{
+@keyframes showMessageAlert {
+    from {
         top: -200px;
         opacity: 0;
     }
-    to{
-        top:0;
-        opacity:1;
+
+    to {
+        top: 0;
+        opacity: 1;
     }
 }
 
-.msgAlertActive{
+.msgAlertActive {
     animation-name: showMessageAlert;
     animation-duration: 1s;
 }
 
-.messageContainerAlert{
-    position:absolute;
-    width:60%;
-    background-color:forestgreen;
-    padding:16px;
-    text-align:center;
-     top:0;
-     z-index: 10000;
-    left:50%;
+.messageContainerAlert {
+    position: absolute;
+    width: 60%;
+    background-color: forestgreen;
+    padding: 16px;
+    text-align: center;
+    top: 0;
+    z-index: 10000;
+    left: 50%;
     transform: translateX(-50%);
-    top:0;
-    opacity:0;
-    
+    top: 0;
+    opacity: 0;
+
 }
 
 .tooltiptext {
@@ -2089,7 +2112,7 @@ span.psw {
     bottom: 150%;
     left: 50%;
     margin-left: -60px;
-    font-size:15px;
+    font-size: 15px;
     opacity: 0;
     transition: opacity 1s;
 }
@@ -2098,7 +2121,7 @@ span.psw {
     content: "";
     position: absolute;
     top: 100%;
-    left:50%;
+    left: 50%;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
@@ -2110,17 +2133,18 @@ span.psw {
     visibility: visible;
     opacity: 1;
 }
+
 .deleteMessage:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
 }
 
-.loginButton{
-    width:100%;
+.loginButton {
+    width: 100%;
 }
 
-.clearSearching{
-    width:90%;
+.clearSearching {
+    width: 90%;
     text-align: center;
     font-size: 25px;
     margin: 10px auto 0px auto;
@@ -2128,23 +2152,26 @@ span.psw {
     border: 2px solid #262626;
     color: cornsilk;
     padding: 10px 8px;
-    cursor:pointer;
+    cursor: pointer;
     transition: .4s ease;
 }
 
-.clearSearching:hover{
+.clearSearching:hover {
     background-color: #fff;
     color: #262626;
 }
 
-.footerText{
+.footerText {
     font-size: 17px;
 }
 
-#loginForm, #registerForm{
-    animation-duration:.4s;
+#loginForm,
+#registerForm {
+    animation-duration: .4s;
 }
 
-.answerContent{
-    color : #262626 !important;
+.answerContent {
+    color: #262626 !important;
 }
+
+

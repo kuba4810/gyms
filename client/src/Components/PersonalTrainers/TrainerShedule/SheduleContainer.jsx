@@ -47,8 +47,8 @@ class SheduleContainer extends Component {
 
     deleteTraining = async (training_id) => {
 
-        console.log('Training_id (SheduleContainer): ',training_id);
-        
+        console.log('Training_id (SheduleContainer): ', training_id);
+
         try {
 
             let res = await deleteTraining(training_id);
@@ -57,35 +57,35 @@ class SheduleContainer extends Component {
                 let trainings = this.state.trainingsList;
                 let currentTrainingList = this.state.currentTrainingList;
 
-                currentTrainingList = currentTrainingList.filter( t => (t.training_id !== training_id) );
+                currentTrainingList = currentTrainingList.filter(t => (t.training_id !== training_id));
 
 
                 trainings = trainings.filter(t => (t.training_id !== training_id));
 
                 this.setState({
                     trainingsList: [...trainings],
-                    currentTrainingList : [...currentTrainingList]
-                },()=>{
+                    currentTrainingList: [...currentTrainingList]
+                }, () => {
                     this.renderCalendar();
                 })
 
                 return 'success'
-                
+
             } else {
                 throw 'failed'
             }
         } catch (error) {
 
             console.log(error);
-            
+
             return 'failed'
         }
 
     }
 
-    clearCurrentTrainingId = () =>{
+    clearCurrentTrainingId = () => {
         this.setState({
-            currentTraining : 0
+            currentTraining: 0
         })
     }
 
@@ -93,64 +93,64 @@ class SheduleContainer extends Component {
     // ------------------------------------------------------------------------
     editTraining = (training) => {
 
-        console.log('Shedule container - edytuje trening : ',training);
-        
+        console.log('Shedule container - edytuje trening : ', training);
+
 
         let trainings = this.state.trainingsList;
         let currentTrainingList = this.state.currentTrainingList;
 
         // --------------------------------------------------------------------
-        trainings = trainings.map( t => {
+        trainings = trainings.map(t => {
 
-            if(t.training_id === training.training_id){
+            if (t.training_id === training.training_id) {
 
-                return  Object.assign({},t,{
-                     name : training.name,
-                     date : training.date
+                return Object.assign({}, t, {
+                    name: training.name,
+                    date: training.date
                 })
 
-            } else{
+            } else {
                 return t;
-            }            
- 
+            }
+
 
         })
 
         // --------------------------------------------------------------------
-        currentTrainingList = currentTrainingList.map( t => {
+        currentTrainingList = currentTrainingList.map(t => {
 
-            if(t.training_id === training.training_id){
+            if (t.training_id === training.training_id) {
 
-                return  Object.assign({},t,{
-                     name : training.name,
-                     date : training.date
+                return Object.assign({}, t, {
+                    name: training.name,
+                    date: training.date
                 })
 
-            } else{
+            } else {
                 return t;
-            }            
- 
+            }
+
 
         })
 
         this.setState({
-            trainingsList : [...trainings],
-            currentTrainingList : [...currentTrainingList]
-        },()=>{
-            console.log('List treningów: ',this.state.currentTrainingList);
-            
+            trainingsList: [...trainings],
+            currentTrainingList: [...currentTrainingList]
+        }, () => {
+            console.log('List treningów: ', this.state.currentTrainingList);
+
             this.renderCalendar();
         })
 
     }
 
-    addTraining = (training) =>{
+    addTraining = (training) => {
         let trainings = this.state.trainingsList;
 
         trainings.push(training);
 
         this.setState({
-            trainingsList : [...trainings]
+            trainingsList: [...trainings]
         })
     }
 
@@ -459,7 +459,7 @@ class SheduleContainer extends Component {
         let details = <TrainingDetails
             training_id={this.state.currentTraining}
             deleteTraining={this.deleteTraining}
-            clear = {this.clearCurrentTrainingId}
+            clear={this.clearCurrentTrainingId}
         />
         return (
             <div className="topicsContent">
@@ -474,7 +474,7 @@ class SheduleContainer extends Component {
                         </div>
                         <div className="listTitle">
                             Zaplanowane treningi
-                </div>
+                        </div>
 
                         {
                             user_type == 'trainer' &&
@@ -494,8 +494,8 @@ class SheduleContainer extends Component {
                             user_type == 'trainer' &&
                             <NewTraining
                                 fetchTrainings={this.fetchTrainings.bind(this)}
-                                addTraining = {this.addTraining}
-                                editTraining = {this.editTraining}
+                                addTraining={this.addTraining}
+                                editTraining={this.editTraining}
                             />
                         }
 

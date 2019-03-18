@@ -13,6 +13,8 @@ import {
 
 
 class GymDetailsCont extends React.Component {
+
+
   componentDidMount() {
     console.log("Pobieram dane ...");
     fetch(`http://localhost:8080/api/gym/${this.props.match.params.gym_id}`)
@@ -27,6 +29,7 @@ class GymDetailsCont extends React.Component {
         }
       });
   }
+  
 
   // Wystawianie oceny
   // --------------------------------------------------------------------------------------------

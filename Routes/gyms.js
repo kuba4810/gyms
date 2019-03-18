@@ -57,7 +57,7 @@ router.get('/api/gym/:gym_id', (request, response) => {
 
     // Pierwsze zapytanie pobierające podstawowe dane siłowni
     var gymData = client.query(`SELECT * FROM kuba.gyms NATURAL JOIN kuba.opening_hours NATURAL JOIN kuba.gym_stats 
-    WHERE gym_id=${request.params.gym_id};`);
+    WHERE gym_id=$1;`,[request.params.gym_id]);
 
     // Po wykonaniu zapytania dane są dodawane do przygotowanego obiektu.
     // W kolejnym kroku wywoływane jest następne zapytanie

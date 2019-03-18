@@ -1,162 +1,235 @@
- .loginUser .badge{
-    border-radius:0;
-}
+ .loginUser .badge {
+     border-radius: 0;
+ }
 
-.color-red{
-    color: red;
-    font-size: 15px !important;
-}
-
-
-/* ------------------------------------------------------------------------- */
-/* ------------------------------------------------------------------------- */
-                            /* TRAINER REGISTER  */
-/* ------------------------------------------------------------------------- */
-/* ------------------------------------------------------------------------- */
+ .color-red {
+     color: red;
+     font-size: 15px !important;
+ }
 
 
-.trainerRegister{
-    max-width:100%;
-    min-height:100vh;
-    background-color: cornsilk;
-    overflow-x:hidden;
-    background-color: #151515;
-}
-.trainerRegister form {
-    box-shadow : 0px 0px 5px  black;
-    border-radius : 5px;
-}
-
-.trainerRegister hr {
-    border-color : #151515;
-}
-
-.trainerRegister label {
-    font-weight : bold;
-}
-
-.registerTrainerPackages .form-group {
-    /* width:30%; */
-}
-
-.trainerRegister ul li{
-    
-    border : none;
-
-}
-
-.tip {
-    position: absolute;
-    display: inline-block;
-  }
-  
-  .tip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: #151515;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -60px;
-    
-    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
-    opacity: 0;
-    transition: opacity .3s;
-  }
-  
-  .tip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  .trainer-photos  {
-    flex-flow: row wrap
-  }
-
-  .trainer-photos .userAvatar{
-    width:29%;
-  }
-  .trainer-photos  .userAvatar, .trainer-photos .userAvatar img {
-    
-    border-radius : 5px;
-
-  }
-
-.userAvatar .overlay{
-    position:absolute;
-    background-color: rgba(63,63,63,0.6);
-    width:100%;
-    height:100%;
-    border-radius : inherit;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity:0;
-    transition : .4s ease;
-    cursor: pointer;
-}
-
-.userAvatar:hover .overlay{
-    opacity : 1;
-}
-
-.userAvatar .overlay i{
-    font-size: 25px;  
-
-}
+ /* ------------------------------------------------------------------------- */
+ /* ------------------------------------------------------------------------- */
+ /* TRAINER REGISTER  */
+ /* ------------------------------------------------------------------------- */
+ /* ------------------------------------------------------------------------- */
 
 
+ .trainerRegister {
+     max-width: 100%;
+     min-height: 100vh;
+     background-color: cornsilk;
+     overflow-x: hidden;
+     background-color: #151515;
+ }
 
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-    z-index: -1;
-    
-}
+ .trainerRegister form {
+     box-shadow: 0px 0px 5px black;
+     border-radius: 5px;
+ }
 
-.inputfile + label {
-    font-size: 1.25em;
-    font-weight: 700;
-    color: white;
-    background-color: #262626;
-    display: inline-block;
-    padding : 5px 10px;
-    border-radius : 5px;
-    transition : .3s ease;
-}
+ .trainerRegister hr {
+     border-color: #151515;
+ }
 
-.inputfile + label:hover {
-    background-color: red;
-}
+ .trainerRegister label {
+     font-weight: bold;
+ }
 
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
+ .registerTrainerPackages .form-group {
+     /* width:30%; */
+ }
 
-.inputfile:focus + label {
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
-}
+ .trainerRegister ul li {
 
-.gymPhoto{
-    width:150px;
-    height: 150px;
+     border: none;
 
-}
+ }
 
-.gymPhoto img{
-    width:100%;
-    height:100%;
-}
+ .tip {
+     position: absolute;
+     display: inline-block;
+ }
 
-.gymPhoto, .gymPhoto img{
-    border-radius: 10px;
-}
+ .tip .tooltiptext {
+     visibility: hidden;
+     width: 120px;
+     background-color: #151515;
+     color: #fff;
+     text-align: center;
+     border-radius: 6px;
+     padding: 5px 0;
+     position: absolute;
+     z-index: 1;
+     bottom: 100%;
+     left: 50%;
+     margin-left: -60px;
+
+     /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+     opacity: 0;
+     transition: opacity .3s;
+ }
+
+ .tip:hover .tooltiptext {
+     visibility: visible;
+     opacity: 1;
+ }
+
+ .trainer-photos {
+     flex-flow: row wrap
+ }
+
+ .trainer-photos .userAvatar {
+     width: 29%;
+ }
+
+ .trainer-photos .userAvatar,
+ .trainer-photos .userAvatar img {
+
+     border-radius: 5px;
+
+ }
+
+ .userAvatar .overlay {
+     position: absolute;
+     background-color: rgba(63, 63, 63, 0.6);
+     width: 100%;
+     height: 100%;
+     border-radius: inherit;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     opacity: 0;
+     transition: .4s ease;
+     cursor: pointer;
+ }
+
+ .userAvatar:hover .overlay {
+     opacity: 1;
+ }
+
+ .userAvatar .overlay i {
+     font-size: 25px;
+
+ }
+
+
+
+ .inputfile {
+     width: 0.1px;
+     height: 0.1px;
+     opacity: 0;
+     overflow: hidden;
+     position: absolute;
+     z-index: -1;
+
+ }
+
+ .inputfile+label {
+     font-size: 1.25em;
+     font-weight: 700;
+     color: white;
+     background-color: #262626;
+     display: inline-block;
+     padding: 5px 10px;
+     border-radius: 5px;
+     transition: .3s ease;
+ }
+
+ .inputfile+label:hover {
+     background-color: red;
+ }
+
+ .inputfile+label {
+     cursor: pointer;
+     /* "hand" cursor */
+ }
+
+ .inputfile:focus+label {
+     outline: 1px dotted #000;
+     outline: -webkit-focus-ring-color auto 5px;
+ }
+
+ .gymPhoto {
+     width: 150px;
+     height: 150px;
+
+ }
+
+ .gymPhoto img {
+     width: 100%;
+     height: 100%;
+ }
+
+ .gymPhoto,
+ .gymPhoto img {
+     border-radius: 10px;
+ }
+
+ /* RESPONSIVE */
+ /* ---------------------------------------------------------------------------- */
+
+ @media only screen  and (max-width: 1100px)   {
+
+    .forumMain{
+        flex-direction: column;
+    }
+    .forumNav, .forumContent{
+        width: 100% !important;
+    }
+
+    .forumNav{
+        margin-top: 15px;
+    }
+    .stats{
+        width:180px !important;
+    }
+    .ans, .votes{
+        display: flex;
+        float : none;
+        width:100%;
+        height: 50%;
+        justify-content: center;
+        align-items: center;
+    }
+
+ }
+
+
+ /* PROFILE */
+ @media only screen and (max-width: 1000px) {
+
+     .userPersonalData,
+     .userForumData {
+         width: 100%;
+         margin-left: auto;
+         margin-right: auto;
+     }
+
+     .userPersonalData,
+     .listContainer {
+         margin-bottom: 15px;
+
+     }
+
+     .sheduleContainer {
+         grid-template-areas: 'list'
+             'container' !important;
+     }
+
+     .trainingDetailsButtons {
+         bottom: -5% !important;
+     }
+
+
+
+ }
+
+ @media only screen and (max-width: 700px) {
+
+    .userPersonalData,
+     .userForumData {
+         font-size: 15px !important;
+     }
+
+ }

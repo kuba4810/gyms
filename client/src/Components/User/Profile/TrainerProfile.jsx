@@ -22,7 +22,7 @@ class TrainerProfile extends Component {
         let data = this.props.data.trainer;
         let skills = this.props.data.skills.map( s=>(
 
-            <div className="col-4">
+            <div className="col-lg-4 col-md-6 col-12">
                 <i className="fas fa-check"></i>
                 <b> {s.name} </b>
             </div>

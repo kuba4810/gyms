@@ -227,7 +227,7 @@ class Details extends Component {
         return (
             <div className="trainingDetails invisible animated">
 
-                <div className="trainingContent">
+                <div className="">
                     {/* Wyświetl spinne gdy dane są ładowane */}
                     {this.state.isLoading && <div className="littleSpinner" ></div>}
                     {/* Nagłówek treningu */}

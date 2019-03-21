@@ -14,6 +14,7 @@ class QuestionLink extends React.Component{
                 <div className="stats">
                     <div className="ans"> {data.how_many_answers} <br/> odpowiedzi</div>
                     <div className="votes">{data.pluses - data.minuses}<br/> głosów</div>
+                    <div className="clear:both"></div>
                 </div>
 
                 <div className="postTopic">

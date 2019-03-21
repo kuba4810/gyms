@@ -174,12 +174,14 @@
     .forumMain{
         flex-direction: column;
     }
-    .forumNav, .forumContent{
+     .forumContent{
         width: 100% !important;
     }
 
     .forumNav{
-        margin-top: 15px;
+        width: 50%;
+        position:absolute;
+        left : 150%;
     }
     .stats{
         width:180px !important;
@@ -230,6 +232,10 @@
     .userPersonalData,
      .userForumData {
          font-size: 15px !important;
+     }
+
+     .forumNav {
+         width: 90%;
      }
 
  }

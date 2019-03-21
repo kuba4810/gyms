@@ -5,7 +5,7 @@ import history from '../history'
 import MainPage from './MainPage'
 import Gym from './Gym/Gym'
 import Trainers from './PersonalTrainers/PersonalTrainer'
-import Forum from './Forum/Forum'
+import Forum from './Forum/Forum.js'
 import UserContainer from './User/UserContainer'
 import TrainerRegister from './TrainerRegister';
 

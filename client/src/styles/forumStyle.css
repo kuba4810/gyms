@@ -363,15 +363,17 @@ textarea {
     position: relative;
     top: 100px;
     width: 25%;
-    max-height: 100vh;
-    min-height: 100vh;
+    /* max-height: 100vh; */
+    height: 80vh;
     background-color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0.8);
     margin: 0;
+    padding-top : 15px;
     /*animation-name: fadeIn;
     animation-duration: .5s;
     animation-delay: .5s;*/
     /*margin-left:10px;*/
+    transition : .4s ease;
 }
 
 .inputHolder {
@@ -2174,4 +2176,31 @@ span.psw {
     color: #262626 !important;
 }
 
+.forumNavVisible{
 
+    left : 5% !important
+
+}
+
+.showForumNav{
+    position : absolute;
+    top: -50px;
+    cursor : pointer;
+    display : none;
+}
+
+.showForumNav div{
+    width: 35px;
+    height: 5px;
+    background-color: cornsilk;
+    margin: 6px 0; 
+}
+
+.forumNav i.fa-times{
+    position: absolute;
+    right : 5px;
+    top : 5px;
+    font-size: 25px;
+    display:none;
+    cursor: pointer;
+}

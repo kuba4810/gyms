@@ -43,6 +43,8 @@ class Question extends React.Component{
 
         document.querySelector(".forumNav").classList.add("invisible");
         document.querySelector(".forumContent").style.width="100%";
+
+        document.querySelector('.showForumNav').classList.add('invisible');
         var questionId = this.props.match.params.questionId;
         const userId = localStorage.getItem('loggedId');
         let question;

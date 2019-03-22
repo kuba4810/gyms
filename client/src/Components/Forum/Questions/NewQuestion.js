@@ -7,6 +7,7 @@ class  Question extends React.Component{
         document.querySelector(".forumNav").classList.add("invisible");
         document.querySelector(".forumContent").style.width="100%";
         document.querySelector(".topicsMenu").classList.add("invisible");
+        document.querySelector('.showForumNav').classList.add('invisible');
         console.log(this.props.questions.questionsList);
     }
     sendNewQuestion = (event) =>{

@@ -19,8 +19,11 @@ class QuestionList extends Component{
         document.querySelector(".forumContent").style.width="74.5%";
         document.querySelector(".topicsMenu").classList.remove("invisible");
 
-        
+        document.querySelector('.showForumNav').classList.remove('invisible');
 
+        const forumNav = document.querySelector('.forumNav');
+
+        forumNav.classList.remove('forumNavVisible');
         fetch("http://localhost:8080/getAllQuestions/"+this.props.sort)
            .then(res => res.json())
             .then(

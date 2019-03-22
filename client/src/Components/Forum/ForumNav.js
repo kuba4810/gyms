@@ -56,10 +56,19 @@ class ForumNav extends React.Component{
         this.props.clearForumSearching();
         this.props.changeCategory('WSZYSTKIE');
     }
+
+    // HIDE FORUM NAV
+    // ------------------------------------------------------------------------
+    hideForumNav = () => {
+        const forumNav = document.querySelector('.forumNav');
+
+        forumNav.classList.remove('forumNavVisible');
+    }
     render(){
         return(
             <div className="forumNav" id="forumNav">
-    
+
+                <i className="fas fa-times" onClick={this.hideForumNav}></i>
     
                 <div className="inputHolder">
                     <input className="topicsSearch" 
@@ -68,8 +77,8 @@ class ForumNav extends React.Component{
                     value = {this.props.questionsSearch.text}
                     onChange = {this.handleChange}
                     />
-                    <div className="searchIcon">
-                        <i className="fas fa-search"></i>
+                    <div className="searchIcon " onClick={this.hideForumNav}>
+                        <i className="fas fa-search" ></i>
                     </div>
                 </div>
                 
@@ -130,13 +139,13 @@ class ForumNav extends React.Component{
 
               
     
-                <div className="socialMedia">
+                {/* <div className="socialMedia">
                     <div className="media animated"><a href="#"><i className="fab fa-facebook-square"></i></a></div>
                     <div className="media animated"><a href="#"><i className="fab fa-youtube"></i></a></div>
                     <div className="media animated"><a href="#"><i className="fab fa-twitter"></i></a></div>
                     <div className="media animated"><a href="#"><i className="fab fa-instagram"></i></a></div>
                     <div className="clear" style={{clear:"both"}}></div>
-                </div>
+                </div> */}
     
     
             </div>

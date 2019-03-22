@@ -4,6 +4,18 @@ const mail = require('../Services/email');
 
 module.exports = (app, client) => {
 
+    app.get('/api/trainers', async (request,response)=>{
+        try {
+
+            let res = await client.query(`SELECT * FROM trainers.trainer`);
+
+            response.send(res.rows)
+            
+        } catch (error) {
+            console.log(error);
+        }
+    })
+
     // Pobiera wszystkie treningi danego trenera
     /*  Request body
         {

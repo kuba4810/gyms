@@ -18,9 +18,9 @@
  .trainerRegister {
      max-width: 100%;
      min-height: 100vh;
-     background-color: cornsilk;
+     /* background-color: cornsilk; */
      overflow-x: hidden;
-     background-color: #151515;
+     /* background-color: #151515; */
  }
 
  .trainerRegister form {
@@ -167,6 +167,80 @@
  }
 
 
+ .gymSearch  {
+    background-image: url('../images/31-36.jpg');
+    background-size: cover;
+    background-position: center;
+    
+    /* filter: grayscale(100%); */
+}
+.trainerSearch{
+   background-image: url('../images/personalTrainerBg.jpg');
+   background-size: cover;
+   background-position: center;
+  
+}
+
+.gymSearchContent, .trainerSearchContent {
+
+   
+    width: 100%;
+    height: 100%;
+    padding-top: 150px;
+    padding-bottom: 50px;
+}
+
+.gymSearchContent{
+   background-color: rgba(0, 0, 0, 0.8);
+}
+
+.trainerSearchContent{
+   background-color: rgba(0, 0, 0, 0.9);
+}
+.gymListContainer {
+    background-color: cornsilk;
+    width: 100%;
+    margin: 0;
+}
+
+
+
+.gymSearchContent h1 {
+    letter-spacing: 2px;
+}
+
+.gymSearchContent .container .row .input-group input {
+    border-radius: 8px;
+    padding: 5px 10px;
+}
+
+.card {
+    background-color: #262626;
+   position: relative;;
+   border:none;
+}
+
+/* .trainerCard{
+    height: 100px;
+} */
+
+/* .card-body {
+    position: relative;
+}*/
+#gymItemBodyContent{
+   background-color: rgba(30,30,30,0.9);
+   width:100%;
+   height:100%;
+}
+#gymItemBody {
+    background-image: url('../images/gymItem.jpg');
+    background-position: center;
+    background-size : cover;
+} 
+
+.footer-copyright {
+    background-color: #151515;
+}
 
 
  /* RESPONSIVE */
@@ -179,7 +253,7 @@
          /* display:none; */
          width: 50%;
          left: -100%;
-         top : 170px;
+         top : 148px;
          background-color: cornsilk;
      }
 

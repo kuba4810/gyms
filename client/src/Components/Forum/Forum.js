@@ -153,7 +153,7 @@ function AppArrow() {
                     page={'FORUM'}
                     image = {this.props.user.image}/>
 
-                <main className="animated forumMain">
+                <main className="animated forumMain pt-5">
                     <div className="forumContent">
 
                     

@@ -118,7 +118,7 @@ class UserCont extends Component {
     // --------------------------------------------------------------------------------------------
     render() { 
         let user_nick = localStorage.getItem('loggedNick');
-        return ( <div className="userContent">
+        return ( <div className="userContent pt-5">
                 <LoginForm/>
                 <RegisterForm/>
                 <UserMenu/>

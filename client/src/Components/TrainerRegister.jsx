@@ -530,7 +530,7 @@ class Register extends Component {
 
 
         return (
-            <div className="trainerRegister  m-0">
+            <div className="trainerRegister  mt-5">
 
 
                 <LoginForm />

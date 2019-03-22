@@ -62,8 +62,8 @@ class GymListC extends React.Component{
         <React.Fragment>
         <GymHeader/>
         <GymSection filter={this.handleInputChange}/>
-            <h2 className="text-center p-4">Dostępne obiekty:</h2>
-            <div class="row container-fluid ">
+            <h2 style={{color: "white"}} className=" gymListContainerTitle text-center p-4  m-0  text-dark bg-light">Dostępne obiekty:</h2>
+            <div class="row container-fluid gymListContainer">
                 {gyms}
             </div>
         <GymFooter/>

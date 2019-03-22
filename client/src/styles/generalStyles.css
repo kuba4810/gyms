@@ -178,11 +178,21 @@
          position: fixed !important;
          /* display:none; */
          width: 50%;
-         left: 150%;
+         left: -100%;
+         top : 170px;
+         background-color: cornsilk;
+     }
+
+     .forumNav i.fa-times{
+         display: block;
      }
 
      .forumContent {
          width: 100% !important;
+     }
+
+     .showForumNav{
+         display: block;
      }
 
 
@@ -369,6 +379,7 @@
 
      .stats {
          width: 150px !important;
+         
 
      }
 
@@ -379,6 +390,27 @@
 
      .topic {
          font-size: 8px;
+     }
+
+     .postContentTopic{
+         width : 70%;
+         font-size: 13px !important;
+     }
+
+     .postContentEvaluations{
+         width: 15%;
+     }
+
+     .postContentHeader .userAvatar {
+         width : 15%;
+     }
+
+     .postContentText, .answerContentText{
+         font-size: 13px;
+     }
+
+     .answer {
+         font-size: 13px;
      }
 
  }

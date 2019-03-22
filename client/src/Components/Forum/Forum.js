@@ -39,6 +39,9 @@ function AppArrow() {
 
     componentDidMount = async ()=>{
         
+        const forumNav = document.querySelector('.forumNav');
+
+        forumNav.classList.remove('forumNavVisible');
 
         let isLoggedIn = checkIfLoggedIn();
        
@@ -126,6 +129,16 @@ function AppArrow() {
 
 
     }
+
+    // SHOW FORUM NAV
+    // ------------------------------------------------------------------------
+    showForumNav = () => {
+
+        const forumNav = document.querySelector('.forumNav');
+
+        forumNav.classList.add('forumNavVisible');
+
+    }
     render(){
 
         return(
@@ -143,7 +156,16 @@ function AppArrow() {
                 <main className="animated forumMain">
                     <div className="forumContent">
 
+                    
+                            {/* Hamburger button */}
+                            <div className="showForumNav text-light" onClick={this.showForumNav}>
+                               <div></div>
+                               <div></div>
+                               <div></div>
+                            </div>
+
                             <TopicsMenu/>
+
 
                             <Route exact path={this.props.match.path} component={QuestionListContainer} />
                             <Route path={`${this.props.match.path}/pytanie/:questionId`} component={QuestionView} />

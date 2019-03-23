@@ -420,8 +420,8 @@
 }
 
 .trainerProfileEditContainer form {
-    position: absolute;
-    bottom : 5%;
+    /* position: absolute; */
+    /* bottom : 5%; */
     left:25%;
     border-radius : 10px;
     animation-duration : .5s;

@@ -371,26 +371,26 @@ module.exports = (app, client) => {
         // Przesłano dane użytkownika
         if (data.type === 'user') {
             query = `UPDATE kuba.users
-            SET first_name=$1, last_name=$2, login=$3, email=$4,
-                height=$5, mass=$6, favourite_exercise=$7,
-                phone_number=$8, passw = $10
-            WHERE user_id = $9;`;
+            SET first_name=$1, last_name=$2, login=$3, 
+                height=$4, mass=$5, favourite_exercise=$6,
+                phone_number=$7
+            WHERE user_id = $8;`;
 
             values = [data.data.first_name, data.data.last_name, data.data.login,
-                data.data.email, data.data.height, data.data.mass,
+                 data.data.height, data.data.mass,
                 data.data.favourite_exercise, data.data.phone_number,
-                data.id, data.data.passw
+                data.id
             ];
 
             // Przesłano dane trenera
         } else if (data.type === 'trainer') {
             query = `UPDATE trainers.trainer
                      SET first_name=$1, last_name=$2, city=$3, voivodeship=$4,
-                         login=$5, passw=$6, mail=$7
-                     WHERE trainer_id = $8;`;
+                         login=$5 
+                     WHERE trainer_id = $6;`;
             values = [data.data.first_name, data.data.last_name, data.data.city,
-                data.data.voivodeship, data.data.login, data.data.passw,
-                data.data.mail, data.id
+                data.data.voivodeship, data.data.login,
+                 data.id
             ];
         }
 

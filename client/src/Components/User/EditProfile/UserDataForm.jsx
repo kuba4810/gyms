@@ -326,27 +326,27 @@ class UserForm extends Component {
                 </div>
 
                 {/* Mail */}
-                <div class="form-group">
+                {/* <div class="form-group">
                   <label class="col-lg-12 control-label">Mail:</label>
                   <div class="col-lg-12">
                     <input class="form-control" name='email' autoComplete='off'
                       value={this.state.email} onChange={this.handleChange}
                       type="text" />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Password */}
-                <div class="form-group">
+                {/* <div class="form-group">
                   <label class="col-lg-12 control-label">Hasło:</label>
                   <div class="col-lg-12">
                     <input class="form-control" name='passw' autoComplete='off'
                       value={this.state.passw} onChange={this.handleChange}
                       type="password" />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Confirm password */}
-                <div class="form-group">
+                {/* <div class="form-group">
                   <label class="col-lg-12 control-label">Potwierdź hasło:</label>
                   <div class="col-lg-12">
                     <input class="form-control" type="password"
@@ -355,7 +355,7 @@ class UserForm extends Component {
                     />
                     <label class="color-red" htmlFor="">{this.state.con_password_message}</label>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Buttons */}
                 <div class="form-group">

@@ -43,7 +43,7 @@ class TrainerForm extends Component {
     photos: [],
     newPhoto: null,
     photo: null,
-    currentIndex : 0
+    currentIndex: 0
 
   }
 
@@ -127,7 +127,7 @@ class TrainerForm extends Component {
   sendNewPhoto = async (e) => {
     e.preventDefault();
 
-  
+
 
     const login = localStorage.getItem('loggedNick');
     let fileName;
@@ -611,52 +611,50 @@ class TrainerForm extends Component {
   // Przygotowuje formularz do wysłania
   // Przed wysłaniem wyświetla okno potwiedzenia 
   handleSubmit = () => {
-    // 1.) Wywołanie funkcji walidującej
-    let valid = this.validateForm();
-    console.log(valid);
 
-    if (valid) {
-      // 2.) Wyświetlenie okna potwierdzenia
-      let confirm = window.confirm('Czy na pewno zapisać zmiany ?');
-      if (confirm) {
-        // 3.) Przygotowanie formularza
-        let s = this.state;
-        let data = {
-          type: localStorage.getItem('type'),
-          id: localStorage.getItem('loggedId'),
-          data: {
-            first_name: s.first_name,
-            last_name: s.last_name,
-            login: s.login,
-            passw: s.passw,
-            city: s.city,
-            voivodeship: s.voivodeship
-          }
+    // 2.) Wyświetlenie okna potwierdzenia
+    let confirm = window.confirm('Czy na pewno zapisać zmiany ?');
+    if (confirm) {
+      // 3.) Przygotowanie formularza
+      let s = this.state;
+      let data = {
+        type: localStorage.getItem('type'),
+        id: localStorage.getItem('loggedId'),
+        data: {
+          first_name: s.first_name,
+          last_name: s.last_name,
+          login: s.login,
+          passw: s.passw,
+          city: s.city,
+          voivodeship: s.voivodeship
         }
-        // 4.) Wysłanie formularza
-        fetch('http://localhost:8080/api/user/edit-profile', {
-          method: "POST",
-          mode: "cors",
-          cache: "no-cache",
-          credentials: "same-origin",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-          // 5.) Odpowiedź z serwera
-          .then(res => res.json())
-          .then(res => {
-            if (res.response === 'success') {
-              alert('Zmiany zostały zapisane !')
-            }
-            else {
-              alert('Wystąpił błąd, spróbuj ponownie później !');
-            }
-          })
       }
-
+      // 4.) Wysłanie formularza
+      fetch('http://localhost:8080/api/user/edit-profile', {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        // 5.) Odpowiedź z serwera
+        .then(res => res.json())
+        .then(res => {
+          if (res.response === 'success') {
+            alert('Zmiany zostały zapisane !')
+          }
+          else {
+            alert('Wystąpił błąd, spróbuj ponownie później !');
+          }
+        }).catch(error => {
+          console.log(error);
+        })
     }
+
+
   }
 
 
@@ -697,7 +695,7 @@ class TrainerForm extends Component {
   showGallery = (index) => {
 
     this.setState({
-      currentIndex : index
+      currentIndex: index
     })
     let gallery = document.querySelector('.gallery');
 
@@ -753,7 +751,7 @@ class TrainerForm extends Component {
         <div className="overlay">
 
           <i class="fas fa-eye text-primary"
-            onClick={this.showGallery.bind(null,index+1)}></i>
+            onClick={this.showGallery.bind(null, index + 1)}></i>
           <i className="fas fa-trash text-danger ml-2"
             onClick={this.deleteImageFromAlbum.bind(null, photo.photo_name)}
           ></i>
@@ -765,12 +763,12 @@ class TrainerForm extends Component {
 
     let galleryPhotos = [...this.state.photos];
     galleryPhotos.unshift({
-      photo_name : localStorage.getItem('loggedNick')
+      photo_name: localStorage.getItem('loggedNick')
     })
 
     return (
       <div>
-        <Gallery photos={galleryPhotos} currentIndex = {this.state.currentIndex}/>
+        <Gallery photos={galleryPhotos} currentIndex={this.state.currentIndex} />
         <div class="container-fluid trainer-profile-edit ">
 
           {/* Edit Form */}
@@ -899,7 +897,7 @@ class TrainerForm extends Component {
                   <div className="overlay">
 
                     <i class="fas fa-eye text-primary"
-                      onClick={this.showGallery.bind(null,0)}></i>
+                      onClick={this.showGallery.bind(null, 0)}></i>
                     <i className="fas fa-trash text-danger ml-2"
                       onClick={this.deleteImage}></i>
 
@@ -1016,7 +1014,7 @@ class TrainerForm extends Component {
                 </div>
                 {/* City */}
                 <div class="form-group">
-                  <label class="col-lg-12 control-label">Miastp:</label>
+                  <label class="col-lg-12 control-label">Miasto:</label>
                   <div class="col-lg-12">
                     <input class="form-control" name='city' autoComplete='off'
                       value={this.state.city} onChange={this.handleChange}
@@ -1046,17 +1044,17 @@ class TrainerForm extends Component {
               </div> */}
 
                 {/* Password */}
-                <div class="form-group">
+                {/* <div class="form-group">
                   <label class="col-lg-12 control-label">Hasło:</label>
                   <div class="col-lg-12">
                     <input class="form-control" name='passw' autoComplete='off'
                       value={this.state.passw} onChange={this.handleChange}
                       type="password" />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Confirm password */}
-                <div class="form-group">
+                {/* <div class="form-group">
                   <label class="col-lg-12 control-label">Potwierdź hasło:</label>
                   <div class="col-lg-12">
                     <input class="form-control" type="password"
@@ -1065,7 +1063,7 @@ class TrainerForm extends Component {
                     />
                     <label class="color-red" htmlFor="">{this.state.con_password_message}</label>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Buttons */}
                 <div class="form-group">

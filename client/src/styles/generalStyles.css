@@ -241,6 +241,13 @@
 .footer-copyright {
     background-color: #151515;
 }
+.trainerProfileEditContainer{
+    /* position: relative; */
+}
+.editPackage, .editSkill{
+    position: fixed;
+    top : 30%;
+}
 
 
  /* RESPONSIVE */
@@ -269,6 +276,20 @@
          display: block;
      }
 
+     .gallery .bigImage{
+         width : 80%;
+         height : 80vh !important;
+         background-color: red;
+         left : 10%;
+     }
+     .gallery .bigImage img{
+        width : 100%;
+        height : 100%;
+     }
+
+     .gallery .bigImage .prevImage, .nextImage{
+
+     }
 
  }
 
@@ -423,6 +444,20 @@
          padding : 10px 5px;
          width: 150px
      }
+
+     .gallery .bigImage{
+        width : 90%;
+        height : 60vh !important;
+        background-color: red;
+        left : 5%;
+    }
+    .gallery .bigImage img{
+       width : 100%;
+       height : 100%;
+    }
+    .gallery .bigImage .prevImage, .nextImage{
+        opacity : 0.5;
+    }
 
  }
 

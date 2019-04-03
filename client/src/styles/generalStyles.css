@@ -21,11 +21,16 @@
      /* background-color: cornsilk; */
      overflow-x: hidden;
      /* background-color: #151515; */
+     background-image: url('../images/registerBg.jpg');
+     background-position: center;
+     background-size : cover;
+     background-attachment: fixed;
  }
 
  .trainerRegister form {
      box-shadow: 0px 0px 5px black;
      border-radius: 5px;
+     margin-top : 100px;
  }
 
  .trainerRegister hr {
@@ -249,6 +254,24 @@
     top : 30%;
 }
 
+.resetPasswordContainer, .changePasswordContainer{
+
+    background-image: url('../images/registerBg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height : 100vh;
+    overflow: hidden;
+}
+
+.resetPasswordContainer .row .col-lg-6 form,
+.changePasswordContainer .row .col-lg-6 form{
+    margin-top : 200px;
+    padding : 25px 30px;
+}
+.resetPasswordContainer .row .col-lg-6 form h3{
+    text-align: center;
+}
 
  /* RESPONSIVE */
  /* ---------------------------------------------------------------------------- */

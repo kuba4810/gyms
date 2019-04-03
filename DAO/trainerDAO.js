@@ -1,4 +1,5 @@
 const randomstring = require('randomstring');
+const dateService = require('../Services/date');
 const fs = require('fs');
 
 // CREATE NEW TRAINER
@@ -707,6 +708,110 @@ async function deletePhoto(photo_name, connection) {
 
 }
 
+// GENERATE CHANGE PASWORD CODE
+// ----------------------------------------------------------------------------
+async function generatePasswordCode(trainer_id, connection) {
+
+
+    try {
+
+        let isValid = true;
+        let code;
+        let ifExists = false;
+
+        // Check if code already exists
+        res = await connection.query(`SELECT * FROM trainers.change_password_code WHERE
+            trainer_id = $1`, [trainer_id]);
+
+        if (res.rows.length > 0) {
+            ifExists = true;
+        }
+
+        // Generate unique code
+        do {
+
+            code = randomstring.generate(20);
+
+            // Check user codes
+            res = await connection.query(`SELECT code FROM kuba.change_password_code
+        WHERE code = $1`, [code])
+
+            if (res.rows.length > 0) {
+                isValid = false;
+            } else {
+                isValid = true;
+            }
+
+            // Check trainer codes
+            res = await connection.query(`SELECT code FROM trainers.change_password_code
+         WHERE code = $1`, [code])
+
+            if (res.rows.length > 0) {
+                isValid = false;
+            } else {
+                isValid = true;
+            }
+
+        } while (isValid = false)
+
+        // Prepare propert query
+        let query;
+        let values;
+        if (!ifExists) {
+            query = `INSERT INTO trainers.change_password_code(
+            trainer_id, code, lapse_date)
+            VALUES ($1,$2,$3)`
+            values = [trainer_id, code, await dateService.addXDays(7)];
+        } else {
+
+            query = `UPDATE trainers.change_password_code
+                 SET code = $1,
+                     lapse_date = $2
+                 WHERE trainer_id = $3`;
+            values = [code, await dateService.addXDays(7), trainer_id];
+        }
+
+        // Execute query
+        res = await connection.query(query, values);
+
+        return {
+            response: 'success',
+            code: code
+        }
+
+    } catch (error) {
+        console.log(error);
+        return {
+            response: 'failed'
+        }
+    }
+
+}
+
+// CHANGE PASSWORD
+// ----------------------------------------------------------------------------
+async function changePassword(trainer_id, password, connection) {
+
+    try {
+
+        let res = await connection.query(`UPDATE trainers.trainer SET passw = $1 
+            WHERE trainer_id = $2`,[password,trainer_id]);
+
+        return {
+            response: 'success'
+        }
+
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response: 'failed'
+        }
+    }
+
+}
+
+
 
 
 
@@ -730,6 +835,8 @@ module.exports = {
     addPhoto: addPhoto,
     deleteAvatar: deleteAvatar,
     getTrainerId: getTrainerId,
-    deletePhoto: deletePhoto
+    deletePhoto: deletePhoto,
+    generatePasswordCode : generatePasswordCode,
+    changePassword : changePassword
 
 }

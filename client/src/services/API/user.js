@@ -274,3 +274,105 @@ export const deleteAvatar = async (login) => {
     }
 
 }
+
+
+// RESET PASSWORD
+// ----------------------------------------------------------------------------
+export const reserPassword = async (userData) => {
+
+    try {
+
+        let res = await axios.post(`${URL}user/reset-code`,userData);
+        
+        console.log('API : ',res.data);
+
+        if (res.data.response === 'failed') {
+            throw {
+                errorCode : res.data.errorCode
+            }
+        }
+
+        return {
+            response: 'success'
+        }
+        
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response : 'failed',
+            errorCode : error.errorCode
+        }
+    }
+
+}
+
+// CHECK RESET PASSWORD CODE
+// ----------------------------------------------------------------------------
+export const checkCode = async (code) =>{
+
+    try {
+        console.log('API checkCode')
+
+        let res = await axios.post(`${URL}user/check-code`,{
+            code : code
+        });
+
+        console.log('API response : ',res.data)
+
+        if(res.data.response === 'failed'){
+            throw {
+                errorCode : res.data.errorCode
+            }
+        }
+
+        console.log('Zwracam sukces !')
+
+        return {
+            response : 'success',
+            id : res.data.id,
+            type : res.data.type
+        }
+
+
+        
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response : 'failed',
+            errorCode : error.errorCode ? error.errorCode : 0
+        }
+    }
+    
+
+}
+
+// CHANGE PASSWORD
+// ------------------------------------------------------------------------
+export const changePassword = async (user_id,password) => {
+
+    try {
+
+        let res = await axios.post(`${URL}user/change-password`,{
+            user_id : user_id,
+            password : password
+        })
+
+        if(res.data.response === 'failed'){
+            throw 'failed'
+        }
+
+        return {
+            response : 'success'
+        }
+        
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
+    }
+
+}

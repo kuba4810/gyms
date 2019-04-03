@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 const confirmationTemplate = require('./mailTemplates/confirmationMail');
 const welcomeMail = require('./mailTemplates/trainerWelcomeMail');
+const passwordReset = require('./mailTemplates/passwordReset');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -38,7 +39,7 @@ async function sendEmail(user_id, verification_code, email, login) {
   });
 }
 
-async function trainerWelcomeMail(data){
+async function trainerWelcomeMail(data) {
 
   var mailOptions = {
     from: 'SILOWNIE-INFO',
@@ -50,21 +51,50 @@ async function trainerWelcomeMail(data){
   try {
 
     let res = await transporter.sendMail(mailOptions);
-    console.log('Rezultat z maila : ',res);
-    
-    if(res){
+    console.log('Rezultat z maila : ', res);
+
+    if (res) {
       return 'success'
     }
-    
+
   } catch (error) {
 
-    console.log(error);    
+    console.log(error);
     return 'failed';
 
   }
 
 }
 
+// PASSWORD RESET CODE
+// ----------------------------------------------------------------------------
+async function passwordResetCode(data) {
+  var mailOptions = {
+    from: 'SILOWNIE-INFO',
+    to: data.mail,
+    subject: 'Zmiana hasła',
+    html: passwordReset(data)
+  };
+
+  try {
+
+    let res = await transporter.sendMail(mailOptions);
+    console.log('Rezultat z maila : ', res);
+
+    if (res) {
+      return 'success'
+    }
+
+  } catch (error) {
+
+    console.log(error);
+    return 'failed';
+
+  }
+}
+
 module.exports = {
-  trainerWelcomeMail : trainerWelcomeMail
+  trainerWelcomeMail: trainerWelcomeMail,
+  passwordResetCode : passwordResetCode,
+  passwordResetCode : passwordResetCode
 }

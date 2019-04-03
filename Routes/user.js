@@ -1,4 +1,5 @@
 const userDAO = require('../DAO/userDAO');
+const trainerDAO = require('../DAO/trainerDAO');
 const sendMail = require('../Services/email');
 const multer = require("multer");
 const fileToArrayBuffer = require('file-to-array-buffer');
@@ -377,7 +378,7 @@ module.exports = (app, client) => {
             WHERE user_id = $8;`;
 
             values = [data.data.first_name, data.data.last_name, data.data.login,
-                 data.data.height, data.data.mass,
+                data.data.height, data.data.mass,
                 data.data.favourite_exercise, data.data.phone_number,
                 data.id
             ];
@@ -390,7 +391,7 @@ module.exports = (app, client) => {
                      WHERE trainer_id = $6;`;
             values = [data.data.first_name, data.data.last_name, data.data.city,
                 data.data.voivodeship, data.data.login,
-                 data.id
+                data.id
             ];
         }
 
@@ -517,7 +518,149 @@ module.exports = (app, client) => {
 
         try {
 
-            let res = userDAO.deleteAvatar(request.body.login,client);
+            let res = userDAO.deleteAvatar(request.body.login, client);
+
+            if (res.response === 'failed') {
+                throw 'failed'
+            }
+
+            response.send({
+                response: 'success'
+            })
+
+        } catch (error) {
+            console.log(error);
+
+            response.send({
+                reponse: 'failed'
+            })
+        }
+
+    });
+
+    // GENERATE RESET CODE
+    // ------------------------------------------------------------------------
+    app.post('/api/user/reset-code', async (request, response) => {
+
+        // console.log('Resetowanie hasła...', request.body)
+
+        try {
+
+            let data = request.body;
+
+            // Find user
+            let res = await userDAO.getUserByMail(data.mail, client);
+
+            if (res.response === 'failed') {
+
+                throw {
+                    errorCode: -1
+                }
+
+            }
+
+            let userData = {
+                id: res.type === 'user' ? res.data.user_id : res.data.trainer_id,
+                login: res.data.login,
+                mail: data.mail,
+                type: res.type
+            }
+
+            // Generate code
+           if(userData.type === 'user'){
+                res = await userDAO.generatePasswordCode(userData.id, client);
+           } else {
+                res = await trainerDAO.generatePasswordCode(userData.id, client);
+           }
+
+            console.log(res);
+
+            if (res.response === 'failed') {
+                throw {
+                    errorCode: 0
+                }
+            }
+
+            // Send mail
+            const mailData = Object.assign({}, userData, {
+                code: res.code
+            })
+
+            res = await sendMail.passwordResetCode(mailData);
+
+            if (res === 'failed') {
+                throw {
+                    errorCode: 0
+                }
+            }
+
+            response.send({
+                response: 'success'
+            })
+
+
+
+        } catch (error) {
+
+            console.log('Błąd endpoint : ', error);
+
+            response.send({
+                response: 'failed',
+                errorCode: error.errorCode
+            })
+
+        }
+
+    })
+
+    // FIND USER BY PASSWORD RESET CODE
+    // ------------------------------------------------------------------------
+    app.post('/api/user/check-code', async (request, response) => {
+
+        try {
+
+            console.log('Endpoint check Code',request.body);
+            let res = await userDAO.findUserByPswCode(request.body.code, client);
+
+            console.log('Endpoint response',res);
+
+            if(res.response === 'failed'){
+                throw {
+                    errorCode : res.errorCode
+                }
+            }
+
+            console.log('Zwracam sukces :D');
+
+            response.send({
+                response : 'success',
+                id : res.id,
+                type : res.type
+            });
+
+
+        } catch (error) {
+
+            console.log(error);
+
+            response.send({
+                response: 'failed',
+                errorCode : error.errorCode ? error.errorCode : 0
+            })
+
+        }
+
+    });
+
+    // CHANGE PASSWORD
+    // ------------------------------------------------------------------------
+    app.post('/api/user/change-password', async (request, response) => {
+
+        try {
+
+            let data = request.body;
+
+            let res = await userDAO.changePassword(data.user_id,data.password, client);
 
             if(res.response === 'failed'){
                 throw 'failed'
@@ -528,11 +671,11 @@ module.exports = (app, client) => {
             })
 
         } catch (error) {
-            console.log(error);
 
             response.send({
-                reponse: 'failed'
+                response: 'failed'
             })
+
         }
 
     });

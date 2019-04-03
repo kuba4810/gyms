@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {logedIn} from '../../Actions'
 import {changeStorageState} from '../../services/localStorage'
+import {Link} from 'react-router-dom'
 
 class Login extends React.Component{
 
@@ -145,11 +146,22 @@ class Login extends React.Component{
                                    {this.state.isLoading &&  <div className="littleSpinner" ></div>}
                                     <span className="loginWarning">{this.state.loginState}</span> <br/>
                                     
-                                </label> <br/>
+                                </label>
+
+                                
 
                                 <label class="loginFormCheckContainer">Jestem trenerem
                                 <input type="checkbox" onChange={this.handleCheck}/>
                                 <span class="checkmark"></span>
+                                </label>
+
+                                <label>
+                                    Zapomniałeś hasła ? 
+                                    <div className="btn btn-danger ml-3">
+                                        <Link to={'/resetowanie-hasla'} className="text-light">
+                                            Resetuj
+                                        </Link>
+                                    </div>
                                 </label>
                                
                         </form>

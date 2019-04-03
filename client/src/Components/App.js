@@ -8,6 +8,8 @@ import Trainers from './PersonalTrainers/PersonalTrainer'
 import Forum from './Forum/Forum.js'
 import UserContainer from './User/UserContainer'
 import TrainerRegister from './TrainerRegister';
+import ResetPasswordContainer from './User/ResetPassword/ResetPaswordContainer';
+import ChangePassword from './User/ResetPassword/ChangePassword';
 
 
 
@@ -23,6 +25,8 @@ class App extends Component {
                     <Route  path="/uzytkownik" component={UserContainer}/>
                     <Route path="/trener-rejestracja" component={TrainerRegister} />
                     <Route path="/rejestracja" component={TrainerRegister} />
+                    <Route path="/resetowanie-hasla" component = {ResetPasswordContainer} />
+                    <Route path="/nowe-haslo/:code" component = {ChangePassword} />
                 </div>
             </Router>
         );

@@ -530,7 +530,7 @@ class Register extends Component {
 
 
         return (
-            <div className="trainerRegister  mt-5">
+            <div className="trainerRegister ">
 
 
                 <LoginForm />
@@ -571,7 +571,7 @@ class Register extends Component {
                     <div className="col-lg-6 col-md-8 col-sm-10 ml-auto mr-auto pt-5 pb-5">
 
                         {/* Form */}
-                        <form action="javascript:void(0)"
+                        <form action="javascript:void(0) mt-5"
                             className="bg-light text-dark p-3 animated fadeIn">
 
                             {/* Legend */}

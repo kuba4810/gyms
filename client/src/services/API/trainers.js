@@ -375,3 +375,33 @@ export const deletePhoto = async (photo_name) => {
     }
 
 }
+
+
+// CHANGE PASSWORD
+// ------------------------------------------------------------------------
+export const changeTrainerPassword = async (trainer_id,password) => {
+
+    try {
+
+        let res = await axios.post(`${URL}trainer/change-password`,{
+            trainer_id : trainer_id,
+            password : password
+        })
+
+        if(res.data.response === 'failed'){
+            throw 'failed'
+        }
+
+        return {
+            response : 'success'
+        }
+        
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response : 'failed'
+        }
+    }
+
+}

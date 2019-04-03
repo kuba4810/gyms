@@ -1,16 +1,17 @@
 const trainerDAO = require('../DAO/trainerDAO');
 const trainingDAO = require('../DAO/trainingDAO');
 const mail = require('../Services/email');
+const userDAO = require('../DAO/userDAO');
 
 module.exports = (app, client) => {
 
-    app.get('/api/trainers', async (request,response)=>{
+    app.get('/api/trainers', async (request, response) => {
         try {
 
             let res = await client.query(`SELECT * FROM trainers.trainer`);
 
             response.send(res.rows)
-            
+
         } catch (error) {
             console.log(error);
         }
@@ -524,8 +525,8 @@ module.exports = (app, client) => {
 
             let res = await trainerDAO.getTrainerData(request.params.id, client)
 
-            console.log('Dane trenera: ',res);
-            
+            console.log('Dane trenera: ', res);
+
 
             if (res.response === 'success') {
                 response.send({
@@ -577,14 +578,14 @@ module.exports = (app, client) => {
     app.post('/api/package', async (request, response) => {
 
         console.log('Endpoint : ', request.body);
-        
+
         console.log('Add package...');
-        
+
         try {
 
             let res = await trainerDAO.addPackage(request.body, client);
 
-            
+
             response.send({
                 response: res.response
             })
@@ -606,7 +607,7 @@ module.exports = (app, client) => {
         try {
 
             console.log(request.body);
-            
+
 
             let res = await trainerDAO.editPackage(request.body, client);
 
@@ -635,7 +636,7 @@ module.exports = (app, client) => {
 
             response.send({
                 response: res.response,
-                package_id : res.package_id
+                package_id: res.package_id
             })
 
 
@@ -655,7 +656,7 @@ module.exports = (app, client) => {
 
         try {
 
-            let res = await  trainerDAO.addSKill(request.body, client);
+            let res = await trainerDAO.addSKill(request.body, client);
 
             if (res.response = 'success') {
                 response.send({
@@ -687,7 +688,7 @@ module.exports = (app, client) => {
             let res = await trainerDAO.editSkill(request.body, client);
 
             response.send({
-                response : res.response
+                response: res.response
             })
 
 
@@ -709,7 +710,7 @@ module.exports = (app, client) => {
             let res = await trainerDAO.deleteSkill(request.body.skill_id, client);
 
             response.send({
-                response : res.response
+                response: res.response
             })
 
 
@@ -725,29 +726,29 @@ module.exports = (app, client) => {
 
     // CHANGE AVATAR
     // ------------------------------------------------------------------------
-    app.post('/api/trainer/avatar', async (request,response) =>{
+    app.post('/api/trainer/avatar', async (request, response) => {
 
         try {
 
-            console.log('Trainer change photo',request.files);
+            console.log('Trainer change photo', request.files);
             let file = request.files.avatar;
             let fileName = request.files.avatar.name;
 
-            let res = trainerDAO.changePhoto(file,fileName,client);
+            let res = trainerDAO.changePhoto(file, fileName, client);
 
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw 'failed'
             }
 
             response.send({
-                response : 'success'
+                response: 'success'
             })
-            
+
         } catch (error) {
-            
+
             console.log(error);
             response.send({
-                response : 'failed'
+                response: 'failed'
             })
 
         }
@@ -757,8 +758,8 @@ module.exports = (app, client) => {
 
     // ADD NEW PHOTO
     // ------------------------------------------------------------------------
-    app.post('/api/trainer/photo', async (request,response) =>{
-        
+    app.post('/api/trainer/photo', async (request, response) => {
+
         try {
 
             // console.log('Trainer add photo...',request.files);
@@ -772,32 +773,32 @@ module.exports = (app, client) => {
             // console.log(login);
 
             // Get trainer id
-            let res = await trainerDAO.getTrainerId(fileName,client);
+            let res = await trainerDAO.getTrainerId(fileName, client);
 
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw 'failed'
             }
 
             res = res.trainer_id;
 
             // Add photo
-            res = await trainerDAO.addPhoto(file,fileName,res,client);
+            res = await trainerDAO.addPhoto(file, fileName, res, client);
 
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw 'failed'
             }
 
             response.send({
-                response : 'success',
-                photo_id : res.photo_id
+                response: 'success',
+                photo_id: res.photo_id
             })
-            
+
         } catch (error) {
-            
+
             console.log(error);
 
             response.send({
-                response : 'failed'
+                response: 'failed'
             })
 
         }
@@ -810,14 +811,14 @@ module.exports = (app, client) => {
 
         try {
 
-            let res = trainerDAO.deleteAvatar(request.body.login,client);
+            let res = trainerDAO.deleteAvatar(request.body.login, client);
 
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw 'failed'
             }
 
             response.send({
-                response : 'success'
+                response: 'success'
             })
 
         } catch (error) {
@@ -836,14 +837,14 @@ module.exports = (app, client) => {
 
         try {
 
-            let res = trainerDAO.deletePhoto(request.body.photo_name,client);
+            let res = trainerDAO.deletePhoto(request.body.photo_name, client);
 
-            if(res.response === 'failed'){
+            if (res.response === 'failed') {
                 throw 'failed'
             }
 
             response.send({
-                response : 'success'
+                response: 'success'
             })
 
         } catch (error) {
@@ -855,4 +856,35 @@ module.exports = (app, client) => {
         }
 
     });
+
+
+
+     // CHANGE PASSWORD
+    // ------------------------------------------------------------------------
+    app.post('/api/trainer/change-password', async (request, response) => {
+
+        try {
+
+            let data = request.body;
+
+            let res = await trainerDAO.changePassword(data.trainer_id,data.password, client);
+
+            if(res.response === 'failed'){
+                throw 'failed'
+            }
+
+            response.send({
+                response : 'success'
+            })
+
+        } catch (error) {
+
+            response.send({
+                response: 'failed'
+            })
+
+        }
+
+    });
+
 };

@@ -7,6 +7,8 @@
                <div class="loaderInner"></div>
                <div class="loaderInnerSmall"></div>
             </div>
+
+          
         </div>
     );
 }

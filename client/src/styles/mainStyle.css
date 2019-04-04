@@ -370,6 +370,13 @@ footer {
     */
 }
 
+.color-red51{
+    color : rgb(251,51,51);
+}
+
+.color-red-FE493B{
+    color :#FE493B;
+}
 
 @media screen and (max-width: 650px)
 {

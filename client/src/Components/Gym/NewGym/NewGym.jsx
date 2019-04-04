@@ -26,14 +26,14 @@ class NewGym extends React.Component {
                 description: ''
             },
             formValid: false,
-            name: 'bbb',
-            city: 'bbb',
-            street: 'bbb',
+            name: '',
+            city: '',
+            street: '',
             post_code: '',
             phone_number: '',
             landline_number: '',
-            mail: 'bbb@op.pl',
-            description: 'bbb',
+            mail: '',
+            description: '',
             monO: '',
             tueO: '',
             wedO: '',
@@ -94,7 +94,7 @@ class NewGym extends React.Component {
 
         let file = e.target.files[0];
 
-        console.log('Zmieniony obraz : ',file)
+        console.log('Zmieniony obraz : ', file)
 
         this.setState({
             picturesToSend: [...picturesToSend]
@@ -106,7 +106,7 @@ class NewGym extends React.Component {
 
     // SAVE PHOTOS
     // ------------------------------------------------------------------------
-    sendPhotos = async (gym_id,gym_name) =>{
+    sendPhotos = async (gym_id, gym_name) => {
 
         const formData = new FormData();
 
@@ -115,14 +115,14 @@ class NewGym extends React.Component {
         for (let index = 0; index < photos.length; index++) {
             const el = photos[index];
 
-            formData.append('image',el,`${gym_id}_${gym_name}`);
-            
+            formData.append('image', el, `${gym_id}_${gym_name}`);
+
         }
 
         let res = await savePhotos(formData);
 
         return {
-            response : res.response
+            response: res.response
         }
 
         console.log(res)
@@ -378,16 +378,16 @@ class NewGym extends React.Component {
 
                 let res = await createGym(data);
 
-                console.log('Odpowiedź z serwera : ',res)
+                console.log('Odpowiedź z serwera : ', res)
 
                 if (res.response === 'failed') {
-                    if(res.message){
+                    if (res.message) {
                         throw {
-                            myMessage : res.message
+                            myMessage: res.message
                         }
                     } else {
                         throw {
-                            type : 'failed'
+                            type: 'failed'
                         }
                     }
                 }
@@ -395,29 +395,29 @@ class NewGym extends React.Component {
 
                 gym_id = res.gym_id;
 
-                res = await this.sendPhotos(gym_id,s.name);
+                res = await this.sendPhotos(gym_id, s.name);
 
-                if(res.response === 'failed'){
+                if (res.response === 'failed') {
                     throw {
-                        type : 'failed'
+                        type: 'failed'
                     }
                 }
 
 
-                // let formatedName = s.name.split(' ').join('-');
-                // history.push(`/silownie/view/${gym_id}/${formatedName}`)
+                let formatedName = s.name.split(' ').join('-');
+                history.push(`/silownie/view/${gym_id}/${formatedName}`)
 
-                
+
 
             } catch (error) {
                 console.log(error);
 
-                if(error.myMessage){
+                if (error.myMessage) {
                     alert(error.myMessage);
                 } else {
                     alert('Wystąpił błąd, spróbuj ponownie później !')
                 }
-                
+
             }
 
             // fetch('http://localhost:8080/api/gym', {
@@ -434,17 +434,17 @@ class NewGym extends React.Component {
             //     .then(res => {
 
             //         console.log('Odpowiedź z serwera : ',res)
-                    // if (res.response !== 'success') {
-                    //     alert('Wystąpił błąd !')
-                    // }
-                    // else {
-                    //     gym_id = res.gym_id;
-                    // }
+            // if (res.response !== 'success') {
+            //     alert('Wystąpił błąd !')
+            // }
+            // else {
+            //     gym_id = res.gym_id;
+            // }
             //     })
 
             // .then(() => {
-                // let formatedName = s.name.split(' ').join('-');
-                // history.push(`/silownie/view/${gym_id}/${formatedName}`)
+            // let formatedName = s.name.split(' ').join('-');
+            // history.push(`/silownie/view/${gym_id}/${formatedName}`)
             // })
 
         }
@@ -570,19 +570,28 @@ class NewGym extends React.Component {
             (<PackageItem packageData={p} key={index} deletePackage={this.deletePackage.bind(this, index)} />));
 
         pictures = this.state.pictures.map(pic => (
-            <div className="userAvatar">
+            <div className="userAvatar mr-2">
                 <img src={pic} alt="" />
             </div>))
 
 
 
         return (
-            <div>
+            <div className="newGymContainer row">
 
-                <div className="text-white bg-secondary">
-                    <h1 className="text-center pt-5 mt-5">Dodawanie nowej siłowni</h1>
+                {this.state.gymIsAdding &&
+                    <div className="spinnerContainer ">
+                        <div className="spinnerContent text-light text-center">
+                            <Spinner />
+                            Trwa dodawanie siłowni !
+                        </div>
+                    </div>}
+
+                <div className="newGymContainerForms rounded text-dark col-lg-6 col-md-8 col-sm-10 mr-auto ml-auto animated fadeIn">
+
+                    <h1 className="text-center pt-5 color-red-FE493B">Dodawanie nowej siłowni</h1>
                     {/* Spinner */}
-                    {this.state.gymIsAdding && <Spinner />}
+
 
                     {/* Podstawowe dane */}
                     {/* ------------------------------------------------------------------------------- */}
@@ -593,7 +602,7 @@ class NewGym extends React.Component {
                     </div>
 
                     <form className="newGymForm primaryData animated" onSubmit={this.handleSubmit}>
-                        <div className="form-group col-6 mx-auto">
+                        <div className="form-group mx-auto">
                             {/* name */}
                             <label htmlFor="name">
                                 *Nazwa <span className="inputError"> {this.state.errors.name} </span>
@@ -662,79 +671,76 @@ class NewGym extends React.Component {
                     <hr />
                     </div>
 
-                    <form className="openingHoursForm newGymForm col-lg-8 col-md-10 col-sm-12 mx-auto d-flex  justify-content-around ">
+                    <form className="openingHoursForm  newGymForm mx-auto d-flex justify-content-center ">
 
-
-                        <div className="form-group col-2 ">
+                        <div className="form-group ">
                             <label>Pon</label>
-                            <input type="time" name="monO" className="form-control  col-12"
+                            <input type="time" name="monO" className="form-control "
                                 value={this.state.monO} onChange={this.handleChange} />
 
-                            <input type="time" name="monC" className="form-control col-12"
+                            <input type="time" name="monC" className="form-control"
                                 value={this.state.monC} onChange={this.handleChange} />
                         </div>
 
-                        <div className="form-group col-2">
+                        <div className="form-group">
                             <label>Wt</label>
-                            <input type="time" name="tueO" className="form-control col-12"
+                            <input type="time" name="tueO" className="form-control"
                                 value={this.state.tueO} onChange={this.handleChange} />
 
-                            <input type="time" name="tueC" className="form-control col-12"
+                            <input type="time" name="tueC" className="form-control"
                                 value={this.state.tueC} onChange={this.handleChange} />
                         </div>
 
-                        <div className="form-group col-2">
+                        <div className="form-group">
                             <label htmlFor="">Śr</label>
-                            <input type="time" name="wedO" className="form-control col-12"
+                            <input type="time" name="wedO" className="form-control"
                                 value={this.state.wedO} onChange={this.handleChange} />
 
-                            <input type="time" name="wedC" className="form-control col-12"
+                            <input type="time" name="wedC" className="form-control"
                                 value={this.state.wedC} onChange={this.handleChange} />
                         </div>
 
-                        <div className="form-group col-2">
+                        <div className="form-group">
                             <label htmlFor="">Czw</label>
-                            <input type="time" name="thuO" className="form-control col-12"
+                            <input type="time" name="thuO" className="form-control"
                                 value={this.state.thuO} onChange={this.handleChange} />
 
-                            <input type="time" name="thuC" className="form-control col-12"
+                            <input type="time" name="thuC" className="form-control"
                                 value={this.state.thuC} onChange={this.handleChange} />
                         </div>
 
-                    </form>
 
-                    <form className="openingHoursForm newGymForm col-lg-8 col-md-10 col-sm-12 mx-auto d-flex  justify-content-around ">
-                        <div className="form-group col-2">
+                        <div className="form-group">
                             <label htmlFor="">Pt</label>
-                            <input type="time" name="friO" className="form-control col-12"
+                            <input type="time" name="friO" className="form-control"
                                 value={this.state.friO} onChange={this.handleChange} />
 
-                            <input type="time" name="friC" className="form-control col-12"
+                            <input type="time" name="friC" className="form-control"
                                 value={this.state.friC} onChange={this.handleChange} />
                         </div>
 
-                        <div className="form-group col-2">
+                        <div className="form-group">
                             <label htmlFor="">Sob</label>
-                            <input type="time" name="satO" className="form-control col-12"
+                            <input type="time" name="satO" className="form-control"
                                 value={this.state.satO} onChange={this.handleChange} />
 
-                            <input type="time" name="satC" className="form-control col-12"
+                            <input type="time" name="satC" className="form-control"
                                 value={this.state.satC} onChange={this.handleChange} />
                         </div>
 
-                        <div className="form-group col-2">
+                        <div className="form-group">
                             <label htmlFor="">Nd</label>
-                            <input type="time" name="sunO" className="form-control col-12"
+                            <input type="time" name="sunO" className="form-control"
                                 value={this.state.sunO} onChange={this.handleChange} />
 
-                            <input type="time" name="sunC" className="form-control col-12"
+                            <input type="time" name="sunC" className="form-control"
                                 value={this.state.sunC} onChange={this.handleChange} />
                         </div>
                     </form>
 
                     {/* Oferty */}
                     {/* ------------------------------------------------------------------------------- */}
-                    <div className="formTitle text-center col-6 mx-auto pt-5">
+                    <div className="formTitle  mx-auto pt-5 pl-5">
                         <h4>Oferta</h4>
                         Dodaj oferty jakie są dostępne w Twojej siłowni (Siłownia,Basen,Sauna...)
                    <hr />
@@ -746,13 +752,13 @@ class NewGym extends React.Component {
                         </ul>
                     </div>
 
-                    <div className="formTitle addOffer col-6 mx-auto text-center">
-                        <i className="fas fa-plus-circle showOfferForm"
+                    <div className="formTitle addOffer mx-auto text-left">
+                        <i className="fas fa-plus-circle showOfferForm pl-5"
                             onClick={this.showOfferForm} data-toggle="collapse" data-target="#offerForm">
                         </i>
                     </div>
 
-                    <form id="offerForm" className="newGymForm offerForm collapse col-6 mx-auto" onSubmit={this.handleOfferSubmit}>
+                    <form id="offerForm" className="newGymForm offerForm collapse  pl-5" onSubmit={this.handleOfferSubmit}>
                         <label htmlFor="offerName">Nazwa oferty</label>
                         <input name="offerName" type="text" className="form-control" />
 
@@ -767,11 +773,12 @@ class NewGym extends React.Component {
                     {/* Pakiety */}
                     {/* ------------------------------------------------------------------------------- */}
 
-                    <div className="formTitle col-6 mx-auto text-center">
+                    <div className="formTitle  mx-auto pl-5 pt-5">
                         <h3>Cennik</h3>
                         Dodaj pakiety jakie Twoja siłownia oferuje. <br />
-                        Przykład: 1 wejście, 6zł , 1raz
-                   <hr />
+                        Przykład: Siłownia, 6zł , 1 wejście
+                    <hr className="bg-dark" />
+
                     </div>
 
                     <div className="formTitle">
@@ -780,13 +787,13 @@ class NewGym extends React.Component {
                         </ul>
                     </div>
 
-                    <div className="formTitle addPackages col-6 mx-auto text-center">
-                        <i className="fas fa-plus-circle showPackageForm"
+                    <div className="formTitle addPackages c mx-auto text-left">
+                        <i className="fas fa-plus-circle showPackageForm pl-5"
                             onClick={this.showOfferForm} data-toggle="collapse" data-target="#packageForm">
                         </i>
                     </div>
 
-                    <form id="packageForm" className=" newGymForm packageForm collapse col-6 mx-auto" onSubmit={this.handlePackageSubmit}>
+                    <form id="packageForm" className=" newGymForm packageForm collapse col-6 pl-5" onSubmit={this.handlePackageSubmit}>
 
                         <label htmlFor="packageName">Nazwa pakietu</label>
                         <input name="packageName" type="text" className="form-control" />
@@ -804,14 +811,16 @@ class NewGym extends React.Component {
 
                     {/* Wyposażenie */}
                     {/* ------------------------------------------------------------------------------- */}
-                    <div className="formTitle col-6 mx-auto text-center">
+                    <div className="formTitle mx-auto pl-5 pt-5">
                         <h3>Wyposażenie</h3>
                         Zaznacz dostępne w Twojej siłowni wyposażenie.
                    <hr />
                     </div>
 
-                    <form className="equipment col-10 mx-auto d-flex justify-content-around">
-                        <div className="form-group">
+                    <form className="equipment mx-auto pl-5 d-flex justify-content-start flex-wrap">
+
+
+                        <div className="form-group mr-2">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" value='Atlas' onChange={this.handleCheck} />
                                 <label class="form-check-label" for="exampleCheck1">Atlas</label>
@@ -830,7 +839,7 @@ class NewGym extends React.Component {
                             </div>
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group mr-2">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" value='Hantle' onChange={this.handleCheck} />
                                 <label class="form-check-label" for="exampleCheck1">Hantle</label>
@@ -849,7 +858,7 @@ class NewGym extends React.Component {
                             </div>
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group mr-2">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" value="Piłki treningowe" onChange={this.handleCheck} />
                                 <label class="form-check-label" for="exampleCheck1">Piłki treningowe</label>
@@ -869,7 +878,7 @@ class NewGym extends React.Component {
                         </div>
 
 
-                        <div className="form-group">
+                        <div className="form-group mr-2">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" value="Suwnice do wypychania" onChange={this.handleCheck} />
                                 <label class="form-check-label" for="exampleCheck1">Suwnice do wypychania</label>
@@ -888,7 +897,7 @@ class NewGym extends React.Component {
                             </div>
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group mr-2">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" value="Piłki fitness" onChange={this.handleCheck} />
                                 <label class="form-check-label" for="exampleCheck1">Piłki fitness</label>
@@ -906,18 +915,39 @@ class NewGym extends React.Component {
                                 <label class="form-check-label" for="exampleCheck1">Maszyny hammer</label>
                             </div>
                         </div>
+
+                        <div className="form-group mr-2">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" value="Skakanki" onChange={this.handleCheck} />
+                                <label class="form-check-label" for="exampleCheck1">Skakanki</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" value="Sklep" onChange={this.handleCheck} />
+                                <label class="form-check-label" for="exampleCheck1">Sklep</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" value="Hula hop" onChange={this.handleCheck} />
+                                <label class="form-check-label" for="exampleCheck1">Hula hop</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" value="Maszyny hammer" onChange={this.handleCheck} />
+                                <label class="form-check-label" for="exampleCheck1">Maszyny hammer</label>
+                            </div>
+                        </div>
                     </form>
 
                     {/* Zdjęcie */}
                     {/* ------------------------------------------------------------------------------- */}
-                    <div className="formTitle mx-auto clo-6 text-center">
+                    <div className="formTitle pl-5">
                         <h3>Zdjęcia</h3>
                         Dodaj zdjęcia do swojej siłowni
-                   <hr />
+                     <hr />
                     </div>
 
-                    <input type="file" name="file" id="file" class="inputfile" onChange={this.handlePhotoChange} />
-                    <label for="file">Choose a file</label>
+                    <div className="pl-5">
+                        <input type="file" name="file" id="file" class="inputfile" onChange={this.handlePhotoChange} />
+                        <label for="file">Choose a file</label>
+                    </div>
 
                     {/* <div className="gymImagesUpload col-6 mx-auto">
                     <ImageUploader
@@ -932,7 +962,7 @@ class NewGym extends React.Component {
                         <button onClick={this.fileUploadHandler} >Wyślij</button> */}
                     {/* </div> */}
 
-                    <div className="formTitle gymImagesUploadList">
+                    <div className="formTitle gymImagesUploadList d-flex pl-5">
                         {pictures}
                     </div>
 

@@ -14,17 +14,41 @@
  /* ------------------------------------------------------------------------- */
  /* ------------------------------------------------------------------------- */
 
+ .gymContainer{
+    overflow-x:hidden;
+ }
+  .newGymContainer, .trainerRegister{
+    background-image: url('../images/registerBg.jpg');
+    background-position: center;
+    background-size : cover;
+    background-attachment: fixed;
+  }
 
+  .newGymContainer {
+      padding-top : 100px;
+      
+      
+  }
+  .newGymContainer i{
+    cursor : pointer;
+  }
+
+  .newGymForm label {
+      font-weight: bold;
+  }
+
+  .newGymContainerForms{
+      background-color: #FEF8DC;
+      margin-bottom : 50px;
+
+  }
  .trainerRegister {
      max-width: 100%;
      min-height: 100vh;
      /* background-color: cornsilk; */
      overflow-x: hidden;
      /* background-color: #151515; */
-     background-image: url('../images/registerBg.jpg');
-     background-position: center;
-     background-size : cover;
-     background-attachment: fixed;
+  
  }
 
  .trainerRegister form {
@@ -271,6 +295,29 @@
 }
 .resetPasswordContainer .row .col-lg-6 form h3{
     text-align: center;
+}
+
+.equipment .form-group input{
+    cursor:pointer;
+}
+
+.spinnerContainer{
+    position : fixed;
+    top:0;
+    width:110%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.7);
+    margin : 0;
+    padding : 0;
+    z-index : 999999999999999;
+}
+
+.spinnerContent{
+    position : absolute;
+    width : 50%;
+    left : 20%;
+    top : 50%;
+    font-size: 20px;
 }
 
  /* RESPONSIVE */

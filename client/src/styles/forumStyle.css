@@ -133,6 +133,10 @@ textarea {
 
 }
 
+.menuInvisible{
+    
+}
+
 .loginUser {
     /*display: none;*/
     position: absolute;
@@ -2183,6 +2187,22 @@ span.psw {
 
     left : 5% !important
 
+}
+.hamburgerButton{
+    position : absolute;
+    cursor : pointer;
+    top:5px;
+    left:5px;
+    display: none;
+    cursor:pointer;
+}
+
+.hamburgerButton div{
+    width: 35px;
+    height: 5px;
+    background-color: cornsilk;
+    margin: 6px 0; 
+   
 }
 
 .showForumNav{

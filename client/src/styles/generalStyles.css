@@ -14,47 +14,51 @@
  /* ------------------------------------------------------------------------- */
  /* ------------------------------------------------------------------------- */
 
- .gymContainer{
-    overflow-x:hidden;
+ .gymContainer {
+     overflow-x: hidden;
  }
-  .newGymContainer, .trainerRegister{
-    background-image: url('../images/registerBg.jpg');
-    background-position: center;
-    background-size : cover;
-    background-attachment: fixed;
-  }
 
-  .newGymContainer {
-      padding-top : 100px;
-      
-      
-  }
-  .newGymContainer i{
-    cursor : pointer;
-  }
+ .newGymContainer,
+ .trainerRegister {
+     background-image: url('../images/registerBg.jpg');
+     background-position: center;
+     background-size: cover;
+     background-attachment: fixed;
+ }
 
-  .newGymForm label {
-      font-weight: bold;
-  }
+ .newGymContainer {
+     padding-top: 100px;
 
-  .newGymContainerForms{
-      background-color: #FEF8DC;
-      margin-bottom : 50px;
 
-  }
+ }
+
+ .newGymContainer i {
+     cursor: pointer;
+ }
+
+ .newGymForm label {
+     font-weight: bold;
+ }
+
+ .newGymContainerForms {
+     background-color: #FEF8DC;
+     margin-bottom: 50px;
+
+ }
+
  .trainerRegister {
      max-width: 100%;
      min-height: 100vh;
      /* background-color: cornsilk; */
      overflow-x: hidden;
      /* background-color: #151515; */
-  
+
  }
 
  .trainerRegister form {
      box-shadow: 0px 0px 5px black;
      border-radius: 5px;
-     margin-top : 100px;
+     margin-top: 100px;
  }
 
  .trainerRegister hr {
@@ -196,145 +200,163 @@
  }
 
 
- .gymSearch  {
-    background-image: url('../images/31-36.jpg');
-    background-size: cover;
-    background-position: center;
-    
-    /* filter: grayscale(100%); */
-}
-.trainerSearch{
-   background-image: url('../images/personalTrainerBg.jpg');
-   background-size: cover;
-   background-position: center;
-  
-}
+ .gymSearch {
+     background-image: url('../images/31-36.jpg');
+     background-size: cover;
+     background-position: center;
 
-.gymSearchContent, .trainerSearchContent {
+     /* filter: grayscale(100%); */
+ }
 
-   
-    width: 100%;
-    height: 100%;
-    padding-top: 150px;
-    padding-bottom: 50px;
-}
+ .trainerSearch {
+     background-image: url('../images/personalTrainerBg.jpg');
+     background-size: cover;
+     background-position: center;
 
-.gymSearchContent{
-   background-color: rgba(0, 0, 0, 0.8);
-}
+ }
 
-.trainerSearchContent{
-   background-color: rgba(0, 0, 0, 0.9);
-}
-.gymListContainer {
-    background-color: cornsilk;
-    width: 100%;
-    margin: 0;
-}
+ .gymSearchContent,
+ .trainerSearchContent {
 
 
+     width: 100%;
+     height: 100%;
+     padding-top: 150px;
+     padding-bottom: 50px;
+ }
 
-.gymSearchContent h1 {
-    letter-spacing: 2px;
-}
+ .gymSearchContent {
+     background-color: rgba(0, 0, 0, 0.8);
+ }
 
-.gymSearchContent .container .row .input-group input {
-    border-radius: 8px;
-    padding: 5px 10px;
-}
+ .trainerSearchContent {
+     background-color: rgba(0, 0, 0, 0.9);
+ }
 
-.card {
-    background-color: #262626;
-   position: relative;;
-   border:none;
-}
+ .gymListContainer {
+     background-color: cornsilk;
+     width: 100%;
+     margin: 0;
+ }
 
-/* .trainerCard{
+
+
+ .gymSearchContent h1 {
+     letter-spacing: 2px;
+ }
+
+ .gymSearchContent .container .row .input-group input {
+     border-radius: 8px;
+     padding: 5px 10px;
+ }
+
+ .card {
+     background-color: #262626;
+     position: relative;
+     ;
+     border: none;
+ }
+
+ /* .trainerCard{
     height: 100px;
 } */
 
-/* .card-body {
+ /* .card-body {
     position: relative;
 }*/
-#gymItemBodyContent{
-   background-color: rgba(30,30,30,0.9);
-   width:100%;
-   height:100%;
-}
-#gymItemBody {
-    background-image: url('../images/gymItem.jpg');
-    background-position: center;
-    background-size : cover;
-} 
+ #gymItemBodyContent {
+     background-color: rgba(30, 30, 30, 0.9);
+     width: 100%;
+     height: 100%;
+ }
 
-.footer-copyright {
-    background-color: #151515;
-}
-.trainerProfileEditContainer{
-    /* position: relative; */
-}
-.editPackage, .editSkill{
-    position: fixed;
-    top : 30%;
-}
+ #gymItemBody {
+     background-image: url('../images/gymItem.jpg');
+     background-position: center;
+     background-size: cover;
+ }
 
-.resetPasswordContainer, .changePasswordContainer{
+ .footer-copyright {
+     background-color: #151515;
+ }
 
-    background-image: url('../images/registerBg.jpg');
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    min-height : 100vh;
-    overflow: hidden;
-}
+ .trainerProfileEditContainer {
+     /* position: relative; */
+ }
 
-.resetPasswordContainer .row .col-lg-6 form,
-.changePasswordContainer .row .col-lg-6 form{
-    margin-top : 200px;
-    padding : 25px 30px;
-}
-.resetPasswordContainer .row .col-lg-6 form h3{
-    text-align: center;
-}
+ .editPackage,
+ .editSkill {
+     position: fixed;
+     top: 30%;
+ }
 
-.equipment .form-group input{
-    cursor:pointer;
-}
+ .resetPasswordContainer,
+ .changePasswordContainer {
 
-.spinnerContainer{
-    position : fixed;
-    top:0;
-    width:110%;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.7);
-    margin : 0;
-    padding : 0;
-    z-index : 999999999999999;
-}
+     background-image: url('../images/registerBg.jpg');
+     background-position: center;
+     background-size: cover;
+     background-attachment: fixed;
+     min-height: 100vh;
+     overflow: hidden;
+ }
 
-.spinnerContent{
-    position : absolute;
-    width : 50%;
-    left : 20%;
-    top : 50%;
-    font-size: 20px;
-}
+ .resetPasswordContainer .row .col-lg-6 form,
+ .changePasswordContainer .row .col-lg-6 form {
+     margin-top: 200px;
+     padding: 25px 30px;
+ }
+
+ .resetPasswordContainer .row .col-lg-6 form h3 {
+     text-align: center;
+ }
+
+ .equipment .form-group input {
+     cursor: pointer;
+ }
+
+ .spinnerContainer {
+     position: fixed;
+     top: 0;
+     width: 110%;
+     height: 100vh;
+     background-color: rgba(0, 0, 0, 0.7);
+     margin: 0;
+     padding: 0;
+     z-index: 999999999999999;
+ }
+
+ .spinnerContent {
+     position: absolute;
+     width: 50%;
+     left: 20%;
+     top: 50%;
+     font-size: 20px;
+ }
 
  /* RESPONSIVE */
  /* ---------------------------------------------------------------------------- */
 
  @media only screen and (max-width: 1200px) {
 
+     .forumHeader .logo {
+         font-size: 35px;
+     }
+
+     .forumHeader .menu {
+         font-size: 25px;
+     }
+
      .forumNav {
          position: fixed !important;
          /* display:none; */
          width: 50%;
          left: -100%;
-         top : 148px;
+         top: 148px;
          background-color: cornsilk;
      }
 
-     .forumNav i.fa-times{
+     .forumNav i.fa-times {
          display: block;
      }
 
@@ -342,28 +364,30 @@
          width: 100% !important;
      }
 
-     .showForumNav{
+     .showForumNav {
          display: block;
      }
 
-     .gallery .bigImage{
-         width : 80%;
-         height : 80vh !important;
+     .gallery .bigImage {
+         width: 80%;
+         height: 80vh !important;
          background-color: red;
-         left : 10%;
-     }
-     .gallery .bigImage img{
-        width : 100%;
-        height : 100%;
+         left: 10%;
      }
 
-     .gallery .bigImage .prevImage, .nextImage{
-
+     .gallery .bigImage img {
+         width: 100%;
+         height: 100%;
      }
+
+     .gallery .bigImage .prevImage,
+     .nextImage {}
 
  }
 
  @media only screen and (max-width: 1100px) {
+
+
 
      .forumMain {
          flex-direction: column;
@@ -411,6 +435,32 @@
  /* PROFILE */
  @media only screen and (max-width: 1000px) {
 
+     .forumHeader {
+         height: 50px;
+     }
+
+     .userMenu {
+         top: 55px;
+         width: 220px;
+     }
+
+     .userOptionsList {
+         font-size: 17px;
+
+     }
+
+     .forumHeader .logo {
+         font-size: 30px;
+     }
+
+     .forumHeader .menu {
+         font-size: 20px;
+     }
+
+     .loginUser {
+         width: 70px;
+     }
+
      .userPersonalData,
      .userForumData {
          width: 100%;
@@ -433,23 +483,26 @@
          bottom: -5% !important;
      }
 
-     .postContentHeader{
-         max-height : 90px;
+     .postContentHeader {
+         max-height: 90px;
      }
+
      /* .postContentHeader .userAvatar a img{
          display: none;
      } */
 
-     .postContentHeader .userAvatar{
-        height : 100%;
-     }
-     .postContentHeader .userAvatar a{
-        height : 100%;
+     .postContentHeader .userAvatar {
+         height: 100%;
      }
 
-      .postContentHeader .userAvatar a img{
-        max-height : 90px;
+     .postContentHeader .userAvatar a {
+         height: 100%;
      }
+
+     .postContentHeader .userAvatar a img {
+         max-height: 90px;
+     }
+
      .topic {
          font-size: 10px;
      }
@@ -459,11 +512,11 @@
      }
 
      .postContentEvaluations {
-         width:11%;
-         
+         width: 11%;
+
      }
 
-     .postContentEvaluations i{
+     .postContentEvaluations i {
          font-size: 20px;
      }
 
@@ -481,63 +534,141 @@
          width: 12%;
      }
 
-     .postContentText, .answerContentText{
+     .postContentText,
+     .answerContentText {
          font-size: 15px;
      }
 
-     .answer{
+     .answer {
          font-size: 15px;
      }
 
-     .beforeAnswers{
+     .beforeAnswers {
          font-size: 20px;
      }
-     .topicsGroupTitle{
+
+     .topicsGroupTitle {
          font-size: 25px;
      }
 
-     .title{
-        font-size: 23px !important; 
+     .title {
+         font-size: 23px !important;
      }
 
-     .sendAnswer{
+     .sendAnswer {
          font-size: 15px;
          padding: 12px 3px;
      }
 
-     .askingQuestionDiv h3{
+     .askingQuestionDiv h3 {
          font-size: 20px !important;
      }
 
-     .saveQuestion{
+     .saveQuestion {
          font-size: 17px;
-         padding : 10px 5px;
+         padding: 10px 5px;
          width: 150px
      }
 
-     .gallery .bigImage{
-        width : 90%;
-        height : 60vh !important;
-        background-color: red;
-        left : 5%;
-    }
-    .gallery .bigImage img{
-       width : 100%;
-       height : 100%;
-    }
-    .gallery .bigImage .prevImage, .nextImage{
-        opacity : 0.5;
-    }
+     .gallery .bigImage {
+         width: 90%;
+         height: 60vh !important;
+         background-color: red;
+         left: 5%;
+     }
+
+     .gallery .bigImage img {
+         width: 100%;
+         height: 100%;
+     }
+
+     .gallery .bigImage .prevImage,
+     .nextImage {
+         opacity: 0.5;
+     }
 
  }
 
  @media only screen and (max-width: 900px) {
-    .postContentTopic, .votesCounter, .postContentEvaluations {
-        font-size: 15px !important;
+    .forumHeader .logo {
+        /* font-size: 20px; */
+        /* display: none; */
+        width: 50%;
+    }
+
+    .forumHeader {
+        justify-content: space-between;
+        background-color: rgba(255, 51, 51, 1);
+    }
+
+
+     .hamburgerButton {
+         display: block;
+     }
+
+     .forumHeader .menu {
+
+        top: 55px;
+        position: fixed;
+        font-size: 13px;
+        height: auto;
+        width: 30%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 51, 51, 1);
+        float: none;
+        padding: 0px 10px;
+        transition : .3s ease;
+        left:5px;
+        border-radius : 5px;
+
+        /* left: -500px; */
+
+    }
+     .menuInvisible{
+         left : -100% !important;
+     }
+
+    
+
+     .forumHeader .menu .menuItem {
+         width: 100%;
+         text-align: center;
+         font-size: 20px;
+     }
+
+     .postContentTopic,
+     .votesCounter,
+     .postContentEvaluations {
+         font-size: 15px !important;
+     }
+
+     .forumHeader .menu {
+         font-size: 18px;
+     }
+ }
+
+ @media only screen and (max-width: 900px) {
+     .forumHeader .menu {
+         font-size: 15px;
+     }
+
+     .forumHeader .logo {
+        font-size: 25px;
+
     }
  }
 
  @media only screen and (max-width: 700px) {
+
+    
+    .forumHeader .logo {
+        font-size: 20px;
+
+    }
+
+     
 
      .userPersonalData,
      .userForumData {
@@ -558,7 +689,7 @@
 
      .stats {
          width: 150px !important;
-         
+
 
      }
 
@@ -571,20 +702,21 @@
          font-size: 8px;
      }
 
-     .postContentTopic{
-         width : 70%;
+     .postContentTopic {
+         width: 70%;
          font-size: 13px !important;
      }
 
-     .postContentEvaluations{
+     .postContentEvaluations {
          width: 15%;
      }
 
      .postContentHeader .userAvatar {
-         width : 15%;
+         width: 15%;
      }
 
-     .postContentText, .answerContentText{
+     .postContentText,
+     .answerContentText {
          font-size: 13px;
      }
 

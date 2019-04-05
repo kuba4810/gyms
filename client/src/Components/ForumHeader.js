@@ -10,6 +10,13 @@ class ForumHeader extends React.Component{
     constructor() {
         super(...arguments);
         }
+
+        showHeaderMenu = () =>{
+            let menu = document.querySelector('.menu');
+
+            menu.classList.toggle('menuInvisible');
+
+        }
         
         showLoginForm = ()=>{
             var loginForm = document.getElementById("loginForm");
@@ -43,6 +50,13 @@ class ForumHeader extends React.Component{
             return(
                 
                 <header className="animated forumHeader">
+
+                    <div className="hamburgerButton text-light" onClick={this.showHeaderMenu}>
+                               <div></div>
+                               <div></div>
+                               <div></div>
+                    </div>
+
                     <div className="logo">
                        
                         <Link 
@@ -51,7 +65,7 @@ class ForumHeader extends React.Component{
                         </Link>
                     </div>
 
-                    <div className="menu">
+                    <div className="menu menuInvisible">
                         <div className="menuItem animated">
                             <Link to="/"><i className="fas fa-home"></i></Link> 
                         </div>

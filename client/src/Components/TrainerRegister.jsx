@@ -544,13 +544,13 @@ class Register extends Component {
 
                 <header className="forumHeader">
 
-                    <div className="logo">
+                    <div className="logo w-100 ">
                             <Link to={'/trener-rejestracja'} >
-                            <i className="fas fa-dumbbell"></i> REJESTRACJA <i className="fas fa-dumbbell"></i>
+                            <i className="fas fa-dumbbell"></i> REJESTRACJA TRENERA <i className="fas fa-dumbbell"></i>
                             </Link>
                     </div> 
 
-                    <div className="menu">
+                    {/* <div className="menu">
                         <div className="menuItem animated">
                             <Link to="/"><i className="fas fa-home"></i></Link> 
                         </div>
@@ -558,7 +558,7 @@ class Register extends Component {
                         {this.props.page !== 'TRENERZY' && <div className="menuItem animated"><Link to="/trenerzy">Trenerzy</Link></div>}
                         {this.props.page !== 'FORUM' && <div className="menuItem animated"><Link to="/forum">Forum</Link></div>}
                         
-                    </div>
+                    </div> */}
 
                     {/* <h1>REJESTRACJA TRENERA</h1> */}
 

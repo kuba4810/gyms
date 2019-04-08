@@ -317,29 +317,29 @@ async function findUserByPswCode(code, connection) {
 
 
         let res = await connection.query(`SELECT user_id FROM kuba.change_password_code WHERE
-            code = $1`,[code]);
+            code = $1`, [code]);
 
-        if(res.rows.length > 0){
+        if (res.rows.length > 0) {
             return {
-                response : 'success',
-                id : res.rows[0].user_id,
-                type : 'user'
+                response: 'success',
+                id: res.rows[0].user_id,
+                type: 'user'
             }
         }
 
         res = await connection.query(`SELECT trainer_id FROM trainers.change_password_code WHERE
-        code = $1`,[code]);
+        code = $1`, [code]);
 
-        if(res.rows.length >  0){
+        if (res.rows.length > 0) {
             return {
-                response : 'success',
-                id : res.rows[0].trainer_id,
-                type : 'trainer'
+                response: 'success',
+                id: res.rows[0].trainer_id,
+                type: 'trainer'
             }
         }
 
         throw {
-            errorCode : -1
+            errorCode: -1
         }
 
     } catch (error) {
@@ -347,7 +347,7 @@ async function findUserByPswCode(code, connection) {
 
         return {
             response: 'failed',
-            errorCode : error.errorCode ? error.errorCode : 0
+            errorCode: error.errorCode ? error.errorCode : 0
         }
     }
 
@@ -362,7 +362,7 @@ async function changePassword(user_id, password, connection) {
     try {
 
         let res = await connection.query(`UPDATE kuba.users SET passw = $1 
-            WHERE user_id = $2`,[password,user_id]);
+            WHERE user_id = $2`, [password, user_id]);
 
         return {
             response: 'success'
@@ -378,6 +378,68 @@ async function changePassword(user_id, password, connection) {
 
 }
 
+async function verifyEmail(code, connection) {
+
+    try {
+
+        let isCodeCorrect = false;
+        let id;
+        let type = '';
+
+        // Check if code is correct
+        let res = await connection.query(`SELECT * from kuba.email_verification_codes
+            WHERE verification_code = $1`, [code]);
+
+        if (res.rows.length > 0) {
+            isCodeCorrect = true;
+            id = res.rows[0].user_id;
+            type = 'user'
+        }
+
+        if (isCodeCorrect === false) {
+            res = await connection.query(`SELECT * from trainers.email_verification_codes
+            WHERE code = $1`, [code]);
+
+            if (res.rows.length > 0) {
+                isCodeCorrect = true;
+                id = res.rows[0].trainer_id;
+            }
+
+            type = 'trainer'
+        }
+
+        if(isCodeCorrect === false){
+            throw {
+                errorCode : -1
+            }
+        }
+
+        if(type === 'user'){
+
+            res = await connection.query(`UPDATE kuba.users 
+            SET is_email_confirmed = true 
+            WHERE user_id = $1`,[id]);
+        } else {
+            res = await connection.query(`UPDATE trainers.trainer 
+            SET is_email_confirmed = true 
+            WHERE trainer_id = $1`,[id]);
+        }
+
+        return {
+            response : 'success'
+        }
+
+    } catch (error) {
+        console.log(error)
+
+        return {
+           response : 'failed', 
+           errorCode : error.errorCode ? error.errorCode : 0
+        }
+    }
+
+}
+
 
 
 module.exports = {
@@ -388,6 +450,7 @@ module.exports = {
     deleteAvatar: deleteAvatar,
     generatePasswordCode: generatePasswordCode,
     getUserByMail: getUserByMail,
-    findUserByPswCode : findUserByPswCode,
-    changePassword : changePassword
+    findUserByPswCode: findUserByPswCode,
+    changePassword: changePassword,
+    verifyEmail : verifyEmail
 }

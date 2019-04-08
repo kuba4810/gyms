@@ -10,6 +10,9 @@ import UserContainer from './User/UserContainer'
 import TrainerRegister from './TrainerRegister';
 import ResetPasswordContainer from './User/ResetPassword/ResetPaswordContainer';
 import ChangePassword from './User/ResetPassword/ChangePassword';
+import VerifyEmail from './User/VerifyEmail/VerifyEmail'
+
+import AlertPrimary from './Alerts/AlertPrimary';
 
 
 
@@ -18,6 +21,7 @@ class App extends Component {
         return (
         <Router history={history}>
                 <div>
+                    <AlertPrimary />
                     <Route exact path="/" component={MainPage}/>
                     <Route  path="/silownie" component={Gym}/>
                     <Route  path="/trenerzy" component={Trainers}/>
@@ -27,6 +31,7 @@ class App extends Component {
                     <Route path="/rejestracja" component={TrainerRegister} />
                     <Route path="/resetowanie-hasla" component = {ResetPasswordContainer} />
                     <Route path="/nowe-haslo/:code" component = {ChangePassword} />
+                    <Route path="/verify-email/:code" component = {VerifyEmail} />
                 </div>
             </Router>
         );

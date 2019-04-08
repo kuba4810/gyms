@@ -680,5 +680,38 @@ module.exports = (app, client) => {
 
     });
 
+    // VERIFY EMAIL
+    // ------------------------------------------------------------------------
+    app.post('/api/user/verify-email', async (request, response) => {
+
+        try {
+
+            let data = request.body;
+
+            let res = await userDAO.verifyEmail(data.code,client);
+
+            if(res.response === 'failed'){
+                throw {
+                    errorCode : res.errorCode
+                }
+            }
+
+            response.send({
+                response : 'success'
+            })
+
+        } catch (error) {
+
+            console.log(error)
+
+            response.send({
+                response: 'failed',
+                errorCode : error.errorCode ? error.errorCode : 0
+            })
+
+        }
+
+    });
+
 
 };

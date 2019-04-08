@@ -376,3 +376,34 @@ export const changePassword = async (user_id,password) => {
     }
 
 }
+
+// CHANGE PASSWORD
+// ------------------------------------------------------------------------
+export const verifyEmail = async (code) => {
+
+    try {
+
+        let res = await axios.post(`${URL}user/verify-email`,{
+            code : code
+        })
+
+        if(res.data.response === 'failed'){
+            throw {
+                errorCode : res.data.errorCode
+            }
+        }
+
+        return {
+            response : 'success'
+        }
+        
+    } catch (error) {
+        console.log(error);
+
+        return {
+            response : 'failed',
+            errorCode : error.errorCode ? error.errorCode : 0
+        }
+    }
+
+}

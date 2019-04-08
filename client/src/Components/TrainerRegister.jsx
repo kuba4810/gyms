@@ -12,6 +12,7 @@ import ForumHeader from './ForumHeader'
 import { LoginForm } from './Forum/LoginForm'
 import RegisterForm from './Forum/RegisterForm'
 import { UserMenu } from './User/UserMenu'
+import {showPrimaryAlert} from '../services/alerts'
 class Register extends Component {
 
     state = {
@@ -439,7 +440,10 @@ class Register extends Component {
         let valid = await this.validate();
 
         if (!valid) {
-            alert('Proszę poprawnie wypełnić formularz !')
+
+            showPrimaryAlert();
+
+            // alert('Proszę poprawnie wypełnić formularz !')
         } else {
             let confirRes = true;
 
@@ -572,7 +576,7 @@ class Register extends Component {
 
                         {/* Form */}
                         <form action="javascript:void(0) mt-5"
-                            className="bg-light text-dark p-3 animated fadeIn">
+                            className="bgc-white text-dark p-3 animated fadeIn">
 
                             {/* Legend */}
                             <legend>
@@ -738,7 +742,7 @@ class Register extends Component {
 
                                     <button className="btn btn-success"
                                         onClick={this.addPackage}>
-                                        Dodaj
+                                        <i className="fas fa-check"></i>
                                     </button>
                                 </div>
                             </div>
@@ -792,7 +796,7 @@ class Register extends Component {
 
                                     <div className="btn btn-success"
                                         onClick={this.addSkill}>
-                                        Dodaj
+                                        <i className="fas fa-check"></i>
                                     </div>
 
                                 </div>
@@ -803,7 +807,7 @@ class Register extends Component {
 
                             <div className="form-group">
 
-                                <div className="btn btn-danger form-control "
+                                <div className="btn btn-success form-control "
                                     onClick={this.register}>
                                     Rejestracja
                                 </div>

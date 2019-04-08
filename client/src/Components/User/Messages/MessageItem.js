@@ -94,7 +94,7 @@ class MessageItem extends React.Component{
                           <div class="deleteMessage" onClick={this.deleteMessage}>  <span class="tooltiptext">Usuń</span> <i class="fas fa-trash-alt"></i></div> 
                      </div>
                   <div class="messageText" style={{backgroundColor: bgColor}}>
-                  {message.message_content}
+                    {message.message_content}
                     </div>
                    
                 </div>

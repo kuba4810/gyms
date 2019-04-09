@@ -626,7 +626,8 @@ module.exports = (app, client) => {
 
             if(res.response === 'failed'){
                 throw {
-                    errorCode : res.errorCode
+                    errorCode : res.errorCode,
+                    mail : res.mail
                 }
             }
 
@@ -645,7 +646,8 @@ module.exports = (app, client) => {
 
             response.send({
                 response: 'failed',
-                errorCode : error.errorCode ? error.errorCode : 0
+                errorCode : error.errorCode ? error.errorCode : 0,
+                mail : error.mail
             })
 
         }

@@ -181,10 +181,14 @@ class Trainer extends Component {
                                 <div className="col-md-3 col-sm-6 p-4 ">
                                     <div class="card trainerCard text-white bg-dark" >
                                         {/* <img class="card-img-top" src="http://www.dzielnicewroclawia.pl/wp-content/uploads/2018/11/Gladiator-1.jpg" alt="Card image cap" /> */}
-                                        <img class="card-img-top" 
-                                            src={`http://localhost:8080/public/images/${trainer.image}.jpg`} 
-                                            alt="Card image cap" 
-                                            style={{height : '13vw'}}/>
+                                       {
+                                           trainer.image === null ?
+                                           <div><h1 clasName="text-center"> <i className="fas fa-user"></i> </h1></div> :
+                                           <img class="card-img-top" 
+                                           src={`http://localhost:8080/public/images/${trainer.image}.jpg`} 
+                                           alt="Card image cap" 
+                                           style={{height : '13vw'}}/>
+                                       }
                                         <div class="card-body animated">
                                             <h5 class="card-title">{trainer.first_name} {trainer.last_name}, {trainer.city}</h5>
                                             <p style={{minHeight: "5vw"}} class="card-text">{trainer.description}</p>
@@ -219,7 +223,8 @@ class Trainer extends Component {
 
                 
                 <Route exact path={this.props.match.path} component={TrainersListContainer} />
-                <Route exact path={`${this.props.match.path}/harmonogram/:training_id?`} component={SheduleContainer} />
+                <Route path={`${this.props.match.path}/harmonogram/:training_id?`} component={SheduleContainer} />
+
                 <div className="footer-copyright text-center py-2 text-white">Kozioł && Koczaski 2018</div>
             </div>
         );

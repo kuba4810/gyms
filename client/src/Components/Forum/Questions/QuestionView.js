@@ -42,6 +42,7 @@ class Question extends React.Component{
     componentDidMount = async () => {
 
         document.querySelector(".forumNav").classList.add("invisible");
+        document.querySelector(".topicsMenu").classList.add("invisible");
         document.querySelector(".forumContent").style.width="100%";
 
         document.querySelector('.showForumNav').classList.add('invisible');

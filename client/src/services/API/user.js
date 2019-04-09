@@ -322,7 +322,8 @@ export const checkCode = async (code) =>{
 
         if(res.data.response === 'failed'){
             throw {
-                errorCode : res.data.errorCode
+                errorCode : res.data.errorCode,
+                mail : res.data.mail
             }
         }
 
@@ -341,7 +342,8 @@ export const checkCode = async (code) =>{
 
         return {
             response : 'failed',
-            errorCode : error.errorCode ? error.errorCode : 0
+            errorCode : error.errorCode ? error.errorCode : 0,
+            mail : error.mail
         }
     }
     

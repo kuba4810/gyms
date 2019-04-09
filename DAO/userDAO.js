@@ -315,11 +315,42 @@ async function findUserByPswCode(code, connection) {
 
     try {
 
+        let date = new Date();
+        let currentDate = new Date(date.getFullYear(),date.getMonth(),date.getDate());
+        // let lapseDate = new Date(2019,3,6)
+        // let res = dateService.daysBetween(currentDate,lapseDate);
 
-        let res = await connection.query(`SELECT user_id FROM kuba.change_password_code WHERE
+        // if(res >= 0){
+        //     console.log('Kod nie wygasł !',res)
+        // } else {
+        //     console.log('Kod jest już nie ważny !',res)
+        // }
+
+        let res = await connection.query(`SELECT user_id, lapse_date FROM kuba.change_password_code WHERE
             code = $1`, [code]);
 
         if (res.rows.length > 0) {
+
+            let lapseDate = res.rows[0].lapse_date;
+
+
+            lapseDate = lapseDate.split('-');
+            lapseDate = new Date(lapseDate[0],lapseDate[1],lapseDate[2]);
+
+            if(dateService.daysBetween(currentDate,lapseDate) < 0){
+
+                res = await connection.query('select email from kuba.users where user_id = $1',
+                [res.rows[0].user_id]);
+
+
+
+                return {
+                    response : 'failed',
+                    errorCode : -2,
+                    mail : res.rows[0].email
+                }
+            }
+
             return {
                 response: 'success',
                 id: res.rows[0].user_id,
@@ -327,10 +358,26 @@ async function findUserByPswCode(code, connection) {
             }
         }
 
-        res = await connection.query(`SELECT trainer_id FROM trainers.change_password_code WHERE
+        res = await connection.query(`SELECT trainer_id,lapse_date FROM trainers.change_password_code WHERE
         code = $1`, [code]);
 
         if (res.rows.length > 0) {
+            lapseDate = res.rows[0].lapse_date;
+
+            lapseDate = lapseDate.split('-');
+            lapseDate = new Date(lapseDate[0],lapseDate[1],lapseDate(2));
+
+            if(dateService.daysBetween(currentDate,lapseDate) < 0){
+
+                res = await connection.query('select mail from trainers.trainer where trainer_id = $1',
+                [res.rows[0].trainer_id]);
+
+                return {
+                    response : 'failed',
+                    errorCode : -2,
+                    mail : res.rows[0].mail
+                }
+            }
             return {
                 response: 'success',
                 id: res.rows[0].trainer_id,

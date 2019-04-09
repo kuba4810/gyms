@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import {
     checkCode,
-    changePassword
+    changePassword,
+    reserPassword
 } from '../../../services/API/user';
 
 import {
@@ -20,7 +21,9 @@ class ChangePassword extends Component {
         type : '',
         displayInput: false,
         password : '',
-        confirmPassword : ''
+        confirmPassword : '',
+        displayButton : false,
+        mail : ''
     }
 
     code = () => this.props.match.params.code;
@@ -46,10 +49,14 @@ class ChangePassword extends Component {
                     displayAlert: true
                 })
             } else if (res.errorCode === -2) {
+
+                console.log('Odebrany mail : ',res)
                 this.setState({
                     alertType: 'danger',
                     alertMessage: 'Kod weryfikacyjny stracił ważność !',
-                    displayAlert: true
+                    displayAlert: true,
+                    displayButton : true,
+                    mail : res.mail
                 })
             }
 
@@ -80,7 +87,8 @@ class ChangePassword extends Component {
     // ------------------------------------------------------------------------
     handlePasswordChange = async () => {
         this.setState({
-            displayAlert : false
+            displayAlert : false,
+            displayButton : false
         })
 
         let res;
@@ -119,6 +127,46 @@ class ChangePassword extends Component {
                 })
             }
         }
+    }
+
+
+    handleResetPassword = async () => {
+
+        this.setState({
+            displayAlert : false
+        })
+
+        const data = {
+            mail: this.state.mail
+        }
+
+        let res = await reserPassword(data);
+
+        console.log('Client res : ',res)
+
+        if (res.response === 'success') {
+            this.setState({
+                alertType : 'success',
+                displayAlert : true,
+                alertMessage : 'Link z kodem do zmiany hasła wysłano na podany adres mail !'
+            })
+        } else {
+            let message = ''
+
+            if(res.errorCode === -1){
+                message = 'Nie znaleziono użytkownika !';
+            } else {
+                message = 'Coś poszło nie tak, spróbuj ponownie później !';
+            }
+
+            this.setState({
+                alertType : 'danger',
+                displayAlert : true,
+                alertMessage : message
+            })
+
+        }
+
     }
 
     render() {
@@ -176,6 +224,13 @@ class ChangePassword extends Component {
                                 this.state.displayAlert &&
                                 <div class={`mt-2 alert alert-${this.state.alertType}`} role="alert">
                                     {this.state.alertMessage}
+                                </div>
+                            }
+
+                            {
+                                this.state.displayButton &&
+                                <div className="btn btn-warning" onClick={this.handleResetPassword}>
+                                    Wyślij ponownie !
                                 </div>
                             }
 

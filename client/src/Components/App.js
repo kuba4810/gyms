@@ -22,6 +22,7 @@ class App extends Component {
         <Router history={history}>
                 <div>
                     <AlertPrimary />
+                    
                     <Route exact path="/" component={MainPage}/>
                     <Route  path="/silownie" component={Gym}/>
                     <Route  path="/trenerzy" component={Trainers}/>

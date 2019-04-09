@@ -9,5 +9,5 @@ class TrainersListContainer extends Component {
          );
     }
 }
- 
+
 export default TrainersListContainer;

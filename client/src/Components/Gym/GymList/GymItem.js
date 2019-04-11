@@ -158,8 +158,39 @@ class GymItem extends React.Component {
                           </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <div class="tooltipHours">Godziny otwarcia
-                                    <span class="tooltiptextHours">godziny otwarcia<br />pon:<br />wt:<br />sro:<br /></span>
+                        <div class="tooltipHours"><i class="far fa-clock mr-2"></i>Godziny otwarcia
+                                    <span class="tooltiptextHours">
+                                        <table className="tableOpeningHours"> 
+                                            <tr>
+                                                <td className="tdOpeningHours">Poniedziałek:</td>
+                                                <td>{gymData.mon}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tdOpeningHours">Wtorek:</td>
+                                                <td>{gymData.tue}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tdOpeningHours">Środa:</td>
+                                                <td>{gymData.wed}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tdOpeningHours">Czwartek:</td>
+                                                <td>{gymData.thu}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tdOpeningHours">Piątek:</td>
+                                                <td>{gymData.fri}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tdOpeningHours">Sobota:</td>
+                                                <td>{gymData.sat}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="tdOpeningHours">Niedziela:</td>
+                                                <td>{gymData.sun}</td>
+                                            </tr>
+                                        </table>
+                                    </span>
                             </div>
                         </div>
                     </div>

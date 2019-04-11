@@ -384,7 +384,7 @@ export const changePassword = async (user_id,password) => {
 export const verifyEmail = async (code) => {
 
     try {
-
+        console.log('API code : ',code);
         let res = await axios.post(`${URL}user/verify-email`,{
             code : code
         })

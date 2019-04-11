@@ -6,7 +6,7 @@ module.exports = data =>{
          </div>
         <div style="padding:16px 8px; background-color:white; text-align:center;">
               <h3> Potwierdź swój E-mail klikając na poniższy link </h3>
-             <a href="http://localhost:3000/verify-email/${data.user_id}/${data.verification_code}" target="blank" style="text-decoration:none;"> Link aktywacyjny </a> <br>
+             <a href="http://localhost:3000/verify-email/${data.verification_code}" target="blank" style="text-decoration:none;"> Link aktywacyjny </a> <br>
                 <h3>Lub skopiuj poniższy kod aktywacyjny<h3> 
                 <h5> ${data.verification_code}<h5> 
         

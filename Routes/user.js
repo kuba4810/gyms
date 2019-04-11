@@ -690,7 +690,10 @@ module.exports = (app, client) => {
 
             let data = request.body;
 
+            console.log('Endpoint code : ',data)
+
             let res = await userDAO.verifyEmail(data.code,client);
+            console.log('Endpoint verify email response : ',res)
 
             if(res.response === 'failed'){
                 throw {

@@ -444,8 +444,12 @@ async function verifyEmail(code, connection) {
         }
 
         if (isCodeCorrect === false) {
+
+            console.log('Szukam w trainers ...')
             res = await connection.query(`SELECT * from trainers.email_verification_codes
             WHERE code = $1`, [code]);
+
+            console.log(res)
 
             if (res.rows.length > 0) {
                 isCodeCorrect = true;

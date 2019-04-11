@@ -82,11 +82,11 @@ class VerifyEmail extends Component {
                     }
                     
                     
-                    <div className="d-flex">
+                    {/* <div className="d-flex">
                         <Link to={'/silownie'}>Siłownie</Link>
                         <Link to={'/trenerzy'}>Trenerzy</Link>
                         <Link to={'/forum'}>Forum</Link>
-                    </div>
+                    </div> */}
 
                 </div>
 

@@ -8,7 +8,7 @@ module.exports = data =>{
          </div>
          <div style="padding:16px 8px; background-color:white; text-align:center;">
               <h3> Potwierdź swój E-mail klikając na poniższy link </h3>
-              <a href="http://localhost:3000/verify-email/${data.trainer_id}/${data.code}" target="blank" style="text-decoration:none;"> Link aktywacyjny </a> <br>      
+              <a href="http://localhost:3000/verify-email/${data.code}" target="blank" style="text-decoration:none;"> Link aktywacyjny </a> <br>      
        
               <br><br>
               <hr>

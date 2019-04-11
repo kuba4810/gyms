@@ -142,7 +142,7 @@ class GymItem extends React.Component {
         return (
             <React.Fragment>
 
-                <div class="col-md-6 col-xl-4 p-1">
+                <div class="col-md-6 col-xl-4 p-1 animated fadeIn">
                     <div class="card text-white h-100">
                         <div class="card-header d-flex justify-content-between">
                             <div><img src="https://img.icons8.com/color/50/000000/dumbbell.png" class="rounded-circle" /></div>

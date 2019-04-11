@@ -566,6 +566,10 @@ footer {
     width:100% !important;
 }
 
+.gymDetailsContainer .row{
+    padding-top : 100px;
+}
+
 
 /* @480px */
 @media only screen and (max-width: 30em) {

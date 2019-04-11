@@ -15,7 +15,9 @@
 }
 
 
-
+.bgc-very-dark{
+    background-color: #151515;
+}
 
 .bgc-white{
     background-color: #fff;
@@ -279,6 +281,7 @@
      background-color: cornsilk;
      width: 100%;
      margin: 0;
+     min-height:50vh;
  }
 
 
@@ -385,6 +388,41 @@
      left : 0
  }
 
+ .dataLoading{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height : 100vh;
+    background-color: #262626;
+    color:white;
+    
+}
+
+.dataLoadingMessage{
+    position: absolute;
+    width:100%;
+    top:25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gymDetailsContainer{
+    background-image: url('../images/wallpaperBricks.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}
+
+.gymAvatar{
+    background-color: #fff;
+    width:142px;
+    border-radius : 50%;
+    background-image: url('../images/wallpaperGymEquipment.jpg');
+    background-position: center;
+    background-size: cover;
+}
  /* RESPONSIVE */
  /* ---------------------------------------------------------------------------- */
 

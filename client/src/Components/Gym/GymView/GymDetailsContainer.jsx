@@ -8,15 +8,15 @@ import {
   evaluation_update
 } from "../../../Actions/index";
 
-import {formatDate} from '../../../services/dateService';
+import { formatDate } from '../../../services/dateService';
 
 
 
 
 class GymDetailsCont extends React.Component {
 
-  state={
-    processing : true
+  state = {
+    processing: true
   }
   componentDidMount() {
     console.log("Pobieram dane ...");
@@ -28,7 +28,7 @@ class GymDetailsCont extends React.Component {
           console.log("Wysyłam dane do magazynu...", response.data);
           this.props.gymDetailsFetched(response.data);
           this.setState({
-            processing : false
+            processing: false
           })
         } else {
           alert("Wystąpił błąd, spróbuj ponownie później !");
@@ -229,18 +229,18 @@ class GymDetailsCont extends React.Component {
 
 
       comments = (
-        <div className="container mt-3 text-light">
+        <div className="container gymComments ml-5 mt-3 text-dark ">
           <h2>Komentarze</h2>
           {this.props.gymDetails.gym.comments.map(com => (
-            <div className="mediaComment  p-3">
-              <img src="https://img.icons8.com/color/48/c0392b/administrator-male.png" alt="" className="mr-3 mt-3 rounded-circle" style={{ width: 60 + "px" }} />
+            <div className="mediaComment  p-1">
+              <img src="https://img.icons8.com/color/48/c0392b/administrator-male.png" alt="" className="mr-3 mt-1 rounded-circle" style={{ width: 60 + "px" }} />
               <div className="mediaBodyComment">
                 <h4>
                   <Link to={`/uzytkownik/profil/${com.login}`}>{com.login}</Link>
                   <small>
-                      <i className="ml-2">{formatDate(com.creation_date)}</i>
+                    <i className="ml-2">{formatDate(com.creation_date)}</i>
                   </small>
-                  </h4>
+                </h4>
                 <p>{com.content}</p>
               </div>
             </div>))}
@@ -248,62 +248,6 @@ class GymDetailsCont extends React.Component {
       );
     }
 
-
-
-
-    // return (
-    // <div class="color-cornsilk">
-    //     <h2> Witam, jestem widokiem siłowni <em>{this.props.match.params.gym_name}</em> :D </h2>
-    //     <br />
-    //     <hr />
-
-    //     <h3>Ocena: {!this.props.gymDetails.isLoading ? data.evaluation : ''}</h3>
-    //     <div class="starDiv">
-    //         <span class="starDivTitle">
-    //             Oceń:
-    //        </span>
-    //         <div class="stars">
-    //             <i class="fas fa-star rateStar" id="rateStar5" onClick={this.vote.bind(null, 5)}></i>
-    //             <i class="fas fa-star rateStar" id="rateStar4" onClick={this.vote.bind(null, 4)} ></i>
-    //             <i class="fas fa-star rateStar" id="rateStar3" onClick={this.vote.bind(null, 3)}></i>
-    //             <i class="fas fa-star rateStar" id="rateStar2" onClick={this.vote.bind(null, 2)}></i>
-    //             <i class="fas fa-star rateStar" id="rateStar1" onClick={this.vote.bind(null, 1)}></i>
-    //         </div>
-    //     </div>
-
-    //     <h3>Podstawowe dane</h3>
-
-    //     {primaryData}
-
-    //     {openingHours}
-
-    //     <h3>Oferta</h3>
-
-    //     {offer}
-
-    //     {packages}
-
-    //     <h3>Wyposażenie</h3>
-
-    //     <h5>
-    //         {equipment}
-    //     </h5>
-
-    //     {/* <h3>Zdjęcia</h3> */}
-    //     {/* <img src={require("./images/pakernia/obraz7.jpg")}/> */}
-
-    //     {(localStorage.getItem('isLoggedIn') === 'true') &&
-    //         <form onSubmit={this.sendComment} className='gymCommentForm' >
-    //             <legend><h3>Wystaw opinie</h3></legend>
-    //             <div className="form-group">
-    //             <textarea className="form-control" name="text" id="" cols="30" rows="10"></textarea>
-    //             </div>
-    //             <button type="submit" className="btn-success">Wyślij</button>
-    //         </form>
-    //     }
-
-    //     {comments}
-    // </div>
 
     let starView = () => {
 
@@ -440,119 +384,123 @@ class GymDetailsCont extends React.Component {
         <React.Fragment>
 
 
-          <div className="container-fluid gymDetailsContainer ">
-            <div className="row pt-5 animated fadeIn">
-              <div className="col-12 pt-5">
+          <div className="container-fluid gymDetailsContainer">
+            <div className="gymContent pt-5">
+              <div className="row pt-5 animated fadeIn">
+                <div className="col-12 ">
 
-              <div className="card bgc-very-dark">
-                <div className="card-header">
-                  <div className="d-flex flex-row justify-content-around">
-                    <div className="gymAvatar">
+                  <div className="card  gymHeader  ml-5">
+                    <div className="card-header">
+                      <div className="d-flex flex-row justify-content-around">
+                        <div className="gymAvatar">
 
-                      {/* <img src={require('../../../images/findYourGym.jpg')} alt="" style={{width:"8rem", height:"8rem"}}/> */}
-                    </div>
-                    <div className="text-light m-5">
-                      <h2>{this.props.gymDetails.gym.gymData.gym_name}, {this.props.gymDetails.gym.gymData.city}</h2>
-                    </div>
-                    <div className="text-light m-5"><h3>{starView()}</h3></div>
-                    <div></div>
-                    <div></div>
-
-    
-                  </div>
-                </div>
-              </div>
-
-                <div className="row">
-                  <div className="col-8">
-
-                    <div className="card content text-white bgc-very-dark ml-5  m-4">
-                      <div className="card-body d-flex justify-content-between">
-                        <div>ZDJECIA SIŁOWNI</div>
-                      </div>
-                    </div>
-
-                    <div className="card content text-white bgc-very-dark ml-5  m-4">
-                      <div className="card-header">
-                        <h4 className="card-title">O siłowni</h4>
-                      </div>
-                      <div className="card-body">
-                        <p className="card-text">{this.props.gymDetails.gym.gymData.description}</p>
-                      </div>
-                    </div>
-
-
-                    <div className="card content text-white bgc-very-dark ml-5  m-4">
-                      <div className="card-header">
-                        <h4 className="card-title">Oferta</h4>
-                      </div>
-                      <div className="card-body">
-                        <p className="card-text">{offer}</p>
-                      </div>
-                    </div>
-
-
-                    <div className="card content text-white bgc-very-dark ml-5  m-4">
-                      <div className="card-header">
-                        <h4 className="card-title">Godziny Otwarcia-zamknięcia</h4>
-                      </div>
-                      <div className="card-body">
-                        <p className="card-text">{openingHours}</p>
-                      </div>
-                    </div>
-
-                    <div className="card content text-white bgc-very-dark ml-5  m-4">
-                      <div className="card-header">
-                        <h4 className="card-title">Cennik</h4>
-                      </div>
-                      <div className="card-body">
-                        <p className="card-text">{packages}</p>
-                      </div>
-                    </div>
-
-
-                    {(localStorage.getItem('isLoggedIn') === 'true') &&
-                      <form onSubmit={this.sendComment} className='gymCommentForm shadow-textarea text-light text-center mx-auto pt-5 m-4' >
-                        <legend id="wystawKomentarz"><h3>Wystaw Komentarz</h3></legend>
-                        <div className="form-group">
-                          <textarea className="form-control bgc-very-dark text-light" name="text" id="" cols="30" rows="10"></textarea>
+                          {/* <img src={require('../../../images/findYourGym.jpg')} alt="" style={{width:"8rem", height:"8rem"}}/> */}
                         </div>
-                        <button type="submit" className="btn-success">Wyślij</button>
-                      </form>
-                    }
+                        <div className="text-dark m-5">
+                          <h2>{this.props.gymDetails.gym.gymData.gym_name}, {this.props.gymDetails.gym.gymData.city}</h2>
+                        </div>
+                        <div className="text-dark m-5"><h3>{starView()}</h3></div>
+                        <div></div>
+                        <div></div>
 
-                    <p>{comments}</p>
 
+                      </div>
+                    </div>
                   </div>
 
+                  <div className="row">
+                    <div className="col-8">
 
-                  <div className="col-3 ">
-                    <div className="card text-white bgc-very-dark px-3 py-3 m-4">
-                      <h4>Trenowałeś tu ?</h4>
-                      <a href="#wystawKomentarz"><button class="btn btn-warning">Wystaw komentarz!</button></a>
-                    </div>
-
-                    <div className="card text-white bgc-very-dark px-3 py-3 m-4">
-                      <div className="card-header">
-
-                        <h3>Adres i dane kontaktowe:</h3>
+                      <div className="card content text-white ml-5  m-4">
+                        <div className="card-body d-flex justify-content-between">
+                          <div>ZDJECIA SIŁOWNI</div>
+                        </div>
                       </div>
-                      <p><i class="far fa-envelope"> {this.props.gymDetails.gym.gymData.email}</i></p>
-                      <p><i class="fas fa-map-marker-alt"> {this.props.gymDetails.gym.gymData.street} {this.props.gymDetails.gym.gymData.city}</i></p>
-                      <p><i class="fas fa-phone"> {this.props.gymDetails.gym.gymData.phone_number}</i></p>
+
+                      <div className="card content text-white  ml-5  m-4">
+                        <div className="card-header">
+                          <h4 className="card-title">O siłowni</h4>
+                        </div>
+                        <div className="card-body">
+                          <p className="card-text">{this.props.gymDetails.gym.gymData.description}</p>
+                        </div>
+                      </div>
+
+
+                      <div className="card content text-white  ml-5  m-4">
+                        <div className="card-header">
+                          <h4 className="card-title">Oferta</h4>
+                        </div>
+                        <div className="card-body">
+                          <p className="card-text">{offer}</p>
+                        </div>
+                      </div>
+
+
+                      <div className="card content text-white ml-5  m-4">
+                        <div className="card-header">
+                          <h4 className="card-title">Godziny Otwarcia-zamknięcia</h4>
+                        </div>
+                        <div className="card-body">
+                          <p className="card-text">{openingHours}</p>
+                        </div>
+                      </div>
+
+                      <div className="card content text-white  ml-5  m-4">
+                        <div className="card-header">
+                          <h4 className="card-title">Cennik</h4>
+                        </div>
+                        <div className="card-body">
+                          <p className="card-text">{packages}</p>
+                        </div>
+                      </div>
+
+
+                      <div>
+                        {comments}
+                      </div>
+                      {(localStorage.getItem('isLoggedIn') === 'true' && localStorage.getItem('type') === 'user') &&
+                        <form onSubmit={this.sendComment} className='gymCommentForm shadow-textarea text-dark text-center pt-5 ' >
+                          <legend className="pl-5 text-left text-light" id="wystawKomentarz "><h3>Wystaw Komentarz</h3></legend>
+                          <div className="form-group">
+                            <textarea className="form-control  text-dark ml-5" name="text" id="" cols="30" rows="10"></textarea>
+                          </div>
+                          <button type="submit" className="btn btn-success">Wyślij</button>
+                        </form>
+                      }
+
+
+
                     </div>
 
-                    <div className="card text-white bgc-very-dark px-3 py-3 m-4">
-                      <h3>Siłownie w pobliżu:</h3>
-                    </div>
 
+                    <div className="col-3 ">
+                      <div className="card text-dark  px-3 py-3 m-4">
+                        <h4>Trenowałeś tu ?</h4>
+                        <a href="#wystawKomentarz"><button class="btn btn-warning ml-5">Wystaw komentarz!</button></a>
+                      </div>
+
+                      <div className="card text-dark  px-3 py-3 m-4">
+                        <div className="card-header">
+
+                          <h3>Adres i dane kontaktowe:</h3>
+                        </div>
+                        <p><i class="far fa-envelope"> {this.props.gymDetails.gym.gymData.email}</i></p>
+                        <p><i class="fas fa-map-marker-alt"> {this.props.gymDetails.gym.gymData.street} {this.props.gymDetails.gym.gymData.city}</i></p>
+                        <p><i class="fas fa-phone"> {this.props.gymDetails.gym.gymData.phone_number}</i></p>
+                      </div>
+
+                      <div className="card text-dark  px-3 py-3 m-4">
+                        <h3>Siłownie w pobliżu:</h3>
+                      </div>
+
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
-
-
 
 
 
@@ -563,11 +511,13 @@ class GymDetailsCont extends React.Component {
     }
     else {
       return <div className="bg-secondary dataLoading gymDetailsContainer">
-        <div className="dataLoadingMessage">
-        
-          <h3>Ładowanie danych</h3>
-          <div className="littleSpinner" ></div>
-        
+        <div className="gymContent">
+          <div className="dataLoadingMessage">
+
+            <h3>Ładowanie danych</h3>
+            <div className="littleSpinner" ></div>
+
+          </div>
         </div>
       </div>;
     }
@@ -576,7 +526,8 @@ class GymDetailsCont extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    gymDetails: state.gymDetails
+    gymDetails: state.gymDetails,
+
   };
 };
 const mapDispatchToProps = {

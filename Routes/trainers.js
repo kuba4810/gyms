@@ -10,10 +10,17 @@ module.exports = (app, client) => {
 
             let res = await client.query(`SELECT * FROM trainers.trainer`);
 
-            response.send(res.rows)
+            response.send({
+                response : 'success',
+                trainer : res.rows
+            })
 
         } catch (error) {
             console.log(error);
+
+            response.send({
+                response : 'failed'
+            })
         }
     })
 

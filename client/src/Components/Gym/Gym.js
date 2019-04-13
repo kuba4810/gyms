@@ -114,18 +114,20 @@ class GymContainer extends React.Component{
         return(
             <div className="gymContainer">
 
-            <ForumHeader 
-                 isLogedIn={this.props.user.isLogedIn} 
-                 isEmailConfirmed={this.props.user.emailConfirmed}
-                 page={'SILOWNIE'}/>
+             
+                <ForumHeader 
+                    isLogedIn={this.props.user.isLogedIn} 
+                    isEmailConfirmed={this.props.user.emailConfirmed}
+                    page={'SILOWNIE'}/>
 
-            <UserMenu/>
-            <LoginForm/>
-            <RegisterForm/>
-                 
-            <Route exact path={this.props.match.path} component={GymListContainer} />  
-            <Route path={`${this.props.match.path}/view/:gym_id/:gym_name`} component={GymDetailsContainer} />
-            <Route path={`${this.props.match.path}/new-gym`} component={NewGym} />      
+                <UserMenu/>
+                <LoginForm/>
+                <RegisterForm/>
+                    
+                <Route exact path={this.props.match.path} component={GymListContainer} />  
+                <Route path={`${this.props.match.path}/view/:gym_id/:gym_name`} component={GymDetailsContainer} />
+                <Route path={`${this.props.match.path}/new-gym`} component={NewGym} />     
+           
 
             </div>
         );

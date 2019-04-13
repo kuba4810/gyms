@@ -2277,3 +2277,19 @@ span.psw {
     margin-left: auto;
     margin-right: auto;
 }
+
+/* IMAGE TRAINER */
+.imgTrainer{
+    /* background-size: cover;
+    background-repeat: no-repeat; */
+
+}
+
+
+.main-card-img-top {
+    width: 100%;
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+    height: 13em;
+    object-fit: cover;
+  }

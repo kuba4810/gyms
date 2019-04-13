@@ -14,6 +14,10 @@ class GymListC extends React.Component{
 
     constructor(){
         super();
+
+        this.state = {
+            processing : true
+        }
     }
     componentDidMount(){
         fetch('http://localhost:8080/api/gyms')
@@ -23,6 +27,9 @@ class GymListC extends React.Component{
                     Promise.resolve();
                 }
                 this.props.gymsFetched(response);
+                this.setState({
+                    processing : false
+                })
             })
               .catch(error=>{
                 alert("Wystąpił błąd , spróbuj ponownie później !");
@@ -63,8 +70,17 @@ class GymListC extends React.Component{
         <GymHeader/>
         <GymSection filter={this.handleInputChange}/>
             <h2 style={{color: "white"}} className=" gymListContainerTitle text-center p-4  m-0  text-dark bg-light">Dostępne obiekty:</h2>
-            <div class="row container-fluid gymListContainer">
-                {gyms}
+            <div class="row container-fluid gymListContainer position-relative">
+                {
+                    this.state.processing === false ?
+                    gyms :
+                    <div className="dataLoadingMessage">
+        
+                        <h3>Ładowanie danych</h3>
+                        <div className="littleSpinner text-center"></div>
+        
+                     </div>
+                }
             </div>
         <GymFooter/>
       </React.Fragment>

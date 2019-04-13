@@ -207,7 +207,7 @@ hr{
 /* Komentarze siłowni */
 /* ---------------------------------------------- */
 .gymCommentForm{
-    width: 40%;
+    width: 30%;
     margin-top:30px;
     margin-bottom:30px;
 }

@@ -22,7 +22,7 @@ router.get('/api/gyms', (request, response) => {
           console.log(err);
        }); */
 
-    let query = 'SELECT * FROM kuba.gyms natural join kuba.opening_hours';
+    let query = 'SELECT * FROM kuba.gyms natural join kuba.opening_hours ORDER BY evaluation DESC';
     client.query(query)
         .then(res => res.rows)
         .then(res => {

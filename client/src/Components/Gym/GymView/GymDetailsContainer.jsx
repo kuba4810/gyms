@@ -136,6 +136,19 @@ class GymDetailsCont extends React.Component {
       console.log("Magazyn: ", data);
 
       console.log("Ładuje dane: ", this.props.gymDetails.isLoading);
+
+
+      photos = this.props.gymDetails.gym.photos.map(photo =>
+        <div className="userAvatar mr-2">
+          <div className="overlay">
+
+            <i class="fas fa-eye text-primary"></i>
+
+          </div>
+          <img src={`http://localhost:8080/public/images/${photo.url}.jpg`} alt="Zdjęicie siłowni" />
+
+        </div>)
+
       primaryData = (
         <table>
           <tr>
@@ -209,27 +222,9 @@ class GymDetailsCont extends React.Component {
         </div>
       ));
 
-      // Opinie
-      // comments = (
-      //   <table>
-      //     <tr>
-      //       <th>Użytkownik</th>
-      //       <th>Data</th>
-      //       <th>Treść</th>
-      //     </tr>
-      //     {this.props.gymDetails.gym.comments.map(com => (
-      //       <tr>
-      //         {" "}
-      //         <td> {com.login} </td> <td>{com.creation_date}</td>{" "}
-      //         <td> {com.content} </td>{" "}
-      //       </tr>
-      //     ))}
-      //   </table>
-      // );
-
 
       comments = (
-        <div className="container gymComments ml-5 mt-3 text-dark ">
+        <div className="container gymComments ml-5 mt-3 mb-3 text-dark ">
           <h2>Komentarze</h2>
           {this.props.gymDetails.gym.comments.map(com => (
             <div className="mediaComment  p-1">
@@ -247,6 +242,7 @@ class GymDetailsCont extends React.Component {
         </div>
       );
     }
+
 
 
     let starView = () => {
@@ -412,9 +408,15 @@ class GymDetailsCont extends React.Component {
                     <div className="col-8">
 
                       <div className="card content text-white ml-5  m-4">
-                        <div className="card-body d-flex justify-content-between">
-                          <div>ZDJECIA SIŁOWNI</div>
+                        <div className="card-header">
+                          <h4 className="card-title">Zdjęcia</h4>
                         </div>
+                        <div className="card-body ">
+                          <div className="d-flex">
+                            {photos}
+                          </div>
+                        </div>
+
                       </div>
 
                       <div className="card content text-white  ml-5  m-4">

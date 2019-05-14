@@ -281,11 +281,12 @@ async function updateProfile(trainer, connection) {
                      last_name =  $2,
                      city = $3,
                      voivodeship = $4,
-                     login = $5
-                     WHERE trainer_id = $6 returning *`
+                     login = $5,
+                     description = $6
+                     WHERE trainer_id = $7 returning *`
 
         let values = [trainer.first_name, trainer.last_name, trainer.city, trainer.voivodeship,
-              trainer.login, trainer.trainer_id
+              trainer.login,trainer.description, trainer.trainer_id
         ]
 
         // Execute query

@@ -43,7 +43,10 @@ module.exports = (app, client) => {
                 break;
 
             case 'receiver':
-                query = `UPDATE kuba.messages SET receiver_deleted = true WHERE message_id = $1`
+                query = `UPDATE kuba.messages 
+                         SET receiver_deleted = true,
+                             is_read = true
+                              WHERE message_id = $1`
                 break;
         }
 

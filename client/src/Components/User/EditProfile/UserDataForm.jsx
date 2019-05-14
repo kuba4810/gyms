@@ -214,7 +214,7 @@ class UserForm extends Component {
 
     let login = localStorage.getItem('loggedNick');
     return (
-      <div>
+      <div className="userDatForm">
 
         <Gallery photos={[{ photo_name: login }]} currentIndex={0} />
 

@@ -148,7 +148,7 @@ class NewGym extends React.Component {
 
 
 
-    checkTextLength = (value, isRequired) => {
+    checkTextLength = (value, isRequired,isDescription) => {
         if (value.length === 0 && isRequired) {
             return ({
                 valid: false,
@@ -161,7 +161,7 @@ class NewGym extends React.Component {
                 error: 'Minimum 3 znaki !'
             })
         }
-        else if (value.length > 50) {
+        else if (value.length > 50 && isDescription === false) {
             return ({
                 valid: false,
                 error: 'Maksimum 50 znaków !'
@@ -181,7 +181,7 @@ class NewGym extends React.Component {
         let pattern;
 
         // name
-        checkTextResponse = this.checkTextLength(this.state.name, true);
+        checkTextResponse = this.checkTextLength(this.state.name, true,false);
         if (!checkTextResponse.valid) {
             formValid = false;
             errors = Object.assign({}, errors, { name: checkTextResponse.error });
@@ -191,7 +191,7 @@ class NewGym extends React.Component {
         }
 
         // city
-        checkTextResponse = this.checkTextLength(this.state.city, true);
+        checkTextResponse = this.checkTextLength(this.state.city, true,false);
         if (!checkTextResponse.valid) {
             formValid = false;
             errors = Object.assign({}, errors, { city: checkTextResponse.error });
@@ -200,7 +200,7 @@ class NewGym extends React.Component {
         }
 
         // street
-        checkTextResponse = this.checkTextLength(this.state.street, true);
+        checkTextResponse = this.checkTextLength(this.state.street, true,false);
         if (!checkTextResponse.valid) {
             formValid = false;
             errors = Object.assign({}, errors, { street: checkTextResponse.error });
@@ -215,7 +215,7 @@ class NewGym extends React.Component {
             formValid = false;
             errors = Object.assign({}, errors, { post_code: 'Kod pocztowy jest nieprawidłowy !' })
         } else {
-            checkTextResponse = this.checkTextLength(this.state.post_code, false);
+            checkTextResponse = this.checkTextLength(this.state.post_code, false,false);
             if (!checkTextResponse.valid) {
                 formValid = false;
                 errors = Object.assign({}, errors, { post_code: checkTextResponse.error });
@@ -231,7 +231,7 @@ class NewGym extends React.Component {
             formValid = false;
             errors = Object.assign({}, errors, { phone_number: 'Podany numer jest nieprawidłowy !' })
         } else {
-            checkTextResponse = this.checkTextLength(this.state.phone_number, false);
+            checkTextResponse = this.checkTextLength(this.state.phone_number, false,false);
             if (!checkTextResponse.valid) {
                 formValid = false;
                 errors = Object.assign({}, errors, { phone_number: checkTextResponse.error });
@@ -247,7 +247,7 @@ class NewGym extends React.Component {
             formValid = false;
             errors = Object.assign({}, errors, { landline_number: 'Podany numer jest nieprawidłowy !' })
         } else {
-            checkTextResponse = this.checkTextLength(this.state.landline_number, false);
+            checkTextResponse = this.checkTextLength(this.state.landline_number, false,false);
             if (!checkTextResponse.valid) {
                 formValid = false;
                 errors = Object.assign({}, errors, { landline_number: checkTextResponse.error });
@@ -259,7 +259,7 @@ class NewGym extends React.Component {
         // mail
         pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-        checkTextResponse = this.checkTextLength(this.state.mail, true);
+        checkTextResponse = this.checkTextLength(this.state.mail, true,false);
         if (!checkTextResponse.valid) {
             formValid = false;
             errors = Object.assign({}, errors, { mail: checkTextResponse.error });
@@ -272,7 +272,7 @@ class NewGym extends React.Component {
         }
 
         // description
-        checkTextResponse = this.checkTextLength(this.state.description, true);
+        checkTextResponse = this.checkTextLength(this.state.description, true,true);
         if (!checkTextResponse.valid) {
             formValid = false;
             errors = Object.assign({}, errors, { description: checkTextResponse.error });

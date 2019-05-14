@@ -243,7 +243,7 @@ module.exports = (app, client) => {
 
         let query = `SELECT count(*) as "msg_count" 
     FROM ${schema}.${table_name} m_t natural join kuba.messages ms
-    WHERE m_t.${column_name} = $1 and ms.is_read = false and m_t.type='receiver'`;
+    WHERE m_t.${column_name} = $1 and ms.is_read = false and m_t.type='receiver' and m_s.receiver_deleted = false`;
         console.log('Query: ', query)
         console.log(request.params.type, schema, table_name, column_name);
 
@@ -251,6 +251,7 @@ module.exports = (app, client) => {
         client.query(query, [request.params.user_id])
 
             .then(res => {
+
                 if (res.rows.length > 0) {
                     response.json({
                         response: 'success',
@@ -363,7 +364,7 @@ module.exports = (app, client) => {
     */
 
     app.post('/api/user/edit-profile', (request, response) => {
-        console.log('Edit profile...', request.body);
+        console.log('Edit profile...', request.body.data.description);
 
         let data = request.body;
         let query = '';
@@ -387,10 +388,10 @@ module.exports = (app, client) => {
         } else if (data.type === 'trainer') {
             query = `UPDATE trainers.trainer
                      SET first_name=$1, last_name=$2, city=$3, voivodeship=$4,
-                         login=$5 
-                     WHERE trainer_id = $6;`;
+                         login=$5 , description = $6
+                     WHERE trainer_id = $7;`;
             values = [data.data.first_name, data.data.last_name, data.data.city,
-                data.data.voivodeship, data.data.login,
+                data.data.voivodeship, data.data.login, data.data.description,
                 data.id
             ];
         }
@@ -398,7 +399,7 @@ module.exports = (app, client) => {
         // Wykonanie zapytania
         client.query(query, values)
             .then(res => {
-                console.log(res);
+                // console.log(res);
 
                 response.send({
                     response: 'success'

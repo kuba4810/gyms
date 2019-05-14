@@ -107,7 +107,7 @@ class Gallery extends Component {
         }
         return (
             // Container
-            <div class="gallery animated invisible">
+            <div class="gallery animated invisible ">
 
                 <div className="close p-2" onClick={this.hideGallery}>
                     <i className="fas fa-times text-danger"></i>

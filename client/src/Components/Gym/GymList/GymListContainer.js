@@ -48,23 +48,7 @@ class GymListC extends React.Component{
         }
         
         
-       return(
-        // <div class="gymContainer">
-        //    <form>
-        //        <div className="form-group">
-        //             <label for="city">Miasto</label>
-        //             <input class="form-control" name="city" type="text" onChange={this.handleInputChange}/>
-        //        </div>
-        //    </form>
-        //     <Link to={"/silownie/new-gym"} className="btn btn-success" >Dodaj siłownie</Link>
-
-        //     <h3>Lista siłowni</h3>
-        //     <ol>
-        //     {gyms}
-        //     </ol>
-        // </div>
-
-        
+       return(       
 
         <React.Fragment>
         <GymHeader/>

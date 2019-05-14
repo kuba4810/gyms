@@ -517,16 +517,17 @@
 
 .trainerPackagesTable {
     width:100%;
+    border-radius : 5px;
     
 }
-.trainerPackagesTable tr{
-
+.trainerPackagesTable table td{
+    display:flex;
+    align-items:center;
 }
 .trainerPackagesTable tr:first-child{
     font-weight : bold;
-    border-bottom : 1px solid #373737;
+    /* border-bottom : 1px solid #373737; */
 }
-
 
 
  /* RESPONSIVE */
@@ -562,6 +563,7 @@
 
      .forumContent {
          width: 100% !important;
+         margin-bottom : 50px;
      }
 
      .showForumNav {
@@ -647,6 +649,7 @@
      .userMenu {
          top: 55px;
          width: 220px;
+
      }
 
      .userOptionsList {

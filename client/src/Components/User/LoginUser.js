@@ -4,17 +4,6 @@ import {connect} from 'react-redux'
 
 class User extends React.Component{
 
-    /* showUserMenu = () =>{
-       var userMenu = document.getElementById("userMenu");
-        if(userMenu.classList.contains("invisible")){
-            userMenu.classList.remove("invisible");
-        }
-        else{
-            userMenu.classList.add("invisible");
-        }
-
-    }
- */
     moveUserList = () =>{
         let list = document.querySelector('.userOptionsList');
         list.classList.toggle('slideInDown');
@@ -39,8 +28,7 @@ class User extends React.Component{
                 data-target="#userMenu" 
                 onClick={this.moveUserList}>
                 { condition && <span class="userInfo badge badge-success">!</span>}
-                {/* {badge} */}
-               <div className="loginUserDiv"  /* onClick={this.showUserMenu} */>
+               <div className="loginUserDiv">
                  {
                      (this.props.user.image !== null && typeof(this.props.user.image) !== "undefined") ?
                      <img src={`http://localhost:8080/public/images/${login}.jpg`} />:

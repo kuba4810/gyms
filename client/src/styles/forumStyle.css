@@ -181,6 +181,7 @@ textarea {
     z-index: 100;
     text-align: center;
     overflow: hidden;
+    z-index:99999999999999999999999;
 
 }
 
@@ -355,6 +356,7 @@ textarea {
     background-color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0.8);
     padding: 30px;
+    margin-bottom : 50px;
 
 
 }
@@ -2239,8 +2241,8 @@ span.psw {
   .tooltipHours .tooltiptextHours {
     visibility: hidden;
     width: 220px;
-    background-color: #555;
-    color: #fff;
+    background-color: cornsilk;
+    color: #262626;
     border-radius: 6px;
     padding: 5px 0;
     position: absolute;
@@ -2260,7 +2262,7 @@ span.psw {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #555 transparent transparent transparent;
+    border-color: cornsilk transparent transparent transparent;
   }
   
   .tooltipHours:hover .tooltiptextHours {
@@ -2292,4 +2294,9 @@ span.psw {
     border-top-right-radius: calc(0.25rem - 1px);
     height: 13em;
     object-fit: cover;
+  }
+
+  .trainerDescription{
+    white-space: pre-line;
+    white-space: pre-wrap;
   }

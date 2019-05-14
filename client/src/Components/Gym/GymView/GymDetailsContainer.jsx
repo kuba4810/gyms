@@ -9,6 +9,7 @@ import {
 } from "../../../Actions/index";
 
 import { formatDate } from '../../../services/dateService';
+import Gallery from '../../User/Gallery';
 
 
 
@@ -16,7 +17,8 @@ import { formatDate } from '../../../services/dateService';
 class GymDetailsCont extends React.Component {
 
   state = {
-    processing: true
+    processing: true,
+    currentIndex : 0
   }
   componentDidMount() {
     console.log("Pobieram dane ...");
@@ -109,6 +111,20 @@ class GymDetailsCont extends React.Component {
       });
   };
 
+  showGallery = (index) => {
+
+    console.log('Dostałem index : ', index)
+
+    this.setState({
+      currentIndex: index
+    })
+    let gallery = document.querySelector('.gallery');
+
+    gallery.classList.add('fadeIn');
+    gallery.classList.remove('fadeOut');
+    gallery.classList.remove('invisible');
+
+  }
   render() {
     const data = this.props.gymDetails.gym.gymData;
 
@@ -131,18 +147,28 @@ class GymDetailsCont extends React.Component {
     var day = "mon";
     let evaluation = "";
     let comments = "";
-
+    let gallery = ''
     if (this.props.gymDetails.isLoading == false) {
       console.log("Magazyn: ", data);
 
       console.log("Ładuje dane: ", this.props.gymDetails.isLoading);
 
+      let photosToGallery = this.props.gymDetails.gym.photos.map( photo => ( {
+        photo_name : photo.url
+      } ) )
 
-      photos = this.props.gymDetails.gym.photos.map(photo =>
+      if(this.props.gymDetails.gym.photos.length  > 0){
+        gallery = <Gallery photos={[...photosToGallery]} currentIndex={this.state.currentIndex} />
+      }
+
+      
+
+      photos = this.props.gymDetails.gym.photos.map((photo,index) =>
         <div className="userAvatar mr-2">
           <div className="overlay">
 
-            <i class="fas fa-eye text-primary"></i>
+            <i class="fas fa-eye text-primary"
+              onClick={this.showGallery.bind(null, index)}></i>
 
           </div>
           <img src={`http://localhost:8080/public/images/${photo.url}.jpg`} alt="Zdjęicie siłowni" />
@@ -188,7 +214,7 @@ class GymDetailsCont extends React.Component {
             {this.props.gymDetails.gym.offers.map(o => (
               <tr>
                 {" "}
-                <td> {o.offer_name} </td> <td>{o.description}</td>{" "}
+                <td className="d-flex align-items-center"> <i class="fas fa-minus mr-2 text-danger"></i> {o.offer_name} </td> <td>{o.description}</td>{" "}
               </tr>
             ))}
           </tbody>
@@ -209,7 +235,7 @@ class GymDetailsCont extends React.Component {
               <tr>
                 {" "}
                 <td>{p.package_name}</td>
-                <td>{p.prize}zł</td>{" "}
+                <td className="text-danger">{p.prize}zł</td>{" "}
                 <td>{p.description}</td>{" "}
               </tr>
             ))}
@@ -217,8 +243,8 @@ class GymDetailsCont extends React.Component {
         </div>
       );
       equipment = data.equipment.split(",").map(eq => (
-        <div>
-          <i class="fas fa-check" /> {eq}{" "}
+        <div className="mr-3 d-flex w-auto">
+          <i class="fas fa-check mr-1 text-danger" /> {eq}{" "}
         </div>
       ));
 
@@ -247,9 +273,10 @@ class GymDetailsCont extends React.Component {
 
     let starView = () => {
 
+
       if (this.props.gymDetails.gym.gymData.evaluation === 0) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "grey" }} className="fas fa-star"></i>
             <i style={{ color: "grey" }} className="fas fa-star"></i>
             <i style={{ color: "grey" }} className="fas fa-star"></i>
@@ -260,10 +287,9 @@ class GymDetailsCont extends React.Component {
         )
       }
 
-
       if (this.props.gymDetails.gym.gymData.evaluation > 0.74 && this.props.gymDetails.gym.gymData.evaluation < 1.25) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "grey", }} className="fas fa-star"></i>
             <i style={{ color: "grey" }} className="fas fa-star"></i>
@@ -275,7 +301,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 1.24 && this.props.gymDetails.gym.gymData.evaluation < 1.75) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow", }} className="fas fa-star-half-alt"></i>
             <i style={{ color: "grey" }} className="fas fa-star"></i>
@@ -288,7 +314,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 1.74 && this.props.gymDetails.gym.gymData.evaluation < 2.25) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "grey" }} className="fas fa-star"></i>
@@ -300,7 +326,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 2.24 && this.props.gymDetails.gym.gymData.evaluation < 2.75) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star-half-alt"></i>
@@ -313,7 +339,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 2.74 && this.props.gymDetails.gym.gymData.evaluation < 3.25) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
@@ -325,7 +351,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 3.24 && this.props.gymDetails.gym.gymData.evaluation < 3.75) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
@@ -338,7 +364,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 3.74 && this.props.gymDetails.gym.gymData.evaluation < 4.25) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
@@ -350,7 +376,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 4.24 && this.props.gymDetails.gym.gymData.evaluation < 4.75) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
@@ -363,7 +389,7 @@ class GymDetailsCont extends React.Component {
 
       if (this.props.gymDetails.gym.gymData.evaluation > 4.74 && this.props.gymDetails.gym.gymData.evaluation < 5.25) {
         return (
-          <div>
+          <div class="stars">
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
             <i style={{ color: "yellow" }} className="fas fa-star"></i>
@@ -375,13 +401,17 @@ class GymDetailsCont extends React.Component {
     }
 
     if (this.props.gymDetails.isLoading === false && this.state.processing === false) {
+
+      
       return (
 
         <React.Fragment>
 
 
           <div className="container-fluid gymDetailsContainer">
+          {gallery}
             <div className="gymContent pt-5">
+              
               <div className="row pt-5 animated fadeIn">
                 <div className="col-12 ">
 
@@ -395,7 +425,10 @@ class GymDetailsCont extends React.Component {
                         <div className="text-dark m-5">
                           <h2>{this.props.gymDetails.gym.gymData.gym_name}, {this.props.gymDetails.gym.gymData.city}</h2>
                         </div>
-                        <div className="text-dark m-5"><h3>{starView()}</h3></div>
+                        <div className="text-dark m-5">
+                            <h3>{starView()}</h3> 
+                            <h5>{this.props.gymDetails.gym.gymData.evaluation}</h5>
+                        </div>
                         <div></div>
                         <div></div>
 
@@ -435,6 +468,17 @@ class GymDetailsCont extends React.Component {
                         </div>
                         <div className="card-body">
                           <p className="card-text">{offer}</p>
+                        </div>
+                      </div>
+
+                      <div className="card content text-white  ml-5  m-4">
+                        <div className="card-header">
+                          <h4 className="card-title">Dostępny sprzęt</h4>
+                        </div>
+                        <div className="card-body">
+                           <p className="d-flex flex-wrap">
+                           {equipment}
+                           </p>
                         </div>
                       </div>
 
@@ -482,14 +526,16 @@ class GymDetailsCont extends React.Component {
                         <a href="#wystawKomentarz"><button class="btn btn-warning ml-5">Wystaw komentarz!</button></a>
                       </div>
 
-                      <div className="card text-dark  px-3 py-3 m-4">
+                      <div className="card text-dark m-4">
                         <div className="card-header">
-
-                          <h3>Adres i dane kontaktowe:</h3>
+                          <h3 className="card-title">Adres i dane kontaktowe:</h3>
+                          <h3></h3>
                         </div>
-                        <p><i class="far fa-envelope"> {this.props.gymDetails.gym.gymData.email}</i></p>
+                       <div className="card-body">
+                       <p><i class="far fa-envelope"> {this.props.gymDetails.gym.gymData.email}</i></p>
                         <p><i class="fas fa-map-marker-alt"> {this.props.gymDetails.gym.gymData.street} {this.props.gymDetails.gym.gymData.city}</i></p>
                         <p><i class="fas fa-phone"> {this.props.gymDetails.gym.gymData.phone_number}</i></p>
+                       </div>
                       </div>
 
                       <div className="card text-dark  px-3 py-3 m-4">

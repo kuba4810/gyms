@@ -23,8 +23,24 @@ class Trainer extends React.Component {
     }
 
     this.setState({
-      processing: false
+      processing: false,
+      currentIndex : 0
     })
+
+  }
+
+  showGallery = (index) => {
+
+    console.log('Dostałem index : ',index)
+
+    this.setState({
+      currentIndex: index
+    })
+    let gallery = document.querySelector('.gallery');
+
+    gallery.classList.add('fadeIn');
+    gallery.classList.remove('fadeOut');
+    gallery.classList.remove('invisible');
 
   }
 
@@ -36,15 +52,17 @@ class Trainer extends React.Component {
     let skills = '';
     let description_skills = '';
     let packages = '';
+    let gallery = '';
 
 
     if (data) {
       // Create array photos
-      photos = data.photos.map(photo =>
+      photos = data.photos.map((photo,index) =>
         <div className="userAvatar ml-2">
           <div className="overlay">
 
-            <i class="fas fa-eye text-primary"></i>
+            <i class="fas fa-eye text-primary" 
+            onClick={this.showGallery.bind(null,index)}></i>
 
           </div>
           <img src={`http://localhost:8080/public/images/${photo.photo_name}.jpg`} alt="" />
@@ -75,6 +93,11 @@ class Trainer extends React.Component {
           <h5><i class="fas fa-minus mr-2 text-danger"></i> <span className="text-dark">{s.name}</span>    </h5>
           <p className="text-dark ml-3">{s.description}</p>
         </div>)
+
+        if(data.photos.length > 0){
+          gallery = <Gallery photos ={[...this.props.trainer.photos]}  currentIndex={this.state.currentIndex}/>
+        }
+        
     }
 
     return (
@@ -82,12 +105,12 @@ class Trainer extends React.Component {
         <div className="container-fluid trainerView">
           <div className="trainerViewContent">
 
-
+         
 
             {
               this.state.processing === false && this.props.trainer ?
-                <div className="row animated fadeIn">
-
+                <div className="row animated fadeIn text-dark">
+                 {gallery}
                   <div className="col-12">
 
                     <div className="card trainerHeader text-dark">
@@ -137,7 +160,7 @@ class Trainer extends React.Component {
                           <div className="card-header text-dark">
                             <h3 id="goToAboutMe">O mnie</h3>
                           </div>
-                          <div className="card-body text-dark">
+                          <div className="card-body text-dark trainerDescription">
                             {data.trainer.description}
                           </div>
                         </div>
@@ -147,7 +170,9 @@ class Trainer extends React.Component {
                             <h3>Zdjęcia</h3>
                           </div>
                           <div className="card-body text-dark d-flex">
-                            {photos}
+                            {photos.length > 0 ?
+                            photos :
+                            'Brak zdjęć'}
                           </div>
                         </div>
 
@@ -171,9 +196,11 @@ class Trainer extends React.Component {
                             <h3 id="goToPrice">Cennik</h3>
                           </div>
                           <div className="card-body text-dark">
-                            <table className="trainerPackagesTable">
+                            <table className="trainerPackagesTable table table-striped table-dark">
 
-                              <tr> <td>Nazwa</td> <td>Czas trwania/ilość</td> <td>Cena</td> </tr>
+                              <thead>
+                              <tr> <th>Nazwa</th> <th>Czas trwania/ilość</th> <th>Cena</th> </tr>
+                              </thead>
                               {packages}
                             </table>
                           </div>

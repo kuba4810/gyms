@@ -27,6 +27,7 @@ class TrainerForm extends Component {
     confirm_password: '',
     con_password_message: '',
     city: '',
+    description : '',
     image: '',
     imageChanged: false,
     img: null,
@@ -626,7 +627,8 @@ class TrainerForm extends Component {
           login: s.login,
           passw: s.passw,
           city: s.city,
-          voivodeship: s.voivodeship
+          voivodeship: s.voivodeship,
+          description : s.description
         }
       }
       // 4.) Wysłanie formularza
@@ -679,6 +681,7 @@ class TrainerForm extends Component {
         img: d.image,
         voivodeship: d.voivodeship,
         packages: [...res.data.packages],
+        description : d.description,
         skills: [...res.data.skills],
         photos: [...res.data.photos]
       })
@@ -767,7 +770,7 @@ class TrainerForm extends Component {
     })
 
     return (
-      <div>
+      <div className="trainerDataForm">
         <Gallery photos={galleryPhotos} currentIndex={this.state.currentIndex} />
         <div class="container-fluid trainer-profile-edit ">
 
@@ -1029,6 +1032,16 @@ class TrainerForm extends Component {
                     <input className='form-control' name='voivodeship' autoComplete='off'
                       value={this.state.voivodeship} onChange={this.handleChange}
                       type='text' />
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Opis:</label>
+                  <div class="col-lg-12">
+                    <textarea className='trainerDescription form-control bg-dark text-light' wrap="hard" name='description' autoComplete='off'
+                      value={this.state.description} onChange={this.handleChange} id="" cols="30" rows="10"></textarea>
+
                   </div>
                 </div>
 

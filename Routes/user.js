@@ -243,7 +243,7 @@ module.exports = (app, client) => {
 
         let query = `SELECT count(*) as "msg_count" 
     FROM ${schema}.${table_name} m_t natural join kuba.messages ms
-    WHERE m_t.${column_name} = $1 and ms.is_read = false and m_t.type='receiver' and m_s.receiver_deleted = false`;
+    WHERE m_t.${column_name} = $1 and ms.is_read = false and m_t.type='receiver' and ms.receiver_deleted = false`;
         console.log('Query: ', query)
         console.log(request.params.type, schema, table_name, column_name);
 

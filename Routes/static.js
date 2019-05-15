@@ -29,6 +29,14 @@ module.exports = (app) => {
         res.sendFile(path.resolve(__dirname, '../' , 'client','build' , 'index.html'));
     });
 
+    app.get('/nowe-haslo/*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../' , 'client','build' , 'index.html'));
+    });
+
+    app.get('/verify-email/*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../' , 'client','build' , 'index.html'));
+    });
+
 
     app.get('/public/images/:name' , (request,response) =>{
 
